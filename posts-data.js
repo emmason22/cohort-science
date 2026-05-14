@@ -187,6 +187,7 @@ window.COHORT_POSTS = [
     excerpt: "FOR IMMEDIATE RELEASE Richardson, TX \u2014 [December 19, 2025] \u2014 Kentucky Christian University (KCU) has entered into a new agreement with Cohort Science, a higher education data science firm specializing in using",
     date: '2025-12-19',
     image: 'Assets/KentuckyChristianUniversity.webp',
+    imageFit: 'contain',
     content: `
 <p><strong>FOR IMMEDIATE RELEASE</strong></p>
 

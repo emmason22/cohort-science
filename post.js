@@ -40,7 +40,7 @@ function loadLocalPost() {
   postMeta.textContent = formatDate(post.date) ? `Published ${formatDate(post.date)}` : '';
   postStatus.textContent = '';
   const imageMarkup = post.image
-    ? `<img class="post-featured-image" src="${post.image}" alt="${post.title} featured image" loading="eager" decoding="async">`
+    ? `<img class="post-featured-image ${post.imageFit === 'contain' ? 'post-featured-image-contain' : ''}" src="${post.image}" alt="${post.title} featured image" loading="eager" decoding="async">`
     : '';
   postContent.innerHTML = `${imageMarkup}${post.content || '<p>Content unavailable.</p>'}`;
 }

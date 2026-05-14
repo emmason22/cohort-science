@@ -8,6 +8,9 @@ function createPostCard(post) {
   if (post.image) {
     const image = document.createElement('img');
     image.className = 'journal-card-image';
+    if (post.imageFit === 'contain') {
+      image.classList.add('journal-card-image-contain');
+    }
     image.src = post.image;
     image.alt = `${post.title} featured image`;
     image.loading = 'lazy';

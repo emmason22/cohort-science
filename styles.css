@@ -229,6 +229,10 @@ select:focus-visible {
   padding: 0;
 }
 
+.journal-page .hero.section-pad {
+  padding-top: calc(var(--space-2xl) + 1rem);
+}
+
 .hero-shell {
   position: relative;
   width: 100vw;
@@ -347,6 +351,14 @@ select:focus-visible {
   transform: translateY(-4px);
   box-shadow: 0 14px 28px rgba(9, 40, 68, 0.14);
   border-color: #b8c7d9;
+}
+
+.client-segment-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 0.8rem;
 }
 
 .card-subhead {
@@ -574,11 +586,24 @@ li {
   margin-bottom: 0.8rem;
 }
 
+.journal-card-image-contain {
+  object-fit: contain;
+  background: #f5f7fa;
+  padding: 0.4rem;
+}
+
 .post-featured-image {
   width: 100%;
   border-radius: 12px;
   margin: 0 0 1.1rem;
   object-fit: cover;
+}
+
+.post-featured-image-contain {
+  object-fit: contain;
+  background: #f5f7fa;
+  max-height: 520px;
+  padding: 0.5rem;
 }
 
 .post-content h1,
