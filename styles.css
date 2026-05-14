@@ -473,6 +473,7 @@ li {
   display: flex;
   flex-direction: column;
   height: 100%;
+  gap: 0.35rem;
 }
 
 .person-card h3 {
@@ -506,7 +507,7 @@ li {
 
 .person-card .bio {
   font-size: 0.95rem;
-  margin-bottom: 0;
+  margin-bottom: 0.6rem;
   color: #2f3d4f;
 }
 
@@ -888,7 +889,7 @@ body.modal-open {
 }
 
 .person-card-cta {
-  margin: 1rem auto 0;
+  margin: 1.35rem auto 0;
   width: 56px;
   height: 56px;
   border-radius: 999px;
