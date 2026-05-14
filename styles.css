@@ -190,6 +190,21 @@ select:focus-visible {
   color: var(--brand-dark);
 }
 
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.social-link img {
+  display: block;
+}
+
+.social-link-header img {
+  border-radius: 4px;
+}
+
 .eyebrow {
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -764,6 +779,10 @@ body.modal-open {
   text-decoration: underline;
 }
 
+.social-link-footer img {
+  border-radius: 4px;
+}
+
 .footer-legal {
   margin: 0;
   color: #94a8c0;
@@ -778,4 +797,47 @@ body.modal-open {
   .footer-legal {
     grid-column: 1 / -1;
   }
+}
+
+.linkedin-link {
+  margin-top: 0.65rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  text-decoration: none;
+  color: #0a66c2;
+  font-weight: 600;
+}
+
+.linkedin-link img {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+}
+
+.linkedin-link:hover {
+  text-decoration: underline;
+}
+
+.person-card-cta {
+  margin: 1rem auto 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background: #000;
+  color: #fff;
+  font-size: 1.45rem;
+  line-height: 1;
+  border: 1px solid #000;
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+
+.person-card-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+  background: #111;
 }
