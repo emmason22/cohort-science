@@ -1,5 +1,18 @@
 const postsGrid = document.getElementById('posts-grid');
 const journalStatus = document.getElementById('journal-status');
+const searchInput = document.getElementById('journal-search');
+const categorySelect = document.getElementById('journal-category');
+
+function categorizePost(post) {
+  const text = `${post.title} ${post.excerpt}`.toLowerCase();
+  if (text.includes('announces') || text.includes('unveils') || text.includes('launch')) {
+    return 'announcement';
+  }
+  if (text.includes('partnership') || text.includes('selects') || text.includes('agreement')) {
+    return 'partnership';
+  }
+  return 'insight';
+}
 
 function createPostCard(post) {
   const article = document.createElement('article');
@@ -18,6 +31,10 @@ function createPostCard(post) {
     article.appendChild(image);
   }
 
+  const tag = document.createElement('p');
+  tag.className = 'journal-tag';
+  tag.textContent = post.categoryLabel;
+
   const h3 = document.createElement('h3');
   h3.textContent = post.title;
 
@@ -29,13 +46,44 @@ function createPostCard(post) {
   link.href = `post.html?id=${encodeURIComponent(post.id)}`;
   link.textContent = 'Read more';
 
-  article.append(h3, p, link);
+  article.append(tag, h3, p, link);
   return article;
 }
 
 function renderPosts(posts) {
   postsGrid.innerHTML = '';
   posts.forEach((post) => postsGrid.appendChild(createPostCard(post)));
+}
+
+function applyFilters() {
+  const allPosts = Array.isArray(window.COHORT_POSTS) ? window.COHORT_POSTS : [];
+  const q = (searchInput?.value || '').trim().toLowerCase();
+  const category = categorySelect?.value || 'all';
+
+  const enriched = allPosts.map((post) => {
+    const cat = post.category || categorizePost(post);
+    return {
+      ...post,
+      category: cat,
+      categoryLabel: cat.charAt(0).toUpperCase() + cat.slice(1)
+    };
+  });
+
+  const filtered = enriched.filter((post) => {
+    const matchesCategory = category === 'all' || post.category === category;
+    const haystack = `${post.title} ${post.excerpt}`.toLowerCase();
+    const matchesQuery = !q || haystack.includes(q);
+    return matchesCategory && matchesQuery;
+  });
+
+  if (!filtered.length) {
+    postsGrid.innerHTML = '';
+    journalStatus.textContent = 'No posts match this filter yet.';
+    return;
+  }
+
+  renderPosts(filtered);
+  journalStatus.textContent = '';
 }
 
 function loadLocalPosts() {
@@ -46,10 +94,11 @@ function loadLocalPosts() {
     return;
   }
 
-  renderPosts(posts);
-  journalStatus.textContent = '';
+  applyFilters();
 }
 
 if (postsGrid && journalStatus) {
+  searchInput?.addEventListener('input', applyFilters);
+  categorySelect?.addEventListener('change', applyFilters);
   loadLocalPosts();
 }

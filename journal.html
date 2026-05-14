@@ -46,6 +46,21 @@
     <section class="section-pad tone" aria-labelledby="latest-posts-title">
       <div class="container">
         <h2 id="latest-posts-title">Latest Posts</h2>
+        <div class="journal-controls" aria-label="Filter posts">
+          <label class="journal-control">
+            <span>Search</span>
+            <input id="journal-search" type="search" placeholder="Search posts">
+          </label>
+          <label class="journal-control">
+            <span>Category</span>
+            <select id="journal-category">
+              <option value="all">All categories</option>
+              <option value="announcement">Announcements</option>
+              <option value="partnership">Partnerships</option>
+              <option value="insight">Insights</option>
+            </select>
+          </label>
+        </div>
         <p id="journal-status" class="muted-note"></p>
         <div id="posts-grid" class="cards-grid"></div>
       </div>
