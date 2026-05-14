@@ -43,6 +43,33 @@ function loadLocalPost() {
     ? `<img class="post-featured-image ${post.imageFit === 'contain' ? 'post-featured-image-contain' : ''}" src="${post.image}" alt="${post.title} featured image" loading="eager" decoding="async">`
     : '';
   postContent.innerHTML = `${imageMarkup}${post.content || '<p>Content unavailable.</p>'}`;
+  injectPostSchema(post);
+}
+
+function injectPostSchema(post) {
+  const url = new URL(window.location.href);
+  const imageUrl = post.image ? new URL(post.image, window.location.origin).href : 'https://cohortscience.com/Assets/optimized/logo-320.png';
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    datePublished: post.date,
+    dateModified: post.date,
+    image: imageUrl,
+    mainEntityOfPage: url.href,
+    publisher: {
+      '@type': 'Organization',
+      name: 'Cohort Science™',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://cohortscience.com/Assets/optimized/logo-320.png'
+      }
+    }
+  };
+  const script = document.createElement('script');
+  script.type = 'application/ld+json';
+  script.textContent = JSON.stringify(schema);
+  document.head.appendChild(script);
 }
 
 if (postTitle && postStatus && postContent) {

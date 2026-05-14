@@ -458,6 +458,46 @@ li {
   }
 }
 
+@media (max-width: 759px) {
+  html {
+    scroll-padding-top: 4.8rem;
+  }
+
+  .section-pad {
+    padding: 3.1rem 0;
+  }
+
+  .hero-copy {
+    padding: 1.2rem 1rem 1.6rem;
+    max-width: 100%;
+  }
+
+  .hero-copy-overlay {
+    background: linear-gradient(180deg, rgba(10, 46, 88, 0.82) 0%, rgba(10, 46, 88, 0.62) 55%, rgba(10, 46, 88, 0.25) 100%);
+  }
+
+  .hero-copy-overlay h1 {
+    font-size: clamp(1.75rem, 9vw, 2.35rem);
+    line-height: 1.14;
+  }
+
+  .lead {
+    font-size: 1.03rem;
+    line-height: 1.5;
+  }
+
+  .card,
+  .clients-grid article,
+  .outcomes-grid article {
+    padding: 1rem;
+  }
+
+  .touch-button {
+    font-size: 1.15rem;
+    padding: 0.72rem 0.9rem;
+  }
+}
+
 @media (min-width: 1080px) {
   .cards-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

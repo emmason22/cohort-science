@@ -4,7 +4,7 @@ window.COHORT_POSTS = [
     title: "Cohort Science Unveils Investor-Grade Institutional Intelligence Platform",
     excerpt: "The Great Divergence in Higher Education: Cohort ScienceTM Unveils Investor-Grade Institutional Intelligence Platform New strategic intelligence suite helps colleges and universities strengthen enrollment, financial sust",
     date: '2026-05-07',
-    image: 'Assets/IntelligencePlatform.png',
+    image: 'Assets/optimized/intelligence-platform.jpg',
     content: `
 <p><strong>The Great Divergence in Higher Education: Cohort Science™ Unveils Investor-Grade Institutional Intelligence Platform</strong></p>
 
@@ -134,7 +134,7 @@ window.COHORT_POSTS = [
     title: "Cohort Science Announces Market Analysis Platform to Help Universities Evaluate New Program Opportunities",
     excerpt: "DALLAS, TX, [April 29, 2026] \u2014 Cohort Science today announced the launch of its Market SignalAnalysis Platform, a decision-support solution designed to help colleges and universities evaluatenew academic program opportun",
     date: '2026-04-29',
-    image: 'Assets/MarketResearch.png',
+    image: 'Assets/optimized/market-research.jpg',
     content: `
 <p>DALLAS, TX, [April 29, 2026] &#8212; Cohort Science today announced the launch of its Market Signal<br>Analysis Platform, a decision-support solution designed to help colleges and universities evaluate<br>new academic program opportunities with greater clarity and confidence.</p>
 
@@ -186,7 +186,7 @@ window.COHORT_POSTS = [
     title: "Kentucky Christian University Selects Cohort Science",
     excerpt: "FOR IMMEDIATE RELEASE Richardson, TX \u2014 [December 19, 2025] \u2014 Kentucky Christian University (KCU) has entered into a new agreement with Cohort Science, a higher education data science firm specializing in using",
     date: '2025-12-19',
-    image: 'Assets/KentuckyChristianUniversity.webp',
+    image: 'Assets/optimized/kentucky-christian-university.jpg',
     imageFit: 'contain',
     content: `
 <p><strong>FOR IMMEDIATE RELEASE</strong></p>
@@ -289,7 +289,7 @@ window.COHORT_POSTS = [
     title: "Cohort Science Partners with Economic Mobility Systems to Advance Education Programs That Elevate Regional Opportunities for All Learners",
     excerpt: "[Dallas, TX] \u2014 Cohort Science is thrilled to announce a new partnership with Economic Mobility Systems (EMS) for a multiyear collaboration to evaluate the Regional Talent Network (RTN) Program. This strategic initiative",
     date: '2025-03-06',
-    image: 'Assets/Economic-Mobility-Systems-Logo-820x430.png',
+    image: 'Assets/optimized/economic-mobility-systems.jpg',
     content: `
 <div data-elementor-type="wp-post" data-elementor-id="18157" class="elementor elementor-18157">
 				<div class="elementor-element elementor-element-707297cc e-flex e-con-boxed wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no e-con e-parent" data-id="707297cc" data-element_type="container">
@@ -326,7 +326,7 @@ window.COHORT_POSTS = [
     title: "Applying the Science of Cohorts",
     excerpt: "Explore how to cohort retention highlights how a recent cohort is performing relative to prior ones.",
     date: '2024-06-11',
-    image: 'Assets/ScienceofCohorts.jpg',
+    image: 'Assets/optimized/science-of-cohorts.jpg',
     content: `
 <p>Educational organizations face a challenge: Their administrators are attuned to viewing their performance in vertical slices of time – e.g., last year vs. this year, or prior month vs. this month. Yet the underlying drivers of performance are longitudinal in nature. For example,</p>
 

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cohortscience.com/sitemap.xml
