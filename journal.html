@@ -3,38 +3,41 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://cohortscience.com/journal.html">
   <title>Cohort Science Journal</title>
-  <meta name="description" content="Latest insights and announcements from Cohort Science.">
+  
   <meta property="og:title" content="Cohort Science Journal">
-  <meta property="og:description" content="Explore recent Cohort Science blog posts and sector perspectives.">
-  <meta property="og:type" content="website">
+  
+  <meta property="og:description" content="Latest insights and announcements from Cohort Science.">
+  
+  
+  <meta property="og:url" content="https://cohortscience.com/journal.html">
+  
+  
   <meta property="og:image" content="CohortScience Color Logo.png">
+  
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Cohort Science Journal">
+  <meta name="twitter:description" content="Latest insights and announcements from Cohort Science.">
+  <meta name="twitter:image" content="CohortScience Color Logo.png">
+  
+  <meta name="twitter:title" content="Cohort Science Journal">
+  <meta name="twitter:description" content="Latest insights and announcements from Cohort Science.">
+  <meta name="twitter:image" content="CohortScience Color Logo.png">
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600;700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;700&family=Public+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script defer src="includes.js"></script>
   <script defer src="script.js"></script>
   <script defer src="journal.js"></script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Cohort Science","url":"https://cohortscience.com/","logo":"https://cohortscience.com/Assets/optimized/logo-320.png"}</script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
 
-  <header class="site-header" id="top">
-    <div class="container nav-wrap">
-      <a href="index.html#top" class="brand" aria-label="Cohort Science home">
-        <img src="CohortScience Color Logo.png" alt="Cohort Science logo">
-      </a>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">Menu</button>
-      <nav id="primary-nav" class="primary-nav" aria-label="Primary">
-        <a href="index.html">Home</a>
-        <a href="index.html#about">About</a>
-        <a href="https://cohortscience.com/blog/" target="_blank" rel="noopener noreferrer">Live Blog</a>
-        <a href="index.html#contact">Briefing</a>
-      </nav>
-    </div>
-  </header>
+  <div data-include="header"></div>
 
   <main id="main-content">
     <section class="hero section-pad" aria-labelledby="journal-hero-title">
@@ -55,21 +58,6 @@
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div>
-        <p class="footer-brand">Cohort Science</p>
-        <p class="footer-copy">Investor-grade intelligence for high-stakes decisions in higher education.</p>
-      </div>
-      <nav class="footer-links" aria-label="Footer">
-        <a href="index.html">Home</a>
-        <a href="index.html#products">Products</a>
-        <a href="index.html#about">Team</a>
-        <a href="journal.html">Journal</a>
-        <a href="index.html#contact">Request a Briefing</a>
-      </nav>
-      <p class="footer-legal">&copy; <span id="year"></span> Cohort Science. All rights reserved.</p>
-    </div>
-  </footer>
+  <div data-include="footer"></div>
 </body>
 </html>
