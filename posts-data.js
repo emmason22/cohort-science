@@ -346,7 +346,7 @@ window.COHORT_POSTS = [
 
 
 <div class="wp-block-image">
-<figure class="aligncenter size-full"></figure>
+<figure class="aligncenter size-full"><img src="Assets/Chart1-1.png" alt="Cohort retention analysis chart one" loading="lazy" decoding="async" width="1200" height="675"></figure>
 </div>
 
 
@@ -364,11 +364,11 @@ window.COHORT_POSTS = [
 
 
 <div class="wp-block-image">
-<figure class="aligncenter size-full"></figure>
+<figure class="aligncenter size-full"><img src="Assets/Chart2-1.png" alt="Cohort behavior comparison chart two" loading="lazy" decoding="async" width="1200" height="675"></figure>
 </div>
 
 <div class="wp-block-image">
-<figure class="aligncenter size-full"></figure>
+<figure class="aligncenter size-full"><img src="Assets/Chart3-1.png" alt="Cohort pattern trend chart three" loading="lazy" decoding="async" width="1200" height="675"></figure>
 </div>
 
 
@@ -376,7 +376,7 @@ window.COHORT_POSTS = [
 
 
 <div class="wp-block-image">
-<figure class="aligncenter size-full"></figure>
+<figure class="aligncenter size-full"><img src="Assets/chart4-1.png" alt="Cohort predictive insights chart four" loading="lazy" decoding="async" width="1200" height="675"></figure>
 </div>
     `
   }

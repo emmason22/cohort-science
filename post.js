@@ -28,6 +28,14 @@ function estimateReadTime(contentHtml) {
   return `${minutes} min read`;
 }
 
+function categorizePost(post) {
+  const text = `${post.title} ${post.excerpt}`.toLowerCase();
+  if (text.includes('science of cohorts') || text.includes('cohort')) return 'Science of Cohorts';
+  if (text.includes('announces') || text.includes('unveils') || text.includes('launch')) return 'Announcement';
+  if (text.includes('partnership') || text.includes('selects') || text.includes('agreement')) return 'Partnership';
+  return 'Insight';
+}
+
 function createRelatedCard(post) {
   const article = document.createElement('article');
   article.className = 'card';
@@ -71,9 +79,16 @@ function loadLocalPost() {
   const author = post.author || 'Cohort Science™ Team';
   const published = formatDate(post.date);
   const readTime = estimateReadTime(post.content || '');
+  const category = post.categoryLabel || categorizePost(post);
 
   postTitle.textContent = post.title;
-  postMeta.textContent = [published ? `Published ${published}` : '', `By ${author}`, readTime].filter(Boolean).join(' · ');
+  postMeta.innerHTML = [
+    `<span class="post-meta-item"><span class="post-meta-icon" aria-hidden="true">🏷</span>${category}</span>`,
+    published ? `<span class="post-meta-item"><span class="post-meta-icon" aria-hidden="true">🕒</span>${published}</span>` : '',
+    `<span class="post-meta-item"><span class="post-meta-icon" aria-hidden="true">👤</span>${author}</span>`,
+    `<span class="post-meta-item"><span class="post-meta-icon" aria-hidden="true">💬</span>No Comments</span>`,
+    `<span class="post-meta-item"><span class="post-meta-icon" aria-hidden="true">⏱</span>${readTime}</span>`
+  ].filter(Boolean).join('');
   postStatus.textContent = '';
 
   const imageMarkup = post.image
