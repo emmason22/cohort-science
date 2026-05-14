@@ -31,6 +31,7 @@
   <link rel="stylesheet" href="styles.css">
   <script defer src="includes.js"></script>
   <script defer src="script.js"></script>
+  <script defer src="posts-data.js"></script>
   <script defer src="journal.js"></script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Cohort Science","url":"https://cohortscience.com/","logo":"https://cohortscience.com/Assets/optimized/logo-320.png"}</script>
 </head>
@@ -44,15 +45,13 @@
       <div class="container narrow">
         <p class="eyebrow">Cohort Science Journal</p>
         <h1 id="journal-hero-title">Blog posts, announcements, and education intelligence perspectives.</h1>
-        <p class="lead">This page attempts to pull the most recent posts from the live Cohort Science blog.</p>
-        <a class="button" href="https://cohortscience.com/blog/" target="_blank" rel="noopener noreferrer">Visit Live Blog</a>
       </div>
     </section>
 
     <section class="section-pad tone" aria-labelledby="latest-posts-title">
       <div class="container">
         <h2 id="latest-posts-title">Latest Posts</h2>
-        <p id="journal-status" class="muted-note">Loading latest posts from cohortscience.com/blog...</p>
+        <p id="journal-status" class="muted-note"></p>
         <div id="posts-grid" class="cards-grid"></div>
       </div>
     </section>
