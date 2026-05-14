@@ -5,6 +5,16 @@ function createPostCard(post) {
   const article = document.createElement('article');
   article.className = 'card';
 
+  if (post.image) {
+    const image = document.createElement('img');
+    image.className = 'journal-card-image';
+    image.src = post.image;
+    image.alt = `${post.title} featured image`;
+    image.loading = 'lazy';
+    image.decoding = 'async';
+    article.appendChild(image);
+  }
+
   const h3 = document.createElement('h3');
   h3.textContent = post.title;
 

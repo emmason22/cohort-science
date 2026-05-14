@@ -566,6 +566,21 @@ li {
   margin: 1rem auto;
 }
 
+.journal-card-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 0.8rem;
+}
+
+.post-featured-image {
+  width: 100%;
+  border-radius: 12px;
+  margin: 0 0 1.1rem;
+  object-fit: cover;
+}
+
 .post-content h1,
 .post-content h2,
 .post-content h3,
