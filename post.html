@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cohort Science Journal Post</title>
+  <meta name="description" content="Cohort Science Journal article page.">
+  <meta property="og:title" content="Cohort Science Journal Post">
+  <meta property="og:description" content="Read a Cohort Science Journal article.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="CohortScience Color Logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600;700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="script.js"></script>
+  <script defer src="post.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <header class="site-header" id="top">
+    <div class="container nav-wrap">
+      <a href="index.html#top" class="brand" aria-label="Cohort Science home">
+        <img src="CohortScience Color Logo.png" alt="Cohort Science logo">
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">Menu</button>
+      <nav id="primary-nav" class="primary-nav" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="journal.html">Journal</a>
+        <a id="source-link" href="https://cohortscience.com/blog/" target="_blank" rel="noopener noreferrer">Source Post</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="hero section-pad" aria-labelledby="post-title">
+      <div class="container narrow">
+        <p class="eyebrow">Cohort Science Journal</p>
+        <h1 id="post-title">Loading article...</h1>
+        <p id="post-meta" class="muted-note"></p>
+      </div>
+    </section>
+
+    <section class="section-pad tone" aria-labelledby="article-content-title">
+      <div class="container narrow">
+        <h2 id="article-content-title">Article</h2>
+        <p id="post-status" class="muted-note">Loading content...</p>
+        <article id="post-content" class="post-content"></article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="footer-brand">Cohort Science</p>
+        <p class="footer-copy">Investor-grade intelligence for high-stakes decisions in higher education.</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="index.html">Home</a>
+        <a href="index.html#products">Products</a>
+        <a href="index.html#about">Team</a>
+        <a href="journal.html">Journal</a>
+        <a href="index.html#contact">Request a Briefing</a>
+      </nav>
+      <p class="footer-legal">&copy; <span id="year"></span> Cohort Science. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>
