@@ -9,11 +9,11 @@
   --accent: #b8a06a;
   --max: 1160px;
   --space-xs: 0.5rem;
-  --space-sm: 0.875rem;
-  --space-md: 1.25rem;
-  --space-lg: 2rem;
-  --space-xl: 3.5rem;
-  --space-2xl: 5rem;
+  --space-sm: 0.8rem;
+  --space-md: 1.1rem;
+  --space-lg: 1.8rem;
+  --space-xl: 3rem;
+  --space-2xl: 4.25rem;
   --radius: 12px;
   --shadow: 0 10px 24px rgba(10, 44, 74, 0.08);
 }
@@ -40,9 +40,10 @@ html {
 
 body {
   margin: 0;
-  font-family: "Public Sans", "Segoe UI", sans-serif;
+  font-family: "Inter", "Segoe UI", sans-serif;
   font-size: 1rem;
-  line-height: 1.65;
+  line-height: 1.58;
+  letter-spacing: -0.005em;
   color: var(--ink);
   background:
     radial-gradient(circle at 12% 18%, rgba(184, 160, 106, 0.12), transparent 40%),
@@ -59,22 +60,31 @@ img {
 h1,
 h2,
 h3 {
-  font-family: "Spectral", Georgia, serif;
-  line-height: 1.2;
-  margin: 0 0 var(--space-md);
+  font-family: "Inter", "Segoe UI", sans-serif;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.9rem;
   color: #0d1f33;
 }
 
 h1 {
-  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
 }
 
 h2 {
-  font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+  font-size: clamp(1.45rem, 2.4vw, 2.1rem);
 }
 
 h3 {
-  font-size: clamp(1.2rem, 2vw, 1.45rem);
+  font-size: clamp(1.1rem, 1.7vw, 1.32rem);
+}
+
+.hero-copy-overlay h1,
+main > section > .container > h2,
+.footer-brand {
+  font-family: "Spectral", Georgia, serif;
+  letter-spacing: -0.01em;
+  line-height: 1.12;
 }
 
 p {
@@ -179,6 +189,7 @@ select:focus-visible {
   color: var(--ink);
   text-decoration: none;
   font-weight: 500;
+  font-size: 0.96rem;
   padding: 0.35rem 0.5rem;
   border-radius: 6px;
   transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
@@ -459,6 +470,9 @@ li {
   padding: var(--space-md);
   text-align: center;
   box-shadow: 0 4px 12px rgba(13, 59, 102, 0.06);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .person-card h3 {
@@ -673,23 +687,31 @@ body.modal-open {
 }
 
 .bio-main .role {
-  margin-top: -0.35rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
   color: #4c5663;
   font-weight: 600;
+  font-size: 1rem;
 }
 
 .bio-main .bio {
   text-align: left;
-  font-size: clamp(1.1rem, 1.8vw, 1.42rem);
-  line-height: 1.6;
+  font-size: clamp(1.02rem, 1.35vw, 1.16rem);
+  line-height: 1.58;
   color: #37414d;
-  margin-bottom: 1.35rem;
+  margin-bottom: 1.1rem;
+}
+
+.bio-main h1 {
+  font-size: clamp(1.9rem, 3vw, 2.55rem);
+  line-height: 1.16;
+  margin-bottom: 0.35rem;
 }
 
 .bio-rule {
   border: 0;
   border-top: 2px solid #2a2f36;
-  margin: 0 0 1.45rem;
+  margin: 1rem 0 1.2rem;
 }
 
 .bio-kicker {
@@ -698,7 +720,7 @@ body.modal-open {
   font-size: 0.9rem;
   font-weight: 700;
   color: #121a23;
-  margin-bottom: 0.9rem;
+  margin-bottom: 0.75rem;
 }
 
 .bio-side {
@@ -880,6 +902,7 @@ body.modal-open {
   line-height: 1;
   border: 1px solid #000;
   transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+  margin-top: auto;
 }
 
 .person-card-cta:hover {
