@@ -1,9 +1,10 @@
 (() => {
+  const PARTIALS_VERSION = '2026-05-15-1';
   const cache = new Map();
 
   const loadPartial = async (name) => {
     if (cache.has(name)) return cache.get(name);
-    const p = fetch(`partials/${name}.html`).then((r) => {
+    const p = fetch(`partials/${name}.html?v=${PARTIALS_VERSION}`, { cache: 'no-store' }).then((r) => {
       if (!r.ok) throw new Error(`Failed to load partial ${name}`);
       return r.text();
     });
