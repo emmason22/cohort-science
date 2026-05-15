@@ -1,3 +1,5 @@
+document.documentElement.classList.add("js");
+
 let siteInitialized = false;
 
 function initSite() {
