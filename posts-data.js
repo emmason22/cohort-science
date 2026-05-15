@@ -290,6 +290,7 @@ window.COHORT_POSTS = [
     excerpt: "[Dallas, TX] \u2014 Cohort Science is thrilled to announce a new partnership with Economic Mobility Systems (EMS) for a multiyear collaboration to evaluate the Regional Talent Network (RTN) Program. This strategic initiative",
     date: '2025-03-06',
     image: 'Assets/EMCLogo.svg',
+    imageFit: 'contain',
     content: `
 <div data-elementor-type="wp-post" data-elementor-id="18157" class="elementor elementor-18157">
 				<div class="elementor-element elementor-element-707297cc e-flex e-con-boxed wpr-particle-no wpr-jarallax-no wpr-parallax-no wpr-sticky-section-no e-con e-parent" data-id="707297cc" data-element_type="container">
