@@ -485,7 +485,7 @@ li {
 
 .site-footer {
   border-top: 1px solid #253243;
-  background: #0e1824;
+  background: var(--brand-dark);
   color: #dde6f3;
 }
 
@@ -732,7 +732,7 @@ li {
 }
 
 .card-linkedin {
-  margin-top: 0.1rem;
+  margin-top: auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1174,9 +1174,9 @@ body.modal-open {
   justify-content: center;
   border-radius: 999px;
   padding: 0.34rem 0.8rem;
-  background: #2f53ea;
-  border: 1px solid #2f53ea;
-  color: #fff;
+  background: #fff;
+  border: 1px solid #fff;
+  color: var(--brand-dark);
   font-weight: 700;
 }
 
@@ -1186,9 +1186,9 @@ body.modal-open {
 }
 
 .footer-links .footer-briefing-button:hover {
-  background: #2745c5;
-  border-color: #2745c5;
-  color: #fff;
+  background: #f2f6fb;
+  border-color: #f2f6fb;
+  color: var(--brand-dark);
   text-decoration: none;
 }
 
