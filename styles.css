@@ -687,6 +687,11 @@ li {
   display: block;
 }
 
+.person-card h3 .degree {
+  display: inline;
+  font-size: 0.72em;
+}
+
 .person-name-hidden {
   visibility: hidden;
 }
