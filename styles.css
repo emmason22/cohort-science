@@ -141,13 +141,16 @@ select:focus-visible {
   position: sticky;
   top: 0.65rem;
   z-index: 60;
-  border: 1px solid #d7e0ea;
-  border-radius: 16px;
+  border-top: 1px solid #d7e0ea;
+  border-bottom: 1px solid #d7e0ea;
+  border-left: 0;
+  border-right: 0;
+  border-radius: 0;
   backdrop-filter: blur(10px);
   background: rgba(255, 255, 255, 0.98);
   box-shadow: 0 14px 28px rgba(9, 40, 68, 0.14);
-  width: min(100% - 1.25rem, var(--max));
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
 }
 
 .nav-wrap {
@@ -162,11 +165,11 @@ select:focus-visible {
 .brand {
   display: inline-flex;
   align-items: center;
-  background: #fff;
-  border: 1px solid rgba(186, 200, 218, 0.82);
+  background: transparent;
+  border: 1px solid transparent;
   border-radius: 12px;
   padding: 0.24rem 0.48rem;
-  box-shadow: 0 6px 14px rgba(8, 33, 58, 0.08);
+  box-shadow: none;
   margin-bottom: 0;
   position: relative;
   z-index: 3;
@@ -219,6 +222,7 @@ select:focus-visible {
   border-radius: 999px;
   padding: 0.36rem 0.72rem;
   font-weight: 700;
+  margin-left: 0.8rem;
 }
 
 .primary-nav .nav-briefing-button:hover {
@@ -531,6 +535,7 @@ li {
     box-shadow: none;
     background: transparent;
     padding: 0;
+    margin-left: auto;
   }
 
   .hero-copy-overlay {
@@ -640,6 +645,18 @@ li {
   .clients-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+
+  .people-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .people-grid .person-card:nth-last-child(2) {
+    grid-column: 2;
+  }
+
+  .people-grid .person-card:last-child {
+    grid-column: 3;
+  }
 }
 
 .people-grid {
@@ -702,6 +719,43 @@ li {
   font-size: 0.95rem;
   margin-bottom: 0.6rem;
   color: #2f3d4f;
+}
+
+.bio-read-more {
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.bio-read-more:hover {
+  text-decoration: underline;
+}
+
+.card-linkedin {
+  margin-top: 0.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  color: #0a66c2;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.card-linkedin img {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+}
+
+.card-linkedin:hover {
+  text-decoration: underline;
+}
+
+.card-linkedin-muted {
+  color: #6a7787;
+  font-weight: 500;
 }
 
 .person-divider {
@@ -1114,9 +1168,28 @@ body.modal-open {
   font-size: 0.98rem;
 }
 
+.footer-links .footer-briefing-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.34rem 0.8rem;
+  background: #2f53ea;
+  border: 1px solid #2f53ea;
+  color: #fff;
+  font-weight: 700;
+}
+
 .footer-links a:hover {
   color: #ffffff;
   text-decoration: underline;
+}
+
+.footer-links .footer-briefing-button:hover {
+  background: #2745c5;
+  border-color: #2745c5;
+  color: #fff;
+  text-decoration: none;
 }
 
 .footer-meta {
