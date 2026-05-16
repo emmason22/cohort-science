@@ -1,5 +1,4 @@
 const postTitle = document.getElementById('post-title');
-const postMeta = document.getElementById('post-meta');
 const postStatus = document.getElementById('post-status');
 const postContent = document.getElementById('post-content');
 const postHeroImage = document.getElementById('post-hero-image');
@@ -12,31 +11,10 @@ function getPostId() {
   return params.get('id');
 }
 
-function formatDate(dateStr) {
-  if (!dateStr) return '';
-  const date = new Date(dateStr);
-  if (Number.isNaN(date.getTime())) return '';
-  return date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
-}
-
 function stripHtml(html) {
   const temp = document.createElement('div');
   temp.innerHTML = html || '';
   return (temp.textContent || temp.innerText || '').trim();
-}
-
-function estimateReadTime(contentHtml) {
-  const words = stripHtml(contentHtml).split(/\s+/).filter(Boolean).length;
-  const minutes = Math.max(1, Math.ceil(words / 220));
-  return `${minutes} min read`;
-}
-
-function categorizePost(post) {
-  const text = `${post.title} ${post.excerpt}`.toLowerCase();
-  if (text.includes('science of cohorts') || text.includes('cohort')) return 'Science of Cohorts';
-  if (text.includes('announces') || text.includes('unveils') || text.includes('launch')) return 'Announcement';
-  if (text.includes('partnership') || text.includes('selects') || text.includes('agreement')) return 'Partnership';
-  return 'Insight';
 }
 
 function createRelatedCard(post) {
@@ -113,19 +91,7 @@ function loadLocalPost() {
     return;
   }
 
-  const author = post.author || 'Cohort Science™ Team';
-  const published = formatDate(post.date);
-  const readTime = estimateReadTime(post.content || '');
-  const category = post.categoryLabel || categorizePost(post);
-
   postTitle.textContent = post.title;
-  postMeta.innerHTML = [
-    `<span class="post-meta-item"><span class="post-meta-icon" aria-hidden="true">🏷</span>${category}</span>`,
-    published ? `<span class="post-meta-item"><span class="post-meta-icon" aria-hidden="true">🕒</span>${published}</span>` : '',
-    `<span class="post-meta-item"><span class="post-meta-icon" aria-hidden="true">👤</span>${author}</span>`,
-    `<span class="post-meta-item"><span class="post-meta-icon" aria-hidden="true">💬</span>No Comments</span>`,
-    `<span class="post-meta-item"><span class="post-meta-icon" aria-hidden="true">⏱</span>${readTime}</span>`
-  ].filter(Boolean).join('');
   postStatus.textContent = '';
 
   if (postHeroImage) {
@@ -138,7 +104,7 @@ function loadLocalPost() {
   renderRelatedPosts(post, posts);
   renderPostPagination(post, posts);
   renderShareButtons(post);
-  injectPostSchema(post, author);
+  injectPostSchema(post, post.author || 'Cohort Science™ Team');
 }
 
 function injectPostSchema(post, author) {
