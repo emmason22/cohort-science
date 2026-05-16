@@ -816,6 +816,13 @@ li {
   color: var(--muted);
 }
 
+.post-byline {
+  margin: 0.45rem 0 0;
+  color: #4a5a6e;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
 .post-content {
   background: #fff;
   border: 1px solid var(--line);

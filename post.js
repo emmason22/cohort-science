@@ -5,6 +5,7 @@ const postHeroImage = document.getElementById('post-hero-image');
 const relatedPostsGrid = document.getElementById('related-posts-grid');
 const postPagination = document.getElementById('post-pagination');
 const postShare = document.getElementById('post-share');
+const postByline = document.getElementById('post-byline');
 const canonicalNode = document.querySelector('link[rel="canonical"]');
 
 function getMeta(selector) {
@@ -14,6 +15,16 @@ function getMeta(selector) {
 function setMetaContent(selector, value) {
   const node = getMeta(selector);
   if (node && typeof value === 'string') node.setAttribute('content', value);
+}
+
+function ensureMeta(propertyName) {
+  let node = document.querySelector(`meta[property="${propertyName}"]`);
+  if (!node) {
+    node = document.createElement('meta');
+    node.setAttribute('property', propertyName);
+    document.head.appendChild(node);
+  }
+  return node;
 }
 
 function getPostId() {
@@ -33,6 +44,13 @@ function clampText(text, max = 155) {
   return `${normalized.slice(0, max).trimEnd()}...`;
 }
 
+function formatDate(dateStr) {
+  if (!dateStr) return '';
+  const date = new Date(dateStr);
+  if (Number.isNaN(date.getTime())) return '';
+  return date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
 function updatePostHead(post) {
   const absoluteUrl = new URL(`post.html?id=${encodeURIComponent(post.id)}`, window.location.origin).href;
   const imageUrl = post.image ? new URL(post.image, window.location.origin).href : 'https://cohortscience.com/Assets/optimized/logo-320.png';
@@ -50,6 +68,11 @@ function updatePostHead(post) {
   setMetaContent('meta[name="twitter:title"]', title);
   setMetaContent('meta[name="twitter:description"]', description);
   setMetaContent('meta[name="twitter:image"]', imageUrl);
+
+  if (post.date) {
+    ensureMeta('article:published_time').setAttribute('content', post.date);
+    ensureMeta('article:modified_time').setAttribute('content', post.date);
+  }
 }
 
 function createRelatedCard(post) {
@@ -128,6 +151,10 @@ function loadLocalPost() {
   postTitle.textContent = post.title;
   postStatus.textContent = '';
   updatePostHead(post);
+  if (postByline) {
+    const dateLabel = formatDate(post.date);
+    postByline.textContent = dateLabel ? `Published ${dateLabel} • Updated ${dateLabel}` : '';
+  }
 
   if (postHeroImage) {
     postHeroImage.innerHTML = post.image
