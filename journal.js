@@ -5,6 +5,9 @@ const categorySelect = document.getElementById('journal-category');
 
 function categorizePost(post) {
   const text = `${post.title} ${post.excerpt}`.toLowerCase();
+  if (text.includes('science of cohorts') || text.includes('cohort')) {
+    return 'science-of-cohorts';
+  }
   if (text.includes('announces') || text.includes('unveils') || text.includes('launch')) {
     return 'announcement';
   }
@@ -62,10 +65,16 @@ function applyFilters() {
 
   const enriched = allPosts.map((post) => {
     const cat = post.category || categorizePost(post);
+    const labelMap = {
+      'science-of-cohorts': 'Science of Cohorts',
+      announcement: 'Announcement',
+      partnership: 'Partnership',
+      insight: 'Insight'
+    };
     return {
       ...post,
       category: cat,
-      categoryLabel: cat.charAt(0).toUpperCase() + cat.slice(1)
+      categoryLabel: labelMap[cat] || 'Insight'
     };
   });
 
