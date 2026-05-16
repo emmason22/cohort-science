@@ -402,6 +402,14 @@ select:focus-visible {
   margin-bottom: 0.8rem;
 }
 
+.product-card-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+
 .card-subhead {
   color: var(--muted);
   margin-top: -0.4rem;
