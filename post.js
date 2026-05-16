@@ -5,6 +5,16 @@ const postHeroImage = document.getElementById('post-hero-image');
 const relatedPostsGrid = document.getElementById('related-posts-grid');
 const postPagination = document.getElementById('post-pagination');
 const postShare = document.getElementById('post-share');
+const canonicalNode = document.querySelector('link[rel="canonical"]');
+
+function getMeta(selector) {
+  return document.querySelector(selector);
+}
+
+function setMetaContent(selector, value) {
+  const node = getMeta(selector);
+  if (node && typeof value === 'string') node.setAttribute('content', value);
+}
 
 function getPostId() {
   const params = new URLSearchParams(window.location.search);
@@ -15,6 +25,31 @@ function stripHtml(html) {
   const temp = document.createElement('div');
   temp.innerHTML = html || '';
   return (temp.textContent || temp.innerText || '').trim();
+}
+
+function clampText(text, max = 155) {
+  const normalized = (text || '').trim().replace(/\s+/g, ' ');
+  if (normalized.length <= max) return normalized;
+  return `${normalized.slice(0, max).trimEnd()}...`;
+}
+
+function updatePostHead(post) {
+  const absoluteUrl = new URL(`post.html?id=${encodeURIComponent(post.id)}`, window.location.origin).href;
+  const imageUrl = post.image ? new URL(post.image, window.location.origin).href : 'https://cohortscience.com/Assets/optimized/logo-320.png';
+  const description = clampText(post.excerpt || stripHtml(post.content || 'Cohort Science™ Journal article.'));
+  const title = `${post.title} | Cohort Science™ Journal`;
+
+  document.title = title;
+  if (canonicalNode) canonicalNode.href = absoluteUrl;
+
+  setMetaContent('meta[name="description"]', description);
+  setMetaContent('meta[property="og:title"]', title);
+  setMetaContent('meta[property="og:description"]', description);
+  setMetaContent('meta[property="og:url"]', absoluteUrl);
+  setMetaContent('meta[property="og:image"]', imageUrl);
+  setMetaContent('meta[name="twitter:title"]', title);
+  setMetaContent('meta[name="twitter:description"]', description);
+  setMetaContent('meta[name="twitter:image"]', imageUrl);
 }
 
 function createRelatedCard(post) {
@@ -84,7 +119,6 @@ function loadLocalPost() {
 
   if (!post) {
     postTitle.textContent = 'Post not found';
-    postMeta.textContent = '';
     postStatus.textContent = 'This article is not available in local content yet.';
     postContent.innerHTML = '<p>Please return to the Journal page to select an available post.</p>';
     if (relatedPostsGrid) relatedPostsGrid.innerHTML = '';
@@ -93,6 +127,7 @@ function loadLocalPost() {
 
   postTitle.textContent = post.title;
   postStatus.textContent = '';
+  updatePostHead(post);
 
   if (postHeroImage) {
     postHeroImage.innerHTML = post.image
