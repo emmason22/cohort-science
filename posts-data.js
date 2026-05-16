@@ -184,33 +184,33 @@ window.COHORT_POSTS = [
   {
     id: 'kentucky-christian-university-selects-cohort-science',
     title: "Kentucky Christian University Selects Cohort Science for Online Expansion Strategy",
-    excerpt: "Richardson, TX — [December 19, 2025] — Kentucky Christian University (KCU) has entered into a new agreement with Cohort Science to support online expansion with data-driven insights for enrollment growth and market positioning.",
+    excerpt: "Richardson, TX — December 19, 2025 — Kentucky Christian University (KCU) has entered into a new agreement with Cohort Science to support online expansion with data-driven insights for enrollment growth and market positioning.",
     date: '2025-12-19',
     image: 'Assets/optimized/kentucky-christian-university.jpg',
     imageFit: 'contain',
     content: `
 
-<p><strong>Richardson, TX — [December 19, 2025]</strong> — Kentucky Christian University (KCU) has entered into a new agreement with <strong>Cohort Science</strong>, a higher education data science firm specializing in using data to help colleges and universities improve enrollment, retention, and student satisfaction. The collaboration will support KCU’s online expansion strategy and provide the institution with the data-driven insights necessary to increase online enrollment and strengthen its competitive position across faith-centered higher education markets.</p>
+<p><strong>Richardson, TX — December 19, 2025</strong> — <a href="https://www.kcu.edu/" target="_blank" rel="noopener noreferrer">Kentucky Christian University (KCU)</a> has entered into a new agreement with <a href="index.html">Cohort Science</a>, a higher education data science firm specializing in using data to help colleges and universities improve enrollment, retention, and student satisfaction. The collaboration will support KCU’s online expansion strategy and provide the institution with the data-driven insights necessary to increase online enrollment and strengthen its competitive position across faith-centered higher education markets.</p>
 
 <p>Under the new agreement, Cohort Science will conduct a holistic evaluation of both new and existing academic programs. The project encompasses an integrated assessment of program demand, labor-market alignment, competitor offerings, student decision behaviors, geographic opportunity, brand perception, and price-sensitivity indicators. This unified approach will give KCU a comprehensive understanding of where the strongest opportunities exist to grow and sustain new and existing online degree programs.</p>
 
-<p>Raj Lalsare, Founder and CEO of Cohort Science, emphasized the alignment between the two organizations, noting: <em>“We are honored to support Kentucky Christian University in advancing its mission to develop Christian leaders grounded in faith, service, and academic excellence. KCU’s commitment to stewardship and intentional, data-driven decision-making aligns beautifully with our purpose at Cohort Science. By integrating longitudinal analysis, market intelligence, and missional context, we look forward to helping KCU grow new and existing programs.”</em></p>
+<p><a href="raj-lalsare.html">Raj Lalsare</a>, Founder and CEO of <a href="index.html">Cohort Science</a>, emphasized the alignment between the two organizations, noting: <em>“We are honored to support Kentucky Christian University in advancing its mission to develop Christian leaders grounded in faith, service, and academic excellence. KCU’s commitment to stewardship and intentional, data-driven decision-making aligns beautifully with our purpose at Cohort Science. By integrating longitudinal analysis, market intelligence, and missional context, we look forward to helping KCU grow new and existing programs.”</em></p>
 
 <p>KCU’s new initiative comes at a time of increased demand for high-quality online programs—especially those rooted in Christian worldview and service leadership. As part of this engagement, Cohort Science will conduct scorecard-based evaluations of selected new and existing programs.</p>
 
-<p>Reflecting on the University’s goals, John Penrose, Vice President of Enrollment and Marketing at Kentucky Christian University, highlighted the strategic significance of the partnership: <em>“KCU is committed to expanding access to high-quality, Christ-centered academic programs, especially for adult learners seeking online options. Cohort Science brings analytical rigor, higher-education expertise, and missional understanding we need to ensure our new programs meet genuine student, workforce, and ministry needs. We are excited to partner together in a way that advances both our enrollment goals and our calling as a Christian university.”</em></p>
+<p>Reflecting on the University’s goals, John Penrose, Vice President of Enrollment and Marketing at <a href="https://www.kcu.edu/" target="_blank" rel="noopener noreferrer">Kentucky Christian University</a>, highlighted the strategic significance of the partnership: <em>“KCU is committed to expanding access to high-quality, Christ-centered academic programs, especially for adult learners seeking online options. Cohort Science brings analytical rigor, higher-education expertise, and missional understanding we need to ensure our new programs meet genuine student, workforce, and ministry needs. We are excited to partner together in a way that advances both our enrollment goals and our calling as a Christian university.”</em></p>
 
 <p>The collaboration is grounded in a shared belief that evidence-based decision-making, paired with faith-driven mission, creates the most sustainable pathway for program growth. By combining rigorous analysis with a deep respect for KCU’s history, identity, and purpose, both organizations aim to position the University for long-term enrollment success and greater impact in Christian higher education.</p>
 
 <p><strong>About Cohort Science</strong></p>
 
-<p>Cohort Science specializes in analyzing longitudinal talent behavior and impact og academic offerings to generate actionable insights for colleges, universities, and organizations. With a focus on removing barriers to enrollment growth, retention, and student satisfaction, Cohort Science leverages cutting-edge machine learning and AI techniques to provide transformative solutions that drive institutional success.</p>
+<p><a href="index.html">Cohort Science</a> specializes in analyzing longitudinal talent behavior and impact of academic offerings to generate actionable insights for colleges, universities, and organizations. With a focus on removing barriers to enrollment growth, retention, and student satisfaction, Cohort Science leverages cutting-edge machine learning and AI techniques to provide transformative solutions that drive institutional success.</p>
 
-<p><strong>Media Contact:</strong><br>Bill Lowery<br>Managing Partner<br>Cohort Science<br>Email: <a href="mailto:bill.lowery@cohortscience.com">bill.lowery@cohortscience.com</a></p>
+<p><strong>Media Contact:</strong><br><a href="bill-lowery.html">Bill Lowery</a><br>Managing Partner<br><a href="index.html">Cohort Science</a><br>Email: <a href="mailto:bill.lowery@cohortscience.com">bill.lowery@cohortscience.com</a></p>
 
 <p><strong>About Kentucky Christian University</strong></p>
 
-<p>Founded in 1919, Kentucky Christian University is a Christ-centered academic community dedicated to the development of Christian leaders in the Church and in the world. Located in Grayson, Kentucky, KCU offers undergraduate and graduate degrees across a range of disciplines, with a continued emphasis on biblical training and service.</p>
+<p>Founded in 1919, <a href="https://www.kcu.edu/" target="_blank" rel="noopener noreferrer">Kentucky Christian University</a> is a Christ-centered academic community dedicated to the development of Christian leaders in the Church and in the world. Located in Grayson, Kentucky, KCU offers undergraduate and graduate degrees across a range of disciplines, with a continued emphasis on biblical training and service.</p>
 
 <p><strong>Media Contact:</strong><br>John Penrose<br>Vice President of Enrollment and Marketing<br>Kentucky Christian University<br>606-474-3248</p>
 
@@ -225,9 +225,9 @@ window.COHORT_POSTS = [
     image: 'Assets/EMCLogo.svg',
     imageFit: 'contain',
     content: `
-<p><strong>[Dallas, TX]</strong> — Cohort Science is thrilled to announce a new partnership with Economic Mobility Systems (EMS) for a multiyear collaboration to evaluate the Regional Talent Network (RTN) Program. This strategic initiative aims to advance postsecondary education and workforce training reforms that improve outcomes for all learners. Under the agreement, Cohort Science will evaluate the Rural Regional Talent Network (R-RTN) strategy currently implemented across three Texas regions: South Texas College, Howard College, and Odessa College. The evaluation will provide actionable insights on program implementation, efficacy, scalability, and impact on student outcomes.</p>
+<p><strong>Dallas, TX — March 6, 2025</strong> — <a href="index.html">Cohort Science</a> is thrilled to announce a new partnership with <a href="https://economicmobilitysystems.org/" target="_blank" rel="noopener noreferrer">Economic Mobility Systems (EMS)</a> for a multiyear collaboration to evaluate the Regional Talent Network (RTN) Program. This strategic initiative aims to advance postsecondary education and workforce training reforms that improve outcomes for all learners. Under the agreement, Cohort Science will evaluate the Rural Regional Talent Network (R-RTN) strategy currently implemented across three Texas regions: <a href="https://www.southtexascollege.edu/" target="_blank" rel="noopener noreferrer">South Texas College</a>, <a href="https://www.howardcollege.edu/" target="_blank" rel="noopener noreferrer">Howard College</a>, and <a href="https://www.odessa.edu/" target="_blank" rel="noopener noreferrer">Odessa College</a>. The evaluation will provide actionable insights on program implementation, efficacy, scalability, and impact on student outcomes.</p>
 
-<p>“We are honored to collaborate with Economic Mobility Systems to support their noble mission of advancing equitable socioeconomic mobility,” said Raj Lalsare, Founder of Cohort Science. “Through this partnership, we are committed to delivering robust, data-driven evaluations and insights that empower educators, policymakers, and communities to create meaningful change for underserved learners.”</p>
+<p>“We are honored to collaborate with Economic Mobility Systems to support their noble mission of advancing equitable socioeconomic mobility,” said <a href="raj-lalsare.html">Raj Lalsare</a>, Founder of <a href="index.html">Cohort Science</a>. “Through this partnership, we are committed to delivering robust, data-driven evaluations and insights that empower educators, policymakers, and communities to create meaningful change for underserved learners.”</p>
 
 <p>The R-RTN initiative emphasizes community collaboration and a redefined approach to measuring program success in rural contexts. By combining qualitative research methods—such as focus groups and stakeholder interviews—with quantitative data analysis using Salesforce and National Student Clearinghouse data, Cohort Science will ensure a comprehensive evaluation.</p>
 
@@ -237,13 +237,13 @@ window.COHORT_POSTS = [
 
 <p><strong>About Cohort Science</strong></p>
 
-<p>Cohort Science specializes in analyzing longitudinal talent behavior and impact of academic offerings to generate actionable insights for colleges, universities, and organizations. With a focus on removing barriers to enrollment growth, retention, and student satisfaction, Cohort Science leverages cutting-edge machine learning and AI techniques to provide transformative solutions that drive institutional success.</p>
+<p><a href="index.html">Cohort Science</a> specializes in analyzing longitudinal talent behavior and impact of academic offerings to generate actionable insights for colleges, universities, and organizations. With a focus on removing barriers to enrollment growth, retention, and student satisfaction, Cohort Science leverages cutting-edge machine learning and AI techniques to provide transformative solutions that drive institutional success.</p>
 
-<p><strong>Media Contact:</strong><br>Lauren Jensen<br>Partner<br>Cohort Science<br>Email: <a href="mailto:lauren.jensen@cohortscience.com">lauren.jensen@cohortscience.com</a></p>
+<p><strong>Media Contact:</strong><br><a href="lauren-jensen.html">Lauren Jensen</a><br>Partner<br><a href="index.html">Cohort Science</a><br>Email: <a href="mailto:lauren.jensen@cohortscience.com">lauren.jensen@cohortscience.com</a></p>
 
 <p><strong>About Economic Mobility Systems</strong></p>
 
-<p>Economic Mobility Systems (EMS) accelerates the development of impact-driven, student-centered data platforms designed to enhance socioeconomic mobility. EMS empowers community partners to identify inequities, develop solutions with students and families, and support continuous improvement efforts to eliminate barriers.</p>
+<p><a href="https://economicmobilitysystems.org/" target="_blank" rel="noopener noreferrer">Economic Mobility Systems (EMS)</a> accelerates the development of impact-driven, student-centered data platforms designed to enhance socioeconomic mobility. EMS empowers community partners to identify inequities, develop solutions with students and families, and support continuous improvement efforts to eliminate barriers.</p>
 
 <p>For more information about EMS, please contact Kristin Micalizio at <a href="mailto:kristin.micalizio@economicmobilitysystems.org">kristin.micalizio@economicmobilitysystems.org</a>.</p>
     `
