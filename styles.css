@@ -503,7 +503,7 @@ li {
   gap: var(--space-sm);
 }
 
-.js .reveal {
+.reveal-ready .reveal {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 520ms ease, transform 520ms ease;

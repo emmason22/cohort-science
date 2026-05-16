@@ -1,0 +1,329 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "Cohort Science™ home" [ref=e5] [cursor=pointer]:
+        - /url: index.html#top
+        - img "Cohort Science™ logo" [ref=e6]
+      - navigation "Primary" [ref=e7]:
+        - link "The Shift" [ref=e8] [cursor=pointer]:
+          - /url: index.html#shift
+        - link "The Idea" [ref=e9] [cursor=pointer]:
+          - /url: index.html#idea
+        - link "Products" [ref=e10] [cursor=pointer]:
+          - /url: index.html#products
+        - link "Clients" [ref=e11] [cursor=pointer]:
+          - /url: index.html#clients
+        - link "About" [ref=e12] [cursor=pointer]:
+          - /url: index.html#about
+        - link "Journal" [ref=e13] [cursor=pointer]:
+          - /url: journal.html
+        - link "Request a Briefing" [ref=e14] [cursor=pointer]:
+          - /url: mailto:info@cohortscience.com?subject=Request%20a%20Briefing
+      - link "Cohort Science™ on LinkedIn" [ref=e15] [cursor=pointer]:
+        - /url: https://www.linkedin.com/company/cohort-science
+        - img "LinkedIn" [ref=e16]
+  - main [ref=e17]:
+    - region "The intelligence infrastructure for high-stakes decisions in higher education." [ref=e18]:
+      - generic [ref=e19]:
+        - figure [ref=e20]:
+          - img "Data-driven decision making in action" [ref=e21]
+        - generic [ref=e22]:
+          - paragraph [ref=e23]: Cohort Science™
+          - heading "The intelligence infrastructure for high-stakes decisions in higher education." [level=1] [ref=e24]:
+            - text: The intelligence infrastructure for
+            - text: high-stakes decisions in higher education.
+          - paragraph [ref=e25]: Investor-grade insights, built on the most comprehensive data platform in the sector.
+          - paragraph [ref=e26]: Cohort Science™ integrates proprietary econometric models, labor market signals, and institutional data into decision-ready intelligence, structured for the pace and precision that institutional leaders, investors, and consultants require.
+          - link "Discover Our Approach" [ref=e27] [cursor=pointer]:
+            - /url: "#products"
+    - region "Higher education is undergoing a fundamental structural transformation." [ref=e28]:
+      - generic [ref=e29]:
+        - paragraph [ref=e30]: The Shift
+        - heading "Higher education is undergoing a fundamental structural transformation." [level=2] [ref=e31]
+        - paragraph [ref=e32]: Demographic shifts, credential disruption, workforce realignment, and evolving capital flows are redefining how institutions grow, how investors evaluate the sector, and how consulting firms serve their clients.
+        - paragraph [ref=e33]: Cohort Science™ is purpose-built to address this challenge, providing the analytical depth and speed of delivery that consequential decisions demand.
+    - region "A new foundation for education intelligence." [ref=e34]:
+      - generic [ref=e35]:
+        - paragraph [ref=e36]: The Idea
+        - heading "A new foundation for education intelligence." [level=2] [ref=e37]
+        - paragraph [ref=e38]: Cohort Science™ maintains a continuously updated intelligence base spanning labor markets, student demand, program economics, graduate outcomes, and geographic market dynamics.
+        - paragraph [ref=e39]: Our proprietary econometric framework evaluates 100 plus variables across labor market conditions, student demand signals, career value trajectories, and competitive positioning, producing market intelligence that is rigorous, reproducible, and ready when decisions need to be made.
+        - generic [ref=e40]:
+          - article [ref=e41]:
+            - heading "Speed to insight" [level=3] [ref=e42]
+            - paragraph [ref=e43]: Structured intelligence delivered in hours, not weeks.
+          - article [ref=e44]:
+            - heading "Analytical depth" [level=3] [ref=e45]
+            - paragraph [ref=e46]: Multi-variable econometric models built for institutional and investment-grade decisions.
+          - article [ref=e47]:
+            - heading "Decision-ready output" [level=3] [ref=e48]
+            - paragraph [ref=e49]: Findings structured for boardrooms, investment committees, and client engagements.
+    - region "Four products. One platform. Built for the decisions that matter." [ref=e50]:
+      - generic [ref=e51]:
+        - paragraph [ref=e52]: How Our Products Help Clients
+        - heading "Four products. One platform. Built for the decisions that matter." [level=2] [ref=e53]
+        - generic [ref=e54]:
+          - article [ref=e55]:
+            - heading "Market Signal" [level=3] [ref=e56]
+            - paragraph [ref=e57]: Predict market demand for programs.
+            - list [ref=e58]:
+              - listitem [ref=e59]: Forecast enrollment and revenue for new and existing degree programs
+              - listitem [ref=e60]: Identify high-yield student segments by demographic, geography, and program type
+              - listitem [ref=e61]: Model the impact of aid policy, tuition changes, and marketing investment on yield
+              - listitem [ref=e62]: Analyze competitive positioning across institutional and geographic markets
+              - listitem [ref=e63]: Rapid market sizing for consulting engagements and investment due diligence
+          - article [ref=e64]:
+            - heading "Dean's Workbench" [level=3] [ref=e65]
+            - paragraph [ref=e66]: Simulate and predict trends among student classes and clusters.
+            - list [ref=e67]:
+              - listitem [ref=e68]: Analyze behavior trends of student clusters across enrollment, retention, and progression
+              - listitem [ref=e69]: Model downstream effects of scheduling, advising capacity, and support resource allocation
+              - listitem [ref=e70]: Simulate interventions and forecast impact prior to deployment
+              - listitem [ref=e71]: Ground institutional decisions in evidence and reproducible analysis
+          - article [ref=e72]:
+            - heading "Economic Mobility and Pathways" [level=3] [ref=e73]
+            - paragraph [ref=e74]: Connect programs to real-world outcomes.
+            - list [ref=e75]:
+              - listitem [ref=e76]: Track graduate earnings and employment at institution, degree, and class level
+              - listitem [ref=e77]: Identify which programs drive long-term economic mobility and which warrant review
+              - listitem [ref=e78]: Map employer relationships and alumni networks to strengthen institutional partnerships
+              - listitem [ref=e79]: Align program design with evolving labor market demand
+          - article [ref=e80]:
+            - heading "Impact Audit" [level=3] [ref=e81]
+            - paragraph [ref=e82]: Independent, investor-grade evaluation.
+            - list [ref=e83]:
+              - listitem [ref=e84]: Assess grant effectiveness, program ROI, and vendor performance objectively
+              - listitem [ref=e85]: Evaluate outcomes-based accreditation evidence with analytical rigor
+              - listitem [ref=e86]: Identify high-performing areas and opportunities for strategic reallocation
+              - listitem [ref=e87]: Purpose-built for consulting firms, foundations, and investors needing fast-turnaround intelligence briefs
+    - region "Sector intelligence tailored to each decision-maker." [ref=e88]:
+      - generic [ref=e89]:
+        - paragraph [ref=e90]: Clients We Serve
+        - heading "Sector intelligence tailored to each decision-maker." [level=2] [ref=e91]
+        - generic [ref=e92]:
+          - article [ref=e93]:
+            - img "Students and faculty in a university setting representing universities and colleges client segment" [ref=e94]
+            - heading "Universities and Colleges" [level=3] [ref=e95]
+            - paragraph [ref=e96]: Private and public colleges, faith-based institutions, and community colleges rely on Cohort Science™ for a clear, continuous picture of student movement from recruitment through graduation. Leaders use our platform to grow enrollment, close equity gaps, and demonstrate outcomes to boards and accreditors with confidence.
+          - article [ref=e97]:
+            - img "Financial professionals collaborating to represent venture capital and private equity clients" [ref=e98]
+            - heading "Venture Capital and Private Equity Firms" [level=3] [ref=e99]
+            - paragraph [ref=e100]: Investment decisions in higher education require market intelligence that matches the pace of capital deployment. Cohort Science™ provides program-level demand analysis, institutional health assessments, and competitive market positioning for investment committees and due diligence processes.
+          - article [ref=e101]:
+            - img "Consulting team in discussion representing management consulting firms" [ref=e102]
+            - heading "Management Consulting Firms" [level=3] [ref=e103]
+            - paragraph [ref=e104]: Education practices at strategy and investment consulting firms rely on timely, rigorous sector intelligence to serve clients effectively. Cohort Science™ functions as a dedicated intelligence partner, compressing research timelines and strengthening analytical depth.
+          - article [ref=e105]:
+            - img "Philanthropy-focused collaboration scene representing foundations and philanthropists" [ref=e106]
+            - heading "Foundations and Philanthropists" [level=3] [ref=e107]
+            - paragraph [ref=e108]: Effective philanthropy requires rigorous measurement. Cohort Science™ provides independent, outcomes-based evaluation of program performance, tracking earnings, mobility, and institutional impact to inform allocation decisions with evidence rather than self-reported data.
+          - article [ref=e109]:
+            - img "Community program participants representing non-profit and mission-driven organizations" [ref=e110]
+            - heading "Non-Profit and Mission-Driven Organizations" [level=3] [ref=e111]
+            - paragraph [ref=e112]: Organizations expanding access and improving outcomes for underserved student populations require data rigorous enough for funders and boards. Cohort Science™ provides the analytical foundation to demonstrate social return on investment with credibility.
+          - article [ref=e113]:
+            - img "Government policy meeting representing public sector education policy-makers" [ref=e114]
+            - heading "Government and Policy-makers" [level=3] [ref=e115]
+            - paragraph [ref=e116]: Education policy-makers at federal, state, and local levels use Cohort Science™ for segment-level analysis of socioeconomic trends, connecting education investments to workforce outcomes and informing funding priorities with evidence-based insight.
+    - region "Built for leadership. Powered by proprietary AI. Grounded in real-world decisions." [ref=e117]:
+      - generic [ref=e118]:
+        - paragraph [ref=e119]: Why Cohort Science™
+        - heading "Built for leadership. Powered by proprietary AI. Grounded in real-world decisions." [level=2] [ref=e120]
+        - paragraph [ref=e121]: Cohort Science™ brings together institutional expertise, proprietary data infrastructure, and advanced AI to deliver intelligence leaders can act on across investment, strategy, and institutional management.
+        - paragraph [ref=e122]: "We are sector specialists. Our team includes economists, engineers, data scientists, and mathematicians. Our models are built exclusively for higher education, incorporating the variables that matter: program-level economics, geographic demand dynamics, labor market trajectories, and the demographic forces reshaping the sector."
+    - region "Explore how Cohort Science™ can support your next decision in higher education." [ref=e123]:
+      - generic [ref=e124]:
+        - paragraph [ref=e125]: From Insight to Impact
+        - heading "Explore how Cohort Science™ can support your next decision in higher education." [level=2] [ref=e126]
+        - link "Request a Briefing" [ref=e127] [cursor=pointer]:
+          - /url: mailto:info@cohortscience.com?subject=Request%20a%20Briefing
+    - region "Team and advisors focused on sector outcomes." [ref=e128]:
+      - generic [ref=e129]:
+        - paragraph [ref=e130]: About Us
+        - heading "Team and advisors focused on sector outcomes." [level=2] [ref=e131]
+        - generic [ref=e132]:
+          - article [ref=e133]:
+            - img "Portrait of Raj Lalsare" [ref=e134]
+            - heading "Raj Lalsare" [level=3] [ref=e135]:
+              - generic [ref=e136]: Raj
+              - generic [ref=e137]: Lalsare
+            - paragraph [ref=e138]: CEO
+            - separator [ref=e139]
+            - paragraph [ref=e140]:
+              - text: Raj founded Cohort Science™ motivated by a passion for the cause of education and has led analytics and business transformation functions in multiple organizations.
+              - link "Read more" [ref=e141] [cursor=pointer]:
+                - /url: raj-lalsare.html
+              - text: .
+            - link "View LinkedIn profile for Raj Lalsare" [ref=e142] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/rajlalsare/
+              - img "LinkedIn" [ref=e143]
+              - text: LinkedIn
+          - article [ref=e144]:
+            - img "Portrait of Bill Lowery" [ref=e145]
+            - heading "Bill Lowery" [level=3] [ref=e146]:
+              - generic [ref=e147]: Bill
+              - generic [ref=e148]: Lowery
+            - paragraph [ref=e149]: Managing Partner
+            - separator [ref=e150]
+            - paragraph [ref=e151]:
+              - text: Bill brings a long track record of helping colleges and universities accelerate enrollment growth and outcomes.
+              - link "Read more" [ref=e152] [cursor=pointer]:
+                - /url: bill-lowery.html
+              - text: .
+            - link "View LinkedIn profile for Bill Lowery" [ref=e153] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/blowery/
+              - img "LinkedIn" [ref=e154]
+              - text: LinkedIn
+          - article [ref=e155]:
+            - img "Portrait of Lauren Jensen" [ref=e156]
+            - heading "Lauren Jensen" [level=3] [ref=e157]:
+              - generic [ref=e158]: Lauren
+              - generic [ref=e159]: Jensen
+            - paragraph [ref=e160]: Partner
+            - separator [ref=e161]
+            - paragraph [ref=e162]:
+              - text: Lauren is an executive leader in higher education with deep experience in enrollment, planning, and analytics.
+              - link "Read more" [ref=e163] [cursor=pointer]:
+                - /url: lauren-jensen.html
+              - text: .
+            - link "View LinkedIn profile for Lauren Jensen" [ref=e164] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/laurenjensen173/
+              - img "LinkedIn" [ref=e165]
+              - text: LinkedIn
+          - article [ref=e166]:
+            - generic [ref=e167]: MJ
+            - paragraph [ref=e168]: Chief Product Officer
+            - separator [ref=e169]
+            - paragraph [ref=e170]: Meera leads product direction and platform execution at Cohort Science™.
+            - generic [ref=e171]: LinkedIn coming soon
+          - article [ref=e172]:
+            - img "Portrait of David Rheams" [ref=e173]
+            - heading "David Rheams, PhD" [level=3] [ref=e174]:
+              - generic [ref=e175]: David
+              - generic [ref=e176]: Rheams, PhD
+            - paragraph [ref=e177]: Associate
+            - separator [ref=e178]
+            - paragraph [ref=e179]:
+              - text: David blends academic research, product strategy, and startup leadership to drive responsible innovation.
+              - link "Read more" [ref=e180] [cursor=pointer]:
+                - /url: david-rheams.html
+              - text: .
+            - link "View LinkedIn profile for David Rheams, PhD" [ref=e181] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/davidrheams/
+              - img "LinkedIn" [ref=e182]
+              - text: LinkedIn
+          - article [ref=e183]:
+            - generic [ref=e184]: GS
+            - heading "Garima Singh" [level=3] [ref=e185]:
+              - generic [ref=e186]: Garima
+              - generic [ref=e187]: Singh
+            - paragraph [ref=e188]: Associate
+            - separator [ref=e189]
+            - paragraph [ref=e190]:
+              - text: Garima Singh is a quantitative strategist, storyteller, and architect of insights.
+              - link "Read more" [ref=e191] [cursor=pointer]:
+                - /url: garima-singh.html
+              - text: .
+            - link "View LinkedIn profile for Garima Singh" [ref=e192] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/garima-singh-utd/
+              - img "LinkedIn" [ref=e193]
+              - text: LinkedIn
+          - article [ref=e194]:
+            - img "Portrait of Anjali Poonia" [ref=e195]
+            - heading "Anjali Poonia" [level=3] [ref=e196]:
+              - generic [ref=e197]: Anjali
+              - generic [ref=e198]: Poonia
+            - paragraph [ref=e199]: Analyst
+            - separator [ref=e200]
+            - paragraph [ref=e201]:
+              - text: Anjali supports analytical modeling and research across Cohort Science™ engagements.
+              - link "Read more" [ref=e202] [cursor=pointer]:
+                - /url: anjali-poonia.html
+              - text: .
+            - link "View LinkedIn profile for Anjali Poonia" [ref=e203] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/anjali-poonia/
+              - img "LinkedIn" [ref=e204]
+              - text: LinkedIn
+          - article [ref=e205]:
+            - img "Portrait of Karmela Gaffney" [ref=e206]
+            - heading "Karmela Gaffney" [level=3] [ref=e207]:
+              - generic [ref=e208]: Karmela
+              - generic [ref=e209]: Gaffney
+            - paragraph [ref=e210]: Advisor
+            - separator [ref=e211]
+            - paragraph [ref=e212]:
+              - text: Karmela is a veteran marketing executive with over 25 years leading digital and integrated growth strategy.
+              - link "Read more" [ref=e213] [cursor=pointer]:
+                - /url: karmela-gaffney.html
+              - text: .
+            - link "View LinkedIn profile for Karmela Gaffney" [ref=e214] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/karmela-gaffney/
+              - img "LinkedIn" [ref=e215]
+              - text: LinkedIn
+          - article [ref=e216]:
+            - img "Portrait of Pavan Kumar" [ref=e217]
+            - heading "Pavan Kumar, PhD" [level=3] [ref=e218]:
+              - generic [ref=e219]: Pavan
+              - generic [ref=e220]: Kumar, PhD
+            - paragraph [ref=e221]: Advisor
+            - separator [ref=e222]
+            - paragraph [ref=e223]:
+              - text: Dr. Pavan is a researcher and entrepreneur focused on STEM education reform, engineering identity, and innovation.
+              - link "Read more" [ref=e224] [cursor=pointer]:
+                - /url: pavan-kumar.html
+              - text: .
+            - link "View LinkedIn profile for Pavan Kumar, PhD" [ref=e225] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/pavan-kumar-ph-d-05a3259/
+              - img "LinkedIn" [ref=e226]
+              - text: LinkedIn
+          - article [ref=e227]:
+            - img "Portrait of Josh Summers, PhD" [ref=e228]
+            - heading "Josh Summers, PhD" [level=3] [ref=e229]:
+              - generic [ref=e230]: Josh
+              - generic [ref=e231]: Summers, PhD
+            - paragraph [ref=e232]: Advisor
+            - separator [ref=e233]
+            - paragraph [ref=e234]:
+              - text: Josh advises Cohort Science™ on strategic growth across education and partner ecosystems.
+              - link "Read more" [ref=e235] [cursor=pointer]:
+                - /url: josh-summers.html
+              - text: .
+            - link "View LinkedIn profile for Josh Summers, PhD" [ref=e236] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/medxlab/
+              - img "LinkedIn" [ref=e237]
+              - text: LinkedIn
+    - region "Insights, announcements, and sector analysis." [ref=e238]:
+      - generic [ref=e239]:
+        - paragraph [ref=e240]: Cohort Science™ Journal
+        - heading "Insights, announcements, and sector analysis." [level=2] [ref=e241]
+        - paragraph [ref=e242]: Browse the latest posts and announcements from our live journal page.
+        - link "Open Journal" [ref=e243] [cursor=pointer]:
+          - /url: journal.html
+  - contentinfo [ref=e244]:
+    - generic [ref=e245]:
+      - generic [ref=e246]:
+        - paragraph [ref=e247]: Cohort Science™
+        - paragraph [ref=e248]: Investor-grade intelligence for high-stakes decisions in higher education.
+      - navigation "Footer navigation" [ref=e249]:
+        - link "Home" [ref=e250] [cursor=pointer]:
+          - /url: index.html
+        - link "Products" [ref=e251] [cursor=pointer]:
+          - /url: index.html#products
+        - link "Team" [ref=e252] [cursor=pointer]:
+          - /url: index.html#about
+        - link "Journal" [ref=e253] [cursor=pointer]:
+          - /url: journal.html
+        - link "Request a Briefing" [ref=e254] [cursor=pointer]:
+          - /url: mailto:info@cohortscience.com?subject=Request%20a%20Briefing
+      - generic [ref=e255]:
+        - navigation "Legal" [ref=e256]:
+          - link "Privacy Policy" [ref=e257] [cursor=pointer]:
+            - /url: privacy.html
+          - link "Terms of Use" [ref=e258] [cursor=pointer]:
+            - /url: terms-of-use.html
+        - paragraph [ref=e259]: © 2026 Cohort Science™. All rights reserved.
+      - link "Cohort Science™ on LinkedIn" [ref=e261] [cursor=pointer]:
+        - /url: https://www.linkedin.com/company/cohort-science
+        - img "LinkedIn" [ref=e262]

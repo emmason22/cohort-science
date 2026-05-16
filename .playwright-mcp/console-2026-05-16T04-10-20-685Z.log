@@ -1,0 +1,25 @@
+[      36ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8765/styles.css:0
+[      36ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8765/script.js:0
+[      50ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8765/Assets/optimized/government-policy.jpg:0
+[      50ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8765/Assets/Raj-Lalsare.jpg:0
+[      51ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8765/partials/header.html?v=2026-05-15-1:0
+[      51ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8765/partials/footer.html?v=2026-05-15-1:0
+[      52ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8765/Assets/Bill-Lowery-2.jpg:0
+[      52ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8765/Assets/lauren-jensen-1-600x600.png:0
+[      60ms] TypeError: Failed to fetch
+    at loadPartial (http://127.0.0.1:8765/includes.js:7:15)
+    at http://127.0.0.1:8765/includes.js:34:30
+    at Array.map (<anonymous>)
+    at run (http://127.0.0.1:8765/includes.js:31:29)
+    at http://127.0.0.1:8765/includes.js:45:5
+    at http://127.0.0.1:8765/includes.js:47:3
+[      53ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8765/Assets/optimized/non-profit.jpg:0
+[      53ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8765/Assets/DavidRheames-300x300.jpeg:0
+[      55ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8765/Assets/optimized/philanthropists.jpg:0
+[      55ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8765/Assets/AnjaliP.jpeg:0
+[      55ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8765/Assets/KarmelaGaffney.png:0
+[      65ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8765/Assets/optimized/management-consulting.jpg:0
+[      65ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8765/Assets/Pavan-Kumar.png:0
+[      65ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8765/Assets/JoshSommers.jpeg:0
+[      71ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8765/Assets/optimized/private-equity.jpg:0
+[      87ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://127.0.0.1:8765/Assets/optimized/education-institutions.jpg:0

@@ -52,6 +52,14 @@ function initSite() {
   window.addEventListener('load', setActiveNav);
 
   const revealEls = document.querySelectorAll('.reveal');
+  const revealReadyClass = 'reveal-ready';
+  const revealFallbackDelayMs = 1200;
+
+  if (revealEls.length) {
+    // Hide reveal sections only once initialization is ready to prevent invisible content on mobile.
+    document.documentElement.classList.add(revealReadyClass);
+  }
+
   revealEls.forEach((el, i) => el.style.setProperty('--reveal-order', String(i % 8)));
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver(
@@ -66,6 +74,11 @@ function initSite() {
       { threshold: 0.18 }
     );
     revealEls.forEach((el) => io.observe(el));
+
+    // Defensive fallback: if observer never triggers (race/device quirk), reveal everything.
+    window.setTimeout(() => {
+      revealEls.forEach((el) => el.classList.add('in-view'));
+    }, revealFallbackDelayMs);
   } else {
     revealEls.forEach((el) => el.classList.add('in-view'));
   }
