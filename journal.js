@@ -93,7 +93,7 @@ function applyFilters() {
   const enriched = allPosts.map((post) => {
     const cat = post.category || categorizePost(post);
     const labelMap = {
-      'science-of-cohorts': 'Science of Cohorts',
+      'science-of-cohorts': 'Cohort Science™ Journal',
       announcement: 'Announcement',
       partnership: 'Partnership',
       insight: 'Insight'
