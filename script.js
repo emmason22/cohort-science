@@ -19,6 +19,11 @@ function initSite() {
     .filter(Boolean);
 
   if (menuToggle && nav) {
+    const closeMenu = () => {
+      nav.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    };
+
     menuToggle.addEventListener('click', () => {
       const isOpen = nav.classList.toggle('open');
       menuToggle.setAttribute('aria-expanded', String(isOpen));
@@ -26,10 +31,16 @@ function initSite() {
 
     navLinks.forEach((link) => {
       link.addEventListener('click', () => {
-        nav.classList.remove('open');
-        menuToggle.setAttribute('aria-expanded', 'false');
+        closeMenu();
       });
     });
+
+    const closeOnScroll = () => {
+      if (nav.classList.contains('open')) closeMenu();
+    };
+    window.addEventListener('scroll', closeOnScroll, { passive: true });
+    window.addEventListener('touchmove', closeOnScroll, { passive: true });
+    window.addEventListener('wheel', closeOnScroll, { passive: true });
   }
 
   const setActiveNav = () => {
