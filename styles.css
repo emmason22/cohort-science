@@ -383,16 +383,6 @@ select:focus-visible {
   transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
 }
 
-.outcomes-grid article:hover,
-.card:hover,
-.clients-grid article:hover,
-.about-grid article:hover,
-.person-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 28px rgba(9, 40, 68, 0.14);
-  border-color: #b8c7d9;
-}
-
 .client-segment-image {
   width: 100%;
   aspect-ratio: 16 / 9;
