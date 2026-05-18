@@ -400,11 +400,11 @@ select:focus-visible {
 }
 
 .idea-icon {
-  width: 54px;
-  height: 54px;
+  width: 88px;
+  height: 88px;
   object-fit: contain;
   border-radius: 8px;
-  margin-bottom: 0.55rem;
+  margin: 0 auto 0.65rem;
 }
 
 .card-subhead {
