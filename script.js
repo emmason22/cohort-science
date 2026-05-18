@@ -102,6 +102,7 @@ function initSite() {
   const contactClose = document.querySelector('[data-contact-close]');
 
   if (contactModal && contactOpen && contactClose) {
+    const contactForm = contactModal.querySelector('.contact-form');
     const getFocusable = () => [...contactModal.querySelectorAll('button, input, textarea, a[href], select')]
       .filter((el) => !el.hasAttribute('disabled') && el.getAttribute('tabindex') !== '-1');
 
@@ -145,6 +146,33 @@ function initSite() {
     window.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && !contactModal.hidden) closeModal();
     });
+
+    if (contactForm) {
+      contactForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const formData = new FormData(contactForm);
+        const name = String(formData.get('name') || '').trim();
+        const email = String(formData.get('email') || '').trim();
+        const title = String(formData.get('title') || '').trim();
+        const organization = String(formData.get('organization') || '').trim();
+        const subject = String(formData.get('subject') || 'Website Inquiry').trim();
+        const subjectWithSource = `Website Contact Form: ${subject}`;
+        const message = String(formData.get('message') || '').trim();
+
+        const lines = [
+          `Name: ${name || 'N/A'}`,
+          `Email: ${email || 'N/A'}`,
+          `Title: ${title || 'N/A'}`,
+          `Organization: ${organization || 'N/A'}`,
+          '',
+          'Message:',
+          message || 'N/A'
+        ];
+        const body = encodeURIComponent(lines.join('\n'));
+        const mailto = `mailto:info@cohortscience.com?subject=${encodeURIComponent(subjectWithSource)}&body=${body}`;
+        window.location.href = mailto;
+      });
+    }
   }
 
   siteInitialized = true;
