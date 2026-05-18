@@ -483,9 +483,9 @@ li {
 }
 
 .site-footer {
-  border-top: 1px solid #253243;
-  background: var(--brand-dark);
-  color: #dde6f3;
+  border-top: 1px solid #d5dde6;
+  background: #f5f8fc;
+  color: #1f3044;
 }
 
 .mobile-briefing-cta {
@@ -1150,7 +1150,7 @@ body.modal-open {
 
 .footer-brand {
   margin: 0 0 0.35rem;
-  color: #f5f9ff;
+  color: #10243a;
   font-family: "Spectral", Georgia, serif;
   font-size: 1.5rem;
   font-weight: 600;
@@ -1158,7 +1158,7 @@ body.modal-open {
 
 .footer-copy {
   margin: 0;
-  color: #b6c6da;
+  color: #4e6278;
   max-width: 40ch;
 }
 
@@ -1170,7 +1170,7 @@ body.modal-open {
 }
 
 .footer-links a {
-  color: #d6e3f5;
+  color: #294460;
   text-decoration: none;
   font-size: 0.98rem;
 }
@@ -1181,21 +1181,21 @@ body.modal-open {
   justify-content: center;
   border-radius: 999px;
   padding: 0.34rem 0.8rem;
-  background: #fff;
-  border: 1px solid #fff;
-  color: var(--brand-dark);
+  background: var(--brand-dark);
+  border: 1px solid var(--brand-dark);
+  color: #fff;
   font-weight: 700;
 }
 
 .footer-links a:hover {
-  color: #ffffff;
+  color: #10243a;
   text-decoration: underline;
 }
 
 .footer-links .footer-briefing-button:hover {
-  background: #f2f6fb;
-  border-color: #f2f6fb;
-  color: var(--brand-dark);
+  background: #1a4d7d;
+  border-color: #1a4d7d;
+  color: #fff;
   text-decoration: none;
 }
 
@@ -1211,13 +1211,13 @@ body.modal-open {
 }
 
 .footer-legal-links a {
-  color: #d6e3f5;
+  color: #294460;
   text-decoration: none;
   font-size: 0.95rem;
 }
 
 .footer-legal-links a:hover {
-  color: #fff;
+  color: #10243a;
   text-decoration: underline;
 }
 
@@ -1231,7 +1231,7 @@ body.modal-open {
 
 .footer-legal {
   margin: 0;
-  color: #94a8c0;
+  color: #5a6f86;
 }
 
 @media (min-width: 860px) {
