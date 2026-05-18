@@ -399,6 +399,14 @@ select:focus-visible {
   margin-bottom: 0.8rem;
 }
 
+.idea-icon {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 0.55rem;
+}
+
 .card-subhead {
   color: var(--muted);
   margin-top: -0.4rem;
