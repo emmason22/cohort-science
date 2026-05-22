@@ -46,7 +46,8 @@ function clampText(text, max = 155) {
 
 function formatDate(dateStr) {
   if (!dateStr) return '';
-  const date = new Date(dateStr);
+  const [year, month, day] = dateStr.split('-').map(Number);
+  const date = new Date(year, month - 1, day);
   if (Number.isNaN(date.getTime())) return '';
   return date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
 }

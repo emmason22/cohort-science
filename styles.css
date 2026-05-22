@@ -364,6 +364,12 @@ select:focus-visible {
   color: var(--brand-dark);
 }
 
+.button-light:hover {
+  background: #edf4fb;
+  color: var(--brand-dark);
+  border-color: #edf4fb;
+}
+
 .tone {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(229, 237, 244, 0.6));
 }
