@@ -685,13 +685,6 @@ li {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
-  .people-grid .person-card:nth-last-child(2) {
-    grid-column: 2;
-  }
-
-  .people-grid .person-card:last-child {
-    grid-column: 3;
-  }
 }
 
 .people-grid {
