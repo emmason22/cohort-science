@@ -673,6 +673,10 @@ li {
     gap: var(--space-lg);
   }
 
+  #products .cards-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .clients-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
