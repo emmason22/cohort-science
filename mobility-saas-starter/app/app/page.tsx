@@ -30,6 +30,8 @@ export default async function AppHomePage() {
           <code> ALLOWED_REVIEW_EMAILS</code>.
         </p>
       )}
+      <div id="longitudinal" />
+      <div id="behavioral" />
       <div className="grid">
         {DASHBOARD_LIST.map((item) => (
           <article key={item.slug} className="card">

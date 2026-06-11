@@ -67,6 +67,12 @@ export default async function DashboardPage({ params }: { params: { slug: string
           <h1>{dashboard.title}</h1>
         </div>
         <div className="admin-actions" aria-label="Admin actions">
+          <Link className="btn btn-secondary" href="/app#longitudinal">
+            Longitudinal Home
+          </Link>
+          <Link className="btn btn-secondary" href="/app#behavioral">
+            Behavioral Home
+          </Link>
           <Link className="btn btn-secondary" href="/app">
             Return to Dashboard
           </Link>
