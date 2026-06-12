@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import { BackButton } from "./BackButton";
 import { DASHBOARDS } from "@/lib/dashboards";
 import { userHasEntitlement } from "@/lib/entitlements";
 import { getCurrentUserPrimaryEmail, isEmailAllowlisted } from "@/lib/access-control";
@@ -73,9 +74,7 @@ export default async function DashboardPage({ params }: { params: { slug: string
           <Link className="btn btn-secondary" href="/app#behavioral">
             Behavioral Home
           </Link>
-          <Link className="btn btn-secondary" href="/app">
-            Return to Dashboard
-          </Link>
+          <BackButton />
           <button className="btn btn-disabled" type="button" disabled title="CMS is not active yet">
             CMS Admin
           </button>
