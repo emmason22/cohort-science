@@ -16,6 +16,9 @@ export const teamMember = defineType({
     }),
     defineField({ name: "headshot", title: "Headshot", type: "image", options: { hotspot: true } }),
     defineField({ name: "legacyImage", title: "Legacy Image Path", type: "string" }),
+    defineField({ name: "profilePath", title: "Profile Page Path", type: "string" }),
+    defineField({ name: "linkedinUrl", title: "LinkedIn URL", type: "url" }),
+    defineField({ name: "summaryHtml", title: "Card Summary HTML", type: "text", rows: 5 }),
     defineField({ name: "bioHtml", title: "Bio HTML", type: "text", rows: 14 }),
     defineField({ name: "sortOrder", title: "Sort Order", type: "number" })
   ],
