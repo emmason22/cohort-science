@@ -10,7 +10,7 @@ This Sanity Studio is the shared CMS for both Cohort Science sites:
 Create one Sanity project and set:
 
 ```bash
-export SANITY_STUDIO_PROJECT_ID="your_project_id"
+export SANITY_STUDIO_PROJECT_ID="nxzmzz11"
 export SANITY_STUDIO_DATASET="production"
 ```
 
@@ -30,7 +30,7 @@ Set the same project details in `/sanity-config.js` so the static public site ca
 Set the same project details in `mobility-saas-starter/.env.local`:
 
 ```bash
-NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
+NEXT_PUBLIC_SANITY_PROJECT_ID=nxzmzz11
 NEXT_PUBLIC_SANITY_DATASET=production
 NEXT_PUBLIC_SANITY_STUDIO_URL=https://your-studio-url
 ```

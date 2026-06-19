@@ -1,5 +1,5 @@
 window.COHORT_SANITY = {
-  projectId: "",
+  projectId: "nxzmzz11",
   dataset: "production",
   apiVersion: "2026-06-19"
 };
