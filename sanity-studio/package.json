@@ -7,8 +7,10 @@
     "build": "sanity build",
     "deploy": "sanity deploy",
     "prepare:public-posts": "node scripts/build-public-posts-ndjson.mjs",
+    "prepare:public-pages": "node scripts/build-public-pages-ndjson.mjs",
     "prepare:team-members": "node scripts/build-team-members-ndjson.mjs",
     "import:public-posts": "sanity dataset import seed/publicPosts.ndjson production --replace",
+    "import:public-pages": "sanity dataset import seed/publicPages.ndjson production --replace",
     "import:team-members": "sanity dataset import seed/teamMembers.ndjson production --replace"
   },
   "dependencies": {
