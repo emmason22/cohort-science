@@ -137,5 +137,9 @@ function loadLocalPosts() {
 if (postsGrid && journalStatus) {
   searchInput?.addEventListener('input', applyFilters);
   categorySelect?.addEventListener('change', applyFilters);
-  loadLocalPosts();
+  if (Array.isArray(window.COHORT_POSTS)) {
+    loadLocalPosts();
+  } else {
+    window.addEventListener('cohort:posts-ready', loadLocalPosts, { once: true });
+  }
 }

@@ -201,5 +201,9 @@ function injectPostSchema(post, author) {
 }
 
 if (postTitle && postStatus && postContent) {
-  loadLocalPost();
+  if (Array.isArray(window.COHORT_POSTS)) {
+    loadLocalPost();
+  } else {
+    window.addEventListener('cohort:posts-ready', loadLocalPost, { once: true });
+  }
 }

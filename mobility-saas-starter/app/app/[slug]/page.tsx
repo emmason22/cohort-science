@@ -2,14 +2,15 @@ import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { BackButton } from "./BackButton";
-import { DASHBOARDS } from "@/lib/dashboards";
 import { userHasEntitlement } from "@/lib/entitlements";
 import { getCurrentUserPrimaryEmail, isEmailAllowlisted } from "@/lib/access-control";
 import { logAccessEvent } from "@/lib/audit";
+import { getPortalDashboard, getSanityStudioUrl } from "@/lib/sanity";
 
 export default async function DashboardPage({ params }: { params: { slug: string } }) {
-  const dashboard = DASHBOARDS[params.slug as keyof typeof DASHBOARDS];
+  const dashboard = await getPortalDashboard(params.slug);
   if (!dashboard) notFound();
+  const studioUrl = getSanityStudioUrl();
 
   const { userId } = await auth();
   if (!userId) redirect("/login");
@@ -66,6 +67,7 @@ export default async function DashboardPage({ params }: { params: { slug: string
       <div className="page-header">
         <div>
           <h1>{dashboard.title}</h1>
+          {dashboard.description && <p>{dashboard.description}</p>}
         </div>
         <div className="admin-actions" aria-label="Admin actions">
           <Link className="btn btn-secondary" href="/app#longitudinal">
@@ -75,9 +77,15 @@ export default async function DashboardPage({ params }: { params: { slug: string
             Behavioral Home
           </Link>
           <BackButton />
-          <button className="btn btn-disabled" type="button" disabled title="CMS is not active yet">
-            CMS Admin
-          </button>
+          {studioUrl ? (
+            <a className="btn btn-secondary" href={studioUrl} target="_blank" rel="noreferrer">
+              CMS Admin
+            </a>
+          ) : (
+            <button className="btn btn-disabled" type="button" disabled title="Set NEXT_PUBLIC_SANITY_STUDIO_URL">
+              CMS Admin
+            </button>
+          )}
           <Link className="btn btn-secondary" href="/app/manage-users">
             Manage Users
           </Link>
