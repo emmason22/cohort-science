@@ -14,6 +14,7 @@
     --shadow:0 2px 16px rgba(27,79,138,0.08);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{max-width:100%;overflow-x:hidden;}
   body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
   header{background:var(--blue-deep);padding:28px 48px 24px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;}
   header .header-left{display:flex;align-items:center;gap:18px;}
@@ -95,13 +96,74 @@
   @media (max-width: 720px) {
     body > header {
       padding:16px 28px !important;
+      align-items:flex-start !important;
+      flex-direction:column;
+    }
+    body > header .header-left {
+      align-items:flex-start !important;
+      gap:14px !important;
+      min-width:0;
+      width:100%;
     }
     body > header .utd-logo {
       height:58px !important;
       width:58px !important;
     }
     body > header .wordmark {
+      min-width:0;
       min-height:58px !important;
+    }
+    body > header .wordmark h1 {
+      font-size:22px;
+      overflow-wrap:anywhere;
+    }
+    body > header .wordmark span {
+      font-size:11px;
+      overflow-wrap:anywhere;
+    }
+    header .header-right {
+      align-items:flex-start;
+      width:100%;
+    }
+    header .cohort-logo {
+      max-width:100%;
+      height:auto;
+      max-height:56px;
+    }
+    main {
+      padding:24px 14px 36px;
+    }
+    .kpi-strip {
+      grid-template-columns:1fr;
+      gap:12px;
+    }
+    .kpi-card {
+      padding:16px 18px;
+    }
+    .kpi-card .val {
+      font-size:30px;
+    }
+    .chart-card {
+      padding:20px 14px;
+      max-width:100%;
+      overflow:hidden;
+    }
+    .controls,
+    .legend {
+      max-width:100%;
+    }
+    .multi-select-wrap,
+    .multi-select-btn {
+      max-width:100%;
+    }
+    .multi-dropdown {
+      left:0;
+      right:auto;
+      max-width:calc(100vw - 28px);
+    }
+    .canvas-wrap {
+      height:360px;
+      max-width:100%;
     }
   }
 </style>

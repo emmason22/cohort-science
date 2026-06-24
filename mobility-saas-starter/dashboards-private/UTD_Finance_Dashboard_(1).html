@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
+html,body{max-width:100%;overflow-x:hidden;}
 body{font-family:'DM Sans',Arial,sans-serif;background:#F8F7F4;min-height:100vh;}
 
 .site-header{background:#0C2340;padding:0 32px;display:flex;align-items:center;height:72px;gap:18px;}
@@ -77,6 +78,9 @@ body{font-family:'DM Sans',Arial,sans-serif;background:#F8F7F4;min-height:100vh;
 @media (max-width: 720px) {
   .site-header {
     padding:14px 24px !important;
+    flex-wrap:wrap;
+    height:auto;
+    gap:12px;
   }
   .site-header .utd-logo,
   .site-header .utd-logo img {
@@ -84,7 +88,68 @@ body{font-family:'DM Sans',Arial,sans-serif;background:#F8F7F4;min-height:100vh;
     height:58px !important;
   }
   .site-header .hdr-main {
+    min-width:0;
     min-height:58px !important;
+  }
+  .hdr-divider {
+    height:28px;
+  }
+  .hdr-title,
+  .hdr-sub,
+  .hdr-meta {
+    overflow-wrap:anywhere;
+  }
+  .hdr-pills {
+    order:5;
+    width:100%;
+    flex-wrap:wrap;
+    align-items:stretch;
+  }
+  .pill {
+    flex:1 1 92px;
+    padding:5px 8px;
+  }
+  .pill-sep {
+    display:none;
+  }
+  .hdr-badge {
+    margin-left:0;
+  }
+  .highlights {
+    display:grid;
+    grid-template-columns:1fr;
+    padding:10px 14px;
+  }
+  .hcard {
+    min-width:0;
+  }
+  .tab-nav {
+    padding:0 12px;
+    max-width:100%;
+    overscroll-behavior-x:contain;
+  }
+  .tab-btn {
+    padding:10px 12px;
+  }
+  .breadcrumb {
+    padding:12px 14px 0;
+    flex-wrap:wrap;
+  }
+  .bc-count {
+    margin-left:0;
+    width:100%;
+  }
+  .iframe-wrap {
+    margin:12px 14px 0;
+    height:calc(100vh - 360px);
+    min-height:420px;
+  }
+  .page-nav {
+    padding:12px 14px 20px;
+    gap:12px;
+  }
+  .nav-btn {
+    padding:7px 12px;
   }
 }
 </style>

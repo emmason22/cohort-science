@@ -2,11 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Geographic Dashboard</title>
 <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap');
 * { margin:0; padding:0; box-sizing:border-box; }
+html, body { max-width:100%; overflow-x:hidden; }
 body { background:#f4f6fb; font-family:'DM Sans',sans-serif; color:#1a1f36; }
 header { background:#1a1f36; color:white; padding:22px 40px; display:flex; align-items:center; gap:32px; flex-wrap:wrap; }
 header { position:relative; padding-top:70px; }
@@ -106,6 +108,62 @@ body > header h1 {
   }
   body > header > div:first-of-type {
     min-height:58px !important;
+  }
+  header {
+    gap:14px !important;
+  }
+  header .cohort-logo {
+    position:static;
+    height:34px;
+    margin-left:auto;
+  }
+  header h1 {
+    font-size:18px;
+  }
+  .stat-row {
+    margin-left:0;
+    width:100%;
+  }
+  .stat-pill {
+    flex:1 1 120px;
+    padding:8px 10px;
+  }
+  .tab-bar {
+    padding:0 12px;
+    max-width:100%;
+    overscroll-behavior-x:contain;
+  }
+  .tab-btn {
+    padding:12px 14px;
+    font-size:12px;
+  }
+  .panel {
+    padding:18px 12px;
+  }
+  .chart-card,
+  .findings,
+  .timeline-wrap {
+    padding:16px 14px;
+    max-width:100%;
+    overflow:hidden;
+  }
+  .filter-bar,
+  .timeline-controls {
+    align-items:stretch;
+  }
+  .filter-group,
+  .filter-group select {
+    width:100%;
+    min-width:0;
+  }
+  .two-col {
+    grid-template-columns:1fr;
+  }
+  #role-map-chart,
+  .js-plotly-plot,
+  .plot-container,
+  .svg-container {
+    max-width:100% !important;
   }
 }
 </style>
