@@ -10,13 +10,13 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 html, body { max-width:100%; overflow-x:hidden; }
 body { background:#f4f6fb; font-family:'DM Sans',sans-serif; color:#1a1f36; }
-header { background:#1a1f36; color:white; padding:22px 40px; display:flex; align-items:center; gap:32px; flex-wrap:wrap; }
-header { position:relative; padding-top:70px; }
+header { background:#1a1f36; color:white; padding:18px 40px 16px; display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:14px 22px; }
+header { position:relative; }
 header .utd-logo { height:36px; width:auto; flex-shrink:0; }
-header .cohort-logo { height:42px; width:auto; position:absolute; top:14px; right:40px; }
+header .cohort-logo { height:42px; width:auto; grid-column:3; grid-row:1; justify-self:end; }
 header h1 { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; }
 header p { font-size:12px; color:#8892a4; margin-top:3px; }
-.stat-row { display:flex; gap:12px; margin-left:auto; flex-wrap:wrap; }
+.stat-row { grid-column:1 / -1; display:grid; grid-template-columns:repeat(4,minmax(150px,1fr)); gap:10px; width:100%; }
 .stat-pill { background:#252d45; border:1px solid #343d5a; border-radius:8px; padding:8px 18px; text-align:center; }
 .stat-pill .num { font-family:'Syne',sans-serif; font-size:20px; font-weight:700; color:#4a90e2; }
 .stat-pill .lbl { font-size:10px; color:#8892a4; text-transform:uppercase; letter-spacing:0.07em; }
@@ -80,8 +80,8 @@ footer { text-align:center; padding:20px; font-size:11px; color:#b0b8cc; border-
 /* UTD title-header alignment */
 body > header {
   align-items:center !important;
-  min-height:96px !important;
-  padding:18px 40px !important;
+  min-height:0 !important;
+  padding:18px 40px 16px !important;
 }
 body > header .utd-logo {
   height:70px !important;
@@ -113,16 +113,13 @@ body > header h1 {
     gap:14px !important;
   }
   header .cohort-logo {
-    position:static;
     height:34px;
-    margin-left:auto;
   }
   header h1 {
     font-size:18px;
   }
   .stat-row {
-    margin-left:0;
-    width:100%;
+    grid-template-columns:repeat(2,minmax(0,1fr));
   }
   .stat-pill {
     flex:1 1 120px;
@@ -335,6 +332,29 @@ const ZOOM_CONFIG = {
   modeBarButtonsToAdd: ['zoom2d', 'pan2d', 'resetScale2d'],
   modeBarButtonsToRemove: ['lasso2d', 'select2d']
 };
+const LABEL_DARK_BLUE = '#1e3a5f';
+const LIGHT_BAR_COLORS = new Set(['#86c9a0', '#93b8d4', '#bdc3c7']);
+
+function isLightBar(color) {
+  return LIGHT_BAR_COLORS.has(String(color).toLowerCase());
+}
+
+function barLabelPositions(values, colors, thresholdRatio = 0.7) {
+  const max = Math.max(...values, 1);
+  return values.map((value, i) => {
+    if (isLightBar(colors[i])) return 'outside';
+    return value >= max * thresholdRatio ? 'inside' : 'outside';
+  });
+}
+
+function barLabelColors(positions) {
+  return positions.map(position => position === 'inside' ? '#ffffff' : LABEL_DARK_BLUE);
+}
+
+function paddedRange(values, floorMax) {
+  const max = Math.max(...values, 1);
+  return [0, Math.max(floorMax || 0, max * 1.26)];
+}
 
 function populateDropdowns() {
   const roleMapRole  = document.getElementById('role-map-role');
@@ -506,20 +526,25 @@ function updateTexas() {
   const barColors = sorted.map(d =>
     d.pct >= 75 ? '#1a4731' : d.pct >= 60 ? '#276749' : d.pct >= 45 ? '#48916b' : '#86c9a0'
   );
+  const values = sorted.map(d => d.pct);
+  const labelPositions = barLabelPositions(values, barColors, 0.72);
 
   Plotly.react('texas-bar-chart', [{
     type: 'bar', orientation: 'h',
-    x: sorted.map(d => d.pct),
+    x: values,
     y: sorted.map(d => d.role),
     marker: { color: barColors },
     text: sorted.map(d => `${d.pct}%  (n=${d.n})`),
-    textposition: 'outside',
+    textposition: labelPositions,
+    textfont: { color: barLabelColors(labelPositions) },
+    insidetextanchor: 'middle',
+    cliponaxis: false,
     hovertemplate: '<b>%{y}</b><br>In Texas: %{x}%<extra></extra>'
   }], {
     paper_bgcolor: '#f9f9f9', plot_bgcolor: '#f9f9f9',
-    xaxis: { title: '% Inside Texas', range: [0, 115], fixedrange: false },
+    xaxis: { title: '% Inside Texas', range: [0, 128], fixedrange: false },
     yaxis: { tickfont: { size: 11 }, fixedrange: false },
-    margin: { l:220, r:140, t:20, b:40 },
+    margin: { l:220, r:190, t:20, b:40 },
     height: 460,
     dragmode: 'zoom'
   }, ZOOM_CONFIG);
@@ -565,18 +590,24 @@ function updateTexasCityChart() {
     const t = d[1] / maxVal;
     return t >= 0.75 ? '#1a4731' : t >= 0.50 ? '#276749' : t >= 0.25 ? '#48916b' : '#86c9a0';
   });
+  const values = top10.map(d => d[1]);
+  const labelPositions = barLabelPositions(values, barColors, 0.74);
 
   Plotly.react('texas-city-chart', [{
     type: 'bar', orientation: 'h',
-    x: top10.map(d => d[1]), y: top10.map(d => d[0]),
+    x: values, y: top10.map(d => d[0]),
     marker: { color: barColors },
-    text: top10.map(d => d[1]), textposition: 'outside',
+    text: values,
+    textposition: labelPositions,
+    textfont: { color: barLabelColors(labelPositions) },
+    insidetextanchor: 'middle',
+    cliponaxis: false,
     hovertemplate: '<b>%{y}</b><br>Positions: %{x}<extra></extra>'
   }], {
     paper_bgcolor: '#f9f9f9', plot_bgcolor: '#f9f9f9',
-    xaxis: { title: 'Number of Positions', tickfont: { size: 11 } },
+    xaxis: { title: 'Number of Positions', tickfont: { size: 11 }, range: paddedRange(values) },
     yaxis: { tickfont: { size: 11 } },
-    margin: { l:160, r:60, t:20, b:50 }, height: 420
+    margin: { l:160, r:110, t:20, b:50 }, height: 420
   });
 
   document.getElementById('texas-city-calc-note').innerHTML =
@@ -601,18 +632,24 @@ function updateMigration() {
   const barColors = sorted.map(d =>
     d.pct >= 25 ? '#1e3a5f' : d.pct >= 20 ? '#2c5282' : d.pct >= 15 ? '#4a7ab5' : '#93b8d4'
   );
+  const values = sorted.map(d => d.pct);
+  const labelPositions = barLabelPositions(values, barColors, 0.7);
 
   Plotly.react('migration-bar-chart', [{
     type: 'bar', orientation: 'h',
-    x: sorted.map(d => d.pct), y: sorted.map(d => d.role),
+    x: values, y: sorted.map(d => d.role),
     marker: { color: barColors },
-    text: sorted.map(d => `${d.pct}%  (n=${d.n})`), textposition: 'outside',
+    text: sorted.map(d => `${d.pct}%  (n=${d.n})`),
+    textposition: labelPositions,
+    textfont: { color: barLabelColors(labelPositions) },
+    insidetextanchor: 'middle',
+    cliponaxis: false,
     hovertemplate: '<b>%{y}</b><br>Outside Texas: %{x}%<extra></extra>'
   }], {
     paper_bgcolor: '#f9f9f9', plot_bgcolor: '#f9f9f9',
-    xaxis: { title: '% Outside Texas', range: [0, 55], fixedrange: false },
+    xaxis: { title: '% Outside Texas', range: paddedRange(values, 62), fixedrange: false },
     yaxis: { tickfont: { size: 11 }, fixedrange: false },
-    margin: { l:220, r:140, t:20, b:40 },
+    margin: { l:220, r:190, t:20, b:40 },
     height: 460,
     dragmode: 'zoom'
   }, ZOOM_CONFIG);
@@ -657,18 +694,24 @@ function updateCityChart() {
     const t = d[1] / maxVal;
     return t >= 0.75 ? '#1e3a5f' : t >= 0.50 ? '#2c5282' : t >= 0.25 ? '#4a7ab5' : '#93b8d4';
   });
+  const values = top10.map(d => d[1]);
+  const labelPositions = barLabelPositions(values, barColors, 0.74);
 
   Plotly.react('city-role-chart', [{
     type: 'bar', orientation: 'h',
-    x: top10.map(d => d[1]), y: top10.map(d => d[0]),
+    x: values, y: top10.map(d => d[0]),
     marker: { color: barColors },
-    text: top10.map(d => d[1]), textposition: 'outside',
+    text: values,
+    textposition: labelPositions,
+    textfont: { color: barLabelColors(labelPositions) },
+    insidetextanchor: 'middle',
+    cliponaxis: false,
     hovertemplate: '<b>%{y}</b><br>Positions: %{x}<extra></extra>'
   }], {
     paper_bgcolor: '#f9f9f9', plot_bgcolor: '#f9f9f9',
-    xaxis: { title: 'Number of Positions', tickfont: { size: 11 } },
+    xaxis: { title: 'Number of Positions', tickfont: { size: 11 }, range: paddedRange(values) },
     yaxis: { tickfont: { size: 11 } },
-    margin: { l:160, r:60, t:20, b:50 }, height: 420
+    margin: { l:160, r:110, t:20, b:50 }, height: 420
   });
 
   document.getElementById('city-calc-note').innerHTML =
