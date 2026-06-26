@@ -171,14 +171,20 @@ select {
 }
 
 iframe.dashboard {
+  display: block;
   width: 100%;
   height: calc(100vh - 120px);
+  min-height: 560px;
   border: 1px solid var(--line);
   border-radius: 12px;
   background: #fff;
 }
 
 @media (max-width: 720px) {
+  .container {
+    padding: 14px;
+  }
+
   .page-header,
   .admin-panel,
   .table-header {
@@ -193,5 +199,10 @@ iframe.dashboard {
   .user-row,
   .user-row-head {
     grid-template-columns: 1fr;
+  }
+
+  iframe.dashboard {
+    min-height: 480px;
+    border-radius: 10px;
   }
 }

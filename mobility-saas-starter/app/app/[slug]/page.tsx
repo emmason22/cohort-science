@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { BackButton } from "./BackButton";
+import { DashboardFrame } from "./DashboardFrame";
 import { userHasEntitlement } from "@/lib/entitlements";
 import { getCurrentUserPrimaryEmail, isEmailAllowlisted } from "@/lib/access-control";
 import { logAccessEvent } from "@/lib/audit";
@@ -91,7 +92,7 @@ export default async function DashboardPage({ params }: { params: { slug: string
           </Link>
         </div>
       </div>
-      <iframe className="dashboard" src={`/app/view/${dashboard.slug}`} title={dashboard.title} />
+      <DashboardFrame slug={dashboard.slug} title={dashboard.title} />
     </main>
   );
 }
