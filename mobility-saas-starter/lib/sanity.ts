@@ -69,7 +69,6 @@ export async function getPortalDashboardList(): Promise<PortalDashboard[]> {
       if (!fallback) return null;
       return {
         ...fallback,
-        title: record.title || fallback.title,
         description: record.description,
         isActive: record.isActive,
         sortOrder: record.sortOrder
@@ -92,7 +91,6 @@ export async function getPortalDashboard(slug: string): Promise<PortalDashboard 
 
   return {
     ...fallback,
-    title: record.title || fallback.title,
     description: record.description,
     isActive: record.isActive,
     sortOrder: record.sortOrder

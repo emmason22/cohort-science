@@ -72,10 +72,10 @@ export default async function DashboardPage({ params }: { params: { slug: string
         </div>
         <div className="admin-actions" aria-label="Admin actions">
           <Link className="btn btn-secondary" href="/app#longitudinal">
-            Longitudinal Home
+            Longitudinal Analyses
           </Link>
           <Link className="btn btn-secondary" href="/app#behavioral">
-            Behavioral Home
+            Behavioral Persona Analyses
           </Link>
           <BackButton />
           {studioUrl ? (
