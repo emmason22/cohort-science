@@ -9,7 +9,7 @@
 body {
   margin: 0;
   font-family: "Avenir Next", "Segoe UI", sans-serif;
-  background: radial-gradient(circle at 20% 20%, #edf5ff, var(--bg));
+  background: linear-gradient(180deg, #edf1f5 0%, var(--bg) 38%, #ffffff 100%);
   color: var(--text);
 }
 
@@ -51,7 +51,8 @@ a { color: inherit; }
   padding: 20px;
   border: 1px solid var(--line);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.78);
+  background: rgba(235, 240, 246, 0.82);
+  color: #5f6d7b;
 }
 
 .platform-intro h2,
@@ -94,22 +95,12 @@ a { color: inherit; }
   display: grid;
   gap: 10px;
   align-content: start;
-  min-height: 260px;
-  padding: 22px;
-  border-radius: 12px;
+  min-height: 238px;
+  padding: 20px;
+  border-radius: 8px;
   background: #1c5477;
   color: #fff;
   box-shadow: 0 16px 38px rgba(17, 75, 139, 0.18);
-}
-
-.analysis-number {
-  width: fit-content;
-  border-radius: 999px;
-  padding: 4px 9px;
-  background: rgba(255, 255, 255, 0.13);
-  color: #d8e9f5;
-  font-size: 0.76rem;
-  font-weight: 800;
 }
 
 .analysis-subhead {
@@ -135,6 +126,57 @@ a { color: inherit; }
   color: #fff;
   font-weight: 800;
   text-decoration: none;
+}
+
+.analysis-link-primary {
+  padding: 8px 13px;
+  border-radius: 7px;
+  background: linear-gradient(180deg, #ffffff 0%, #d9e9f4 100%);
+  color: #123f62;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  box-shadow: 0 5px 0 #0d3654, 0 13px 22px rgba(5, 36, 60, 0.2);
+  transform: translateY(0);
+}
+
+.analysis-link-primary:active {
+  box-shadow: 0 2px 0 #0d3654, 0 8px 16px rgba(5, 36, 60, 0.18);
+  transform: translateY(3px);
+}
+
+.theme-carousel {
+  margin: 10px 0 28px;
+}
+
+.theme-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(230px, 1fr);
+  gap: 14px;
+  overflow-x: auto;
+  padding: 4px 2px 14px;
+  scroll-snap-type: x proximity;
+}
+
+.theme-card {
+  scroll-snap-align: start;
+  min-height: 156px;
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px solid #d9e1ea;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(17, 75, 139, 0.1);
+}
+
+.theme-card h3 {
+  margin: 0 0 8px;
+  color: #123f62;
+  font-size: 1rem;
+}
+
+.theme-card p {
+  margin: 0;
+  color: #496176;
+  line-height: 1.5;
 }
 
 .library-section {
@@ -333,6 +375,10 @@ iframe.dashboard {
   .platform-intro,
   .analysis-grid {
     grid-template-columns: 1fr;
+  }
+
+  .theme-track {
+    grid-auto-columns: minmax(240px, 86%);
   }
 
   .platform-intro {

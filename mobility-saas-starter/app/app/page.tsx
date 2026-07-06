@@ -12,6 +12,28 @@ export default async function AppHomePage() {
   const studioUrl = getSanityStudioUrl();
   const longitudinalDashboards = dashboards.filter((item) => item.category === "Longitudinal Analyses");
   const personaDashboards = dashboards.filter((item) => item.category === "Behavioral Persona Analyses");
+  const carouselThemes = [
+    {
+      title: "Measure & Benchmark Outcomes",
+      body: "Measure post-graduation success, program-level ROI, and long-term alumni outcomes."
+    },
+    {
+      title: "Benchmark ROI And Mobility",
+      body: "Compare earnings, employment, and mobility by program, identity, and geographic region."
+    },
+    {
+      title: "Evaluate Curricular Relevance",
+      body: "Identify career detours, upward pivots, and labor-market gaps emerging around each program."
+    },
+    {
+      title: "Support Accreditation Reporting",
+      body: "Connect outcomes evidence to accreditation, financial-aid, and leadership reporting needs."
+    },
+    {
+      title: "Forecast Cohort Mobility",
+      body: "Use labor, education, economic, and demographic signals to forecast cohort outcomes."
+    }
+  ];
 
   return (
     <main className="container">
@@ -66,32 +88,44 @@ export default async function AppHomePage() {
       </section>
       <div className="analysis-grid" aria-label="Analysis library">
         <section className="analysis-card" id="longitudinal">
-          <span className="analysis-number">01</span>
           <h2>Longitudinal Analyses</h2>
           <p className="analysis-subhead">For longitudinal trends and comparisons across cohorts.</p>
           <ul>
-            <li>Enrollments: compare progression and completion across student cohorts.</li>
-            <li>Equity: identify gaps by student segment, institution, and program.</li>
-            <li>Endowments: connect outcomes evidence to program and investment decisions.</li>
+            <li>Enrollments: Compare progression and completion across student cohorts.</li>
+            <li>Equity: Identify gaps by student segment, institution, and program.</li>
+            <li>Endowments: Connect outcomes evidence to program and investment decisions.</li>
           </ul>
-          <a className="analysis-link" href="#longitudinal-library">
-            Open analysis library
-          </a>
+          <Link className="analysis-link analysis-link-primary" href={allowlisted ? "/app/utd-finance" : "/app"}>
+            Enter UTD Finance
+          </Link>
         </section>
         <section className="analysis-card" id="behavioral">
-          <span className="analysis-number">02</span>
           <h2>Behavioral Persona Analyses</h2>
           <p className="analysis-subhead">For segment and persona-level insights.</p>
           <ul>
-            <li>Enrollments: understand student groups and pathway participation.</li>
-            <li>Equity: compare persona mix and outcomes across populations.</li>
-            <li>Endowments: surface support opportunities tied to measurable outcomes.</li>
+            <li>Enrollments: Understand student groups and pathway participation.</li>
+            <li>Equity: Compare persona mix and outcomes across populations.</li>
+            <li>Endowments: Surface support opportunities tied to measurable outcomes.</li>
           </ul>
-          <a className="analysis-link" href="#persona-library">
-            Open analysis library
+          <a className="analysis-link analysis-link-primary" href="#persona-library">
+            Explore Personas
           </a>
         </section>
       </div>
+      <section className="theme-carousel" aria-label="Education Outcomes Platform themes">
+        <div className="section-heading">
+          <p className="eyebrow">Let's understand</p>
+          <h2>Outcomes and economic mobility measured at institution level</h2>
+        </div>
+        <div className="theme-track">
+          {carouselThemes.map((theme) => (
+            <article key={theme.title} className="theme-card">
+              <h3>{theme.title}</h3>
+              <p>{theme.body}</p>
+            </article>
+          ))}
+        </div>
+      </section>
       {!allowlisted && (
         <p>
           Your account is not allowlisted for client review yet. Ask an admin to add your email to
