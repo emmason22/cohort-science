@@ -8,3 +8,22 @@ sanity-studio/package-lock.json
 
 tmp/
 *.log
+
+# Local dashboard verification artifacts.
+dallas-*.png
+dallas-*.json
+geo-*-check.png
+job-*-check.png
+portal-*-current.png
+utd-*.png
+
+# Portal application files belong in the portal repo, not this website repo.
+mobility-saas-starter/app/
+mobility-saas-starter/docs/
+mobility-saas-starter/lib/
+mobility-saas-starter/middleware.ts
+mobility-saas-starter/next-env.d.ts
+mobility-saas-starter/next.config.mjs
+mobility-saas-starter/package.json
+mobility-saas-starter/supabase-schema.sql
+mobility-saas-starter/tsconfig.json
