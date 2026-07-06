@@ -75,7 +75,7 @@
     })
     .then((data) => {
       const sanityPosts = (data.result || []).map(normalizePost);
-      return loadSeedPosts().then((seedPosts) => publish(mergePosts(sanityPosts, seedPosts)));
+      return loadSeedPosts().then((seedPosts) => publish(mergePosts(seedPosts, sanityPosts)));
     })
     .catch((error) => {
       console.error(error);

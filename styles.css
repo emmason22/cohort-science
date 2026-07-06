@@ -936,7 +936,12 @@ li {
 
 .journal-title-link {
   color: inherit;
+  line-height: 1.22;
   text-decoration: none;
+}
+
+.journal-title-link .brand-trademark {
+  margin-right: 0.04em;
 }
 
 .journal-title-link:hover {
