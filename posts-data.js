@@ -8,12 +8,16 @@
   }
 
   function normalizePost(post) {
+    const image = post.id === "cohort-science-introduces-education-outcomes-platform"
+      ? "Assets/Economic Mobility_Announcement_Cohort Science_Jul2026 v7-1.png"
+      : post.image;
+
     return {
       id: post.id,
       title: post.title,
       excerpt: post.excerpt,
       date: post.date,
-      image: post.image,
+      image,
       imageFit: post.imageFit,
       category: post.category,
       author: post.author,
