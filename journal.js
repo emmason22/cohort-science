@@ -17,6 +17,24 @@ function clampExcerpt(text, max = 170) {
   return `${normalized.slice(0, max).trimEnd()}...`;
 }
 
+function escapeHtml(text) {
+  return String(text || '').replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[char]));
+}
+
+function formatBrandMarkup(text) {
+  return escapeHtml(text).replace(/Cohort Science(?:\s*(?:™|TM))?/g, 'Cohort Science<sup class="brand-trademark">™</sup>');
+}
+
+function setBrandedHtml(element, text) {
+  element.innerHTML = formatBrandMarkup(text);
+}
+
 function categorizePost(post) {
   const text = `${post.title} ${post.excerpt}`.toLowerCase();
   if (text.includes('science of cohorts') || text.includes('cohort')) {
@@ -56,13 +74,13 @@ function createPostCard(post) {
 
   const tag = document.createElement('p');
   tag.className = 'journal-tag';
-  tag.textContent = post.categoryLabel;
+  setBrandedHtml(tag, post.categoryLabel);
 
   const h3 = document.createElement('h3');
   const titleLink = document.createElement('a');
   titleLink.className = 'journal-title-link';
   titleLink.href = postHref;
-  titleLink.textContent = post.title;
+  setBrandedHtml(titleLink, post.title);
   h3.appendChild(titleLink);
 
   const date = document.createElement('p');
@@ -70,7 +88,7 @@ function createPostCard(post) {
   date.textContent = formatDate(post.date);
 
   const p = document.createElement('p');
-  p.textContent = clampExcerpt(post.excerpt);
+  setBrandedHtml(p, clampExcerpt(post.excerpt));
 
   const link = document.createElement('a');
   link.className = 'text-link';

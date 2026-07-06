@@ -44,6 +44,64 @@ function clampText(text, max = 155) {
   return `${normalized.slice(0, max).trimEnd()}...`;
 }
 
+function escapeHtml(text) {
+  return String(text || '').replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[char]));
+}
+
+function formatBrandMarkup(text) {
+  return escapeHtml(text).replace(/Cohort Science(?:\s*(?:™|TM))?/g, 'Cohort Science<sup class="brand-trademark">™</sup>');
+}
+
+function setBrandedHtml(element, text) {
+  element.innerHTML = formatBrandMarkup(text);
+}
+
+function isTrademarkElement(node) {
+  return node?.nodeType === Node.ELEMENT_NODE && /^(?:™|TM)$/i.test((node.textContent || '').trim());
+}
+
+function superscriptBrandMarks(root) {
+  if (!root) return;
+  const matcher = /Cohort Science(?:\s*(?:™|TM))?/g;
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      matcher.lastIndex = 0;
+      return matcher.test(node.nodeValue || '') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+    }
+  });
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+
+  nodes.forEach((node) => {
+    const text = node.nodeValue || '';
+    if (/Cohort Science\s*$/.test(text) && isTrademarkElement(node.nextSibling)) {
+      node.nextSibling.remove();
+    }
+
+    matcher.lastIndex = 0;
+    const fragment = document.createDocumentFragment();
+    let lastIndex = 0;
+    let match;
+    while ((match = matcher.exec(text))) {
+      fragment.append(document.createTextNode(text.slice(lastIndex, match.index)));
+      fragment.append(document.createTextNode('Cohort Science'));
+      const sup = document.createElement('sup');
+      sup.className = 'brand-trademark';
+      sup.textContent = '™';
+      fragment.append(sup);
+      lastIndex = match.index + match[0].length;
+    }
+    fragment.append(document.createTextNode(text.slice(lastIndex)));
+    node.replaceWith(fragment);
+  });
+}
+
 function formatDate(dateStr) {
   if (!dateStr) return '';
   const [year, month, day] = dateStr.split('-').map(Number);
@@ -81,10 +139,10 @@ function createRelatedCard(post) {
   article.className = 'card';
 
   const h4 = document.createElement('h3');
-  h4.textContent = post.title;
+  setBrandedHtml(h4, post.title);
 
   const p = document.createElement('p');
-  p.textContent = post.excerpt;
+  setBrandedHtml(p, post.excerpt);
 
   const link = document.createElement('a');
   link.className = 'text-link';
@@ -110,12 +168,12 @@ function renderPostPagination(currentPost, allPosts) {
 
   const parts = [];
   if (newer) {
-    parts.push(`<a class="post-nav-link" href="post.html?id=${encodeURIComponent(newer.id)}"><span class="post-nav-label">Newer</span><span>${newer.title}</span></a>`);
+    parts.push(`<a class="post-nav-link" href="post.html?id=${encodeURIComponent(newer.id)}"><span class="post-nav-label">Newer</span><span>${formatBrandMarkup(newer.title)}</span></a>`);
   } else {
     parts.push('<span class="post-nav-link post-nav-link-disabled"><span class="post-nav-label">Newer</span><span>None</span></span>');
   }
   if (older) {
-    parts.push(`<a class="post-nav-link" href="post.html?id=${encodeURIComponent(older.id)}"><span class="post-nav-label">Older</span><span>${older.title}</span></a>`);
+    parts.push(`<a class="post-nav-link" href="post.html?id=${encodeURIComponent(older.id)}"><span class="post-nav-label">Older</span><span>${formatBrandMarkup(older.title)}</span></a>`);
   } else {
     parts.push('<span class="post-nav-link post-nav-link-disabled"><span class="post-nav-label">Older</span><span>None</span></span>');
   }
@@ -149,7 +207,7 @@ function loadLocalPost() {
     return;
   }
 
-  postTitle.textContent = post.title;
+  setBrandedHtml(postTitle, post.title);
   postStatus.textContent = '';
   updatePostHead(post);
   if (postByline) {
@@ -164,6 +222,7 @@ function loadLocalPost() {
   }
 
   postContent.innerHTML = `${post.content || '<p>Content unavailable.</p>'}`;
+  superscriptBrandMarks(postContent);
   renderRelatedPosts(post, posts);
   renderPostPagination(post, posts);
   renderShareButtons(post);
