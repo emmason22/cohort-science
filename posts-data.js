@@ -21,15 +21,29 @@
     };
   }
 
+  function sortPosts(posts) {
+    return posts.slice().sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+  }
+
+  function mergePosts(primaryPosts, secondaryPosts) {
+    const byId = new Map();
+    [...primaryPosts, ...secondaryPosts].forEach((post) => {
+      if (post && post.id && !byId.has(post.id)) {
+        byId.set(post.id, post);
+      }
+    });
+    return sortPosts([...byId.values()]);
+  }
+
   function loadSeedPosts() {
     return fetch("sanity-studio/seed/publicPosts.json", { cache: "no-cache" })
       .then((response) => (response.ok ? response.json() : []))
-      .then((posts) => publish(posts.map(normalizePost)))
-      .catch(() => publish([]));
+      .then((posts) => posts.map(normalizePost))
+      .catch(() => []);
   }
 
   if (!config.projectId) {
-    loadSeedPosts();
+    loadSeedPosts().then(publish);
     return;
   }
 
@@ -55,9 +69,12 @@
       }
       return response.json();
     })
-    .then((data) => publish((data.result || []).map(normalizePost)))
+    .then((data) => {
+      const sanityPosts = (data.result || []).map(normalizePost);
+      return loadSeedPosts().then((seedPosts) => publish(mergePosts(sanityPosts, seedPosts)));
+    })
     .catch((error) => {
       console.error(error);
-      loadSeedPosts();
+      loadSeedPosts().then(publish);
     });
 })();
