@@ -45,7 +45,7 @@ export default async function AppHomePage() {
       </div>
       <div className="analysis-grid" aria-label="Analysis library">
         <section className="analysis-card" id="longitudinal">
-          <h2>Longitudinal Analyses</h2>
+          <h2>Longitudinal</h2>
           <p className="analysis-subhead">For longitudinal trends and comparisons across cohorts.</p>
           <ul>
             <li>Enrollments: Compare progression and completion across student cohorts.</li>
@@ -57,7 +57,7 @@ export default async function AppHomePage() {
           </Link>
         </section>
         <section className="analysis-card" id="behavioral">
-          <h2>Behavioral Persona Analyses</h2>
+          <h2>Behavioral Persona</h2>
           <p className="analysis-subhead">For segment and persona-level insights.</p>
           <ul>
             <li>Enrollments: Understand student groups and pathway participation.</li>
