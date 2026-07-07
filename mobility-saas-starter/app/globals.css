@@ -19,7 +19,7 @@
 body {
   margin: 0;
   font-family: "Avenir Next", "Segoe UI", sans-serif;
-  background: linear-gradient(180deg, #edf1f5 0%, var(--bg) 38%, #ffffff 100%);
+  background: #ffffff;
   color: var(--text);
 }
 
@@ -254,14 +254,53 @@ a { color: inherit; }
 }
 
 .dashboard-card {
+  position: relative;
   display: grid;
+  grid-template-rows: auto auto auto 1fr auto;
   align-content: start;
   gap: 10px;
+  height: 100%;
+  min-height: 238px;
+  padding-top: 22px;
+  overflow: hidden;
+}
+
+.dashboard-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  background: var(--palette-cobalt);
+}
+
+.dashboard-card:nth-child(2)::before {
+  background: var(--palette-teal);
+}
+
+.dashboard-card:nth-child(3)::before {
+  background: var(--palette-violet);
+}
+
+.dashboard-card:nth-child(4)::before {
+  background: var(--palette-coral);
+}
+
+.dashboard-card:nth-child(5)::before {
+  background: var(--palette-amber);
+}
+
+.dashboard-card:nth-child(6)::before {
+  background: var(--palette-green);
 }
 
 .dashboard-card h3,
 .dashboard-card p {
   margin: 0;
+}
+
+.dashboard-card .btn {
+  align-self: end;
+  justify-self: start;
 }
 
 .card-meta {
@@ -293,6 +332,7 @@ a { color: inherit; }
   display: grid;
   gap: 14px;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  align-items: stretch;
 }
 
 button, .btn {
