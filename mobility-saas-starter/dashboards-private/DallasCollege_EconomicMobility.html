@@ -20,11 +20,15 @@ body{font-family:Arial,sans-serif;background:#F8F7F4;min-height:100vh;}
   font-family:Arial,sans-serif;}
 .tab-btn:hover{color:#1A3A5C;}
 .tab-btn.active{color:#1A3A5C;font-weight:600;border-bottom:2px solid #1A3A5C;background:#EDF2F7;}
-.breadcrumb{display:flex;align-items:center;gap:8px;padding:16px 32px 0;}
-.bc-title{font-size:10px;font-weight:600;color:#1A3A5C;letter-spacing:0.06em;text-transform:uppercase;}
-.bc-dot{font-size:10px;color:#D3D1C7;}
+.breadcrumb{display:none;align-items:center;gap:8px;padding:16px 32px 0;}
+.bc-title{display:none;}
+.bc-dot{display:none;font-size:10px;color:#D3D1C7;}
 .bc-desc{font-size:11px;color:#888780;}
 .bc-count{margin-left:auto;font-size:10px;color:#B4B2A9;}
+.coach-overlay{position:fixed;z-index:30;pointer-events:none;max-width:min(340px,calc(100vw - 32px));opacity:0;transform:translateY(-6px);transition:opacity .25s ease,transform .25s ease;}
+.coach-overlay.on{opacity:1;transform:translateY(0);}
+.coach-bubble{background:#fff;border:1px solid #C7D3DF;border-left:5px solid #E87722;border-radius:22px;padding:11px 16px;box-shadow:0 12px 28px rgba(12,35,64,.18);font-size:12px;line-height:1.4;color:#1A2B45;}
+.coach-kicker{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:18px;margin:0 7px 0 0;border-radius:999px;background:#E87722;color:#fff;font-size:9px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;vertical-align:1px;}
 
 /* iframe wrap with room for the cluster-legend sidebar */
 .iframe-wrap{margin:16px 32px 0;border:0.5px solid #D3D1C7;background:#fff;
@@ -109,6 +113,8 @@ body{font-family:Arial,sans-serif;background:#F8F7F4;min-height:100vh;}
 
 <nav class="tab-nav" id="tabNav"></nav>
 
+<div class="coach-overlay" id="coachOverlay" aria-live="polite"></div>
+
 <div class="breadcrumb">
   <span class="bc-title" id="bcTitle"></span>
   <span class="bc-dot">&middot;</span>
@@ -188,6 +194,41 @@ function b64toBlob(b64, mime) {
 
 const navEl  = document.getElementById('tabNav');
 const dotsEl = document.getElementById('dots');
+const coachOverlay = document.getElementById('coachOverlay');
+const BUBBLE_TEXTS = [
+  'Definitions, rules, domains, and levels',
+  'Graduation year composition across clusters &mdash; 2005 to 2020',
+  'First job vs current job seniority distribution per cluster',
+  'Seniority trajectory flows through 5 years post-graduation, per cluster',
+  'Cumulative % reaching Manager or above by years since graduation',
+  'Salary bracket shift &mdash; first job vs current job per cluster',
+  'Cumulative % reaching $75k+ and $100k+ within 5 years of graduation',
+  'Career outcome profiles by cluster &mdash; skills, seniority, salary &amp; exec attainment'
+];
+
+function positionCoachBubble(btn) {
+  if (!coachOverlay || !coachOverlay.firstElementChild || !btn) return;
+  const bubble = coachOverlay.firstElementChild;
+  const rect = btn.getBoundingClientRect();
+  const bubbleRect = bubble.getBoundingClientRect();
+  const top = Math.min(window.innerHeight - bubbleRect.height - 12, rect.bottom + 12);
+  const left = Math.min(window.innerWidth - bubbleRect.width - 16, Math.max(16, rect.left));
+  coachOverlay.style.left = left + 'px';
+  coachOverlay.style.top = top + 'px';
+}
+
+function showCoachBubble(idx, btn) {
+  if (!coachOverlay) return;
+  coachOverlay.innerHTML = '<div class="coach-bubble"><span class="coach-kicker">Tip</span>' + BUBBLE_TEXTS[idx] + '</div>';
+  coachOverlay.classList.add('on');
+  requestAnimationFrame(() => positionCoachBubble(btn));
+}
+
+function hideCoachBubble() {
+  if (!coachOverlay) return;
+  coachOverlay.classList.remove('on');
+  coachOverlay.innerHTML = '';
+}
 
 LABELS.forEach((lbl, i) => {
   const btn = document.createElement('button');
@@ -195,6 +236,10 @@ LABELS.forEach((lbl, i) => {
   btn.textContent = lbl;
   btn.id = 'tab' + i;
   btn.onclick = () => showTab(i);
+  btn.onmouseenter = () => showCoachBubble(i, btn);
+  btn.onmouseleave = hideCoachBubble;
+  btn.onfocus = () => showCoachBubble(i, btn);
+  btn.onblur = hideCoachBubble;
   navEl.appendChild(btn);
   const d = document.createElement('div');
   d.className = 'dot';
@@ -208,7 +253,7 @@ function showTab(idx) {
     document.getElementById('tab' + i).classList.toggle('active', i === idx);
     document.getElementById('dot' + i).classList.toggle('on', i === idx);
   });
-  document.getElementById('bcTitle').textContent = LABELS[idx];
+  document.getElementById('bcTitle').textContent = '';
   document.getElementById('bcDesc').innerHTML    = DESCS[idx];
   document.getElementById('bcCount').textContent = (idx+1) + ' of ' + N;
   if (!blobCache[idx]) {
@@ -260,6 +305,13 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'f' || e.key === 'F') {
     if (document.fullscreenElement) document.exitFullscreen();
     else document.documentElement.requestFullscreen();
+  }
+});
+
+window.addEventListener('scroll', hideCoachBubble, { passive: true });
+window.addEventListener('resize', () => {
+  if (coachOverlay && coachOverlay.classList.contains('on') && coachOverlay.firstElementChild) {
+    positionCoachBubble(document.getElementById('tab' + cur));
   }
 });
 
