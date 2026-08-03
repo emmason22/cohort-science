@@ -180,7 +180,17 @@ select:focus-visible {
   z-index: 3;
 }
 
-.brand img {
+.brand-logo-frame {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.34rem 0.54rem;
+}
+
+.brand-logo-frame img {
   width: clamp(150px, 21vw, 230px);
   border-radius: 8px;
 }
