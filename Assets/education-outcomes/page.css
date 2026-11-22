@@ -62,9 +62,6 @@
   border: 1px solid rgba(20, 44, 68, .15);
   border-radius: .625rem;
 }
-.education-outcomes .logo-tile-dark {
-  background: #20354c;
-}
 .education-outcomes .logo-tile img {
   width: 100%;
   height: 4.25rem;
