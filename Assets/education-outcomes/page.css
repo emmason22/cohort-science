@@ -1,204 +1,705 @@
+.education-outcomes {
+  --workspace-navy: #102c49;
+  --workspace-blue: #1f4f7e;
+  --workspace-cyan: #6fc4dc;
+  --workspace-ink: #10253c;
+  --workspace-muted: #5d6c7d;
+  --workspace-line: #d7e0e9;
+  --workspace-soft: #f2f6fa;
+}
+
+.education-outcomes .hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(2.75rem, 4vw, 3.5rem) 0;
+  background:
+    radial-gradient(circle at 84% 28%, rgba(111, 196, 220, .22), transparent 22rem),
+    linear-gradient(135deg, #f9f7f1 0%, #eef5fa 100%);
+}
+
+.education-outcomes .hero::after {
+  position: absolute;
+  right: -8rem;
+  bottom: -13rem;
+  width: 28rem;
+  height: 28rem;
+  border: 1px solid rgba(31, 79, 126, .12);
+  border-radius: 50%;
+  content: "";
+}
+
 .education-outcomes .hero .container {
+  position: relative;
+  z-index: 1;
   max-width: 72rem;
 }
-.education-outcomes .hero p {
-  max-width: 38rem;
+
+.education-outcomes .hero h1 {
+  max-width: 54rem;
+  margin-bottom: .8rem;
 }
-.education-outcomes .outcomes-dashboard {
-  background: #edf2f7;
+
+.education-outcomes .hero p:not(.outcomes-eyebrow) {
+  max-width: 48rem;
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
 }
-.education-outcomes .outcome-dashboard-shell {
-  --dashboard-padding: clamp(.9rem, 2.4vw, 1.85rem);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 1rem;
-  box-shadow: var(--shadow);
+
+.education-outcomes .outcomes-eyebrow,
+.education-outcomes .insight-kicker,
+.education-outcomes .overview-label {
+  margin: 0 0 .65rem;
+  color: var(--workspace-blue);
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
 }
-.education-outcomes .outcome-dashboard-toolbar {
+
+.education-outcomes .outcomes-hero-proof {
   display: flex;
   flex-wrap: wrap;
+  gap: .55rem;
+  margin-top: 1.5rem;
+}
+
+.education-outcomes .outcomes-hero-proof span {
+  padding: .48rem .75rem;
+  border: 1px solid rgba(31, 79, 126, .2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .72);
+  color: var(--workspace-ink);
+  font-size: .86rem;
+  font-weight: 650;
+}
+
+.education-outcomes .outcomes-dashboard {
+  scroll-margin-top: 6.25rem;
+  background:
+    linear-gradient(rgba(16, 44, 73, .02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 44, 73, .02) 1px, transparent 1px),
+    #e9f0f6;
+  background-size: 28px 28px;
+}
+
+.education-outcomes .outcomes-dashboard > .container {
+  width: min(100% - 2rem, 98rem);
+  max-width: 98rem;
+}
+
+.education-outcomes .outcome-dashboard-shell {
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #cbd7e2;
+  border-radius: 1.15rem;
+  box-shadow: 0 28px 70px rgba(16, 44, 73, .16);
+}
+
+.education-outcomes .outcome-dashboard-toolbar {
+  display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: .85rem 1.5rem;
-  padding: 1.15rem var(--dashboard-padding);
-  background: var(--brand-dark);
-  border-radius: calc(1rem - 1px) calc(1rem - 1px) 0 0;
+  gap: 1rem 2rem;
+  min-height: 6.3rem;
+  padding: 1.15rem clamp(1rem, 2.5vw, 2rem);
+  background:
+    radial-gradient(circle at 90% 0%, rgba(111, 196, 220, .24), transparent 18rem),
+    linear-gradient(115deg, #0d2741, #173f66);
   color: #fff;
 }
+
+.education-outcomes .outcome-dashboard-toolbar p {
+  margin: 0 0 .2rem;
+  color: #a9d9e7;
+  font-size: .76rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
 .education-outcomes .outcome-dashboard-toolbar h2 {
   margin: 0;
   color: inherit;
-  font-size: clamp(1.3rem, 2.4vw, 1.8rem);
+  font-size: clamp(1.3rem, 2.4vw, 1.85rem);
 }
-.education-outcomes .outcome-workspace {
-  display: grid;
-  grid-template-columns: 13rem minmax(0, 1fr);
+
+.education-outcomes .dashboard-status {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: .5rem;
 }
-.education-outcomes .outcome-workspace-nav {
-  align-self: stretch;
-  padding: 1rem .7rem;
-  background: #f4f7fb;
-  border-right: 1px solid var(--line);
-  border-radius: 0 0 0 1rem;
+
+.education-outcomes .dashboard-status span {
+  padding: .4rem .7rem;
+  border: 1px solid rgba(255, 255, 255, .24);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .08);
+  color: #eef8fb;
+  font-size: .8rem;
+  font-weight: 650;
 }
-.education-outcomes .workspace-nav-label {
-  margin: .85rem .65rem .3rem;
-  color: var(--muted);
-  font-size: .85rem;
+
+.education-outcomes .outcome-context-bar {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .72rem clamp(1rem, 2.5vw, 2rem);
+  border-bottom: 1px solid var(--workspace-line);
+  background: #fff;
+}
+
+.education-outcomes .outcome-context-bar span {
+  padding: .35rem .6rem;
+  border-radius: .35rem;
+  background: var(--workspace-soft);
+  color: var(--workspace-muted);
+  font-size: .78rem;
   font-weight: 700;
 }
+
+.education-outcomes .outcome-context-bar a {
+  margin-left: auto;
+  color: var(--workspace-blue);
+  font-size: .84rem;
+  font-weight: 750;
+}
+
+.education-outcomes .outcome-workspace {
+  display: grid;
+  grid-template-columns: 14.25rem minmax(0, 1fr);
+  min-height: 45rem;
+}
+
+.education-outcomes .outcome-workspace-nav {
+  align-self: stretch;
+  padding: 1.25rem .85rem;
+  border-right: 1px solid var(--workspace-line);
+  background: #f5f8fb;
+}
+
+.education-outcomes .workspace-nav-label {
+  margin: .2rem .65rem .75rem;
+  color: #738193;
+  font-size: .75rem;
+  font-weight: 800;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+
 .education-outcomes .outcome-workspace-nav a {
   display: block;
-  padding: .45rem .65rem;
-  color: var(--brand-dark);
-  border-radius: .35rem;
+  margin-bottom: .18rem;
+  padding: .64rem .7rem;
+  color: var(--workspace-ink);
+  border-radius: .5rem;
   font-size: .9rem;
+  font-weight: 550;
+  line-height: 1.25;
   text-decoration: none;
 }
+
 .education-outcomes .outcome-workspace-nav a:hover {
-  background: #e7eef7;
+  background: #e6eef6;
 }
+
 .education-outcomes .outcome-workspace-nav a[aria-current="true"] {
+  background: var(--workspace-blue);
+  box-shadow: 0 6px 14px rgba(31, 79, 126, .2);
   color: #fff;
-  background: var(--brand);
-  font-weight: 600;
+  font-weight: 700;
 }
+
 .education-outcomes .outcome-workspace-content {
   min-width: 0;
-  padding: var(--dashboard-padding);
+  padding: clamp(1rem, 2.4vw, 2rem);
+  background: #fff;
 }
+
+.education-outcomes .outcome-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 17.5rem;
+  gap: clamp(1.1rem, 2vw, 1.8rem);
+  align-items: start;
+}
+
+.education-outcomes .outcome-panel-stack,
 .education-outcomes .outcome-example {
   min-width: 0;
-  background: var(--surface);
-  scroll-margin-top: 6rem;
 }
+
+.education-outcomes .outcome-example {
+  background: #fff;
+  scroll-margin-top: 7rem;
+}
+
 .education-outcomes .outcome-example + .outcome-example {
   margin-top: 1.5rem;
 }
+
 .education-outcomes .outcome-workspace-ready .outcome-example {
   margin-top: 0;
 }
+
 .education-outcomes .outcome-card-header {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  align-items: baseline;
-  gap: .2rem 1rem;
-  margin-bottom: .9rem;
-  padding-bottom: .75rem;
-  border-bottom: 1px solid var(--line);
+  align-items: end;
+  gap: .25rem 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: .85rem;
+  border-bottom: 1px solid var(--workspace-line);
 }
+
 .education-outcomes .workspace-context {
   grid-column: 1 / -1;
   margin: 0;
-  color: var(--muted);
-  font-size: .88rem;
-  font-weight: 600;
+  color: var(--workspace-blue);
+  font-size: .82rem;
+  font-weight: 750;
 }
+
 .education-outcomes .outcome-card-header h3 {
   margin: 0;
-  color: var(--brand-dark);
-  font-size: clamp(1.35rem, 2.6vw, 2rem);
+  color: var(--workspace-ink);
+  font-size: clamp(1.45rem, 2.6vw, 2.15rem);
+  line-height: 1.1;
 }
-.education-outcomes .workspace-full {
-  font-size: .85rem;
+
+.education-outcomes .workspace-full,
+.education-outcomes .outcome-figure > a {
+  color: var(--workspace-blue);
+  font-size: .84rem;
+  font-weight: 700;
 }
-.education-outcomes .workspace-chart-scroll {
+
+.education-outcomes .outcome-insights {
+  position: sticky;
+  top: 7.25rem;
+  padding: 1.25rem;
+  border: 1px solid #cbd9e5;
+  border-radius: .8rem;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(111, 196, 220, .17), transparent 10rem),
+    #f5f9fc;
+}
+
+.education-outcomes .outcome-insights h3 {
+  margin: 0 0 .75rem;
+  color: var(--workspace-ink);
+  font-size: 1.2rem;
+  line-height: 1.25;
+}
+
+.education-outcomes .outcome-insights > p:not(.insight-kicker) {
+  color: var(--workspace-muted);
+  font-size: .92rem;
+  line-height: 1.55;
+}
+
+.education-outcomes .insight-question {
+  margin: 1rem 0 1.15rem;
+  padding: .9rem;
+  border-left: 3px solid var(--workspace-cyan);
+  background: #fff;
+}
+
+.education-outcomes .insight-question span {
+  display: block;
+  margin-bottom: .35rem;
+  color: var(--workspace-muted);
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.education-outcomes .insight-question p {
+  margin: 0;
+  color: var(--workspace-ink);
+  font-size: .9rem;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+.education-outcomes .outcome-insights .button {
+  width: 100%;
+  padding-inline: .75rem;
+  text-align: center;
+}
+
+.education-outcomes .overview-intro {
+  max-width: 48rem;
+  margin: -.15rem 0 1.25rem;
+  color: var(--workspace-muted);
+  font-size: 1rem;
+}
+
+.education-outcomes .overview-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: .75rem;
+  margin-bottom: 1.25rem;
+}
+
+.education-outcomes .overview-metrics div {
+  min-height: 7.2rem;
+  padding: 1rem;
+  border: 1px solid var(--workspace-line);
+  border-radius: .7rem;
+  background: linear-gradient(145deg, #fff, #f4f8fb);
+}
+
+.education-outcomes .overview-metrics strong {
+  display: block;
+  margin-bottom: .2rem;
+  color: var(--workspace-blue);
+  font-family: "Spectral", Georgia, serif;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  line-height: 1;
+}
+
+.education-outcomes .overview-metrics span {
+  display: block;
+  color: var(--workspace-muted);
+  font-size: .8rem;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.education-outcomes .overview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.education-outcomes .overview-grid section {
+  min-width: 0;
+  padding: 1.25rem;
+  border-radius: .8rem;
+  background: var(--workspace-soft);
+}
+
+.education-outcomes .overview-grid h4 {
+  margin: 0 0 .75rem;
+  color: var(--workspace-ink);
+  font-size: 1.2rem;
+}
+
+.education-outcomes .overview-grid ul {
+  margin: 0;
+  padding-left: 1.15rem;
+  color: var(--workspace-muted);
+}
+
+.education-outcomes .overview-grid li + li {
+  margin-top: .45rem;
+}
+
+.education-outcomes .overview-callout {
+  background: linear-gradient(145deg, #102c49, #1d4e78) !important;
+  color: #eef7fb;
+}
+
+.education-outcomes .overview-callout .overview-label {
+  color: #9fd8e8;
+}
+
+.education-outcomes .overview-callout p:not(.overview-label) {
+  margin-top: 0;
+  color: #eef7fb;
+  line-height: 1.6;
+}
+
+.education-outcomes .overview-callout .button {
+  background: #fff;
+  color: var(--workspace-navy);
+}
+
+.education-outcomes .workspace-chart-scroll,
+.education-outcomes .figure-scroll {
   overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-color: #9db1c4 #edf2f7;
 }
+
+.education-outcomes .workspace-chart-scroll:focus-visible,
+.education-outcomes .figure-scroll:focus-visible {
+  outline: 3px solid var(--workspace-cyan);
+  outline-offset: 3px;
+}
+
 .education-outcomes .workspace-chart-scroll .outcome-frame {
   min-width: 720px;
 }
+
 .education-outcomes .workspace-sankey .outcome-frame {
   min-width: 960px;
 }
+
 .education-outcomes .outcome-example > p {
   margin-inline: .4rem;
-  color: var(--muted);
+  color: var(--workspace-muted);
   font-size: .9rem;
 }
+
 .education-outcomes .outcome-frame {
   display: block;
   width: 100%;
   border: 0;
 }
+
 .education-outcomes .outcome-figure {
   margin: 1rem 0 0;
 }
-.education-outcomes .figure-scroll {
-  overflow-x: auto;
-}
-.education-outcomes .figure-scroll:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 3px;
-}
+
 .education-outcomes .figure-scroll img {
   display: block;
   min-width: 760px;
   width: 100%;
   height: auto;
 }
+
 .education-outcomes figcaption {
-  margin-top: .75rem;
+  margin-top: .85rem;
+  color: var(--workspace-muted);
   font-size: .875rem;
+  line-height: 1.5;
 }
+
+.education-outcomes .outcome-methodology {
+  padding: .9rem clamp(1rem, 2.5vw, 2rem) 1rem;
+  border-top: 1px solid var(--workspace-line);
+  background: #f8fafc;
+}
+
+.education-outcomes .outcome-methodology summary {
+  width: max-content;
+  color: var(--workspace-blue);
+  cursor: pointer;
+  font-size: .86rem;
+  font-weight: 750;
+}
+
+.education-outcomes .outcome-methodology p {
+  max-width: 70rem;
+  margin: .75rem 0 0;
+  color: var(--workspace-muted);
+  font-size: .88rem;
+  line-height: 1.55;
+}
+
 .education-outcomes .outcomes-coverage {
   background: #fff;
 }
+
+.education-outcomes .outcomes-coverage > .container {
+  max-width: 84rem;
+}
+
+.education-outcomes .coverage-intro {
+  max-width: 48rem;
+  margin-bottom: 2rem;
+  color: var(--workspace-muted);
+}
+
 .education-outcomes .outcome-logo-grid {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: .75rem;
+  gap: 1rem 1.25rem;
   padding: 0;
   list-style: none;
 }
+
 .education-outcomes .logo-tile {
   display: grid;
   place-items: center;
   min-width: 0;
   height: 6rem;
-  padding: .75rem;
+  padding: .6rem;
   background: #fff;
 }
+
+.education-outcomes .logo-tile img {
+  width: 100%;
+  max-width: 10.5rem;
+  height: 4.4rem;
+  object-fit: contain;
+}
+
 .education-outcomes [hidden] {
   display: none !important;
 }
+
 .education-outcomes .outcome-logo-actions {
   display: flex;
   justify-content: center;
-  margin-top: 1.25rem;
+  margin-top: 1.5rem;
 }
-.education-outcomes .logo-tile img {
-  width: 100%;
-  height: 4.25rem;
-  object-fit: contain;
-}
-@media (max-width: 760px) {
-  .education-outcomes .outcome-workspace {
+
+@media (max-width: 1320px) {
+  .education-outcomes .outcome-stage {
     grid-template-columns: minmax(0, 1fr);
   }
-  .education-outcomes .outcome-workspace-nav {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: .15rem .3rem;
-    border-right: 0;
-    border-bottom: 1px solid var(--line);
-    border-radius: 0;
+
+  .education-outcomes .outcome-insights {
+    position: static;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+    align-items: center;
+    gap: .7rem 1.25rem;
   }
-  .education-outcomes .workspace-nav-label {
-    flex-basis: 100%;
-    margin-top: .5rem;
+
+  .education-outcomes .outcome-insights .insight-kicker,
+  .education-outcomes .outcome-insights h3 {
+    grid-column: 1 / -1;
   }
-  .education-outcomes .outcome-card-header {
-    grid-template-columns: minmax(0, 1fr);
+
+  .education-outcomes .outcome-insights > p:not(.insight-kicker),
+  .education-outcomes .insight-question {
+    margin: 0;
+  }
+
+  .education-outcomes .outcome-insights .button {
+    width: auto;
+    white-space: nowrap;
   }
 }
+
 @media (max-width: 900px) {
   .education-outcomes .outcome-logo-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
+
+  .education-outcomes .overview-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
+
+@media (max-width: 780px) {
+  .education-outcomes .outcome-dashboard-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .education-outcomes .dashboard-status {
+    justify-content: flex-start;
+  }
+
+  .education-outcomes .outcome-context-bar {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .education-outcomes .outcome-context-bar a {
+    margin-left: .35rem;
+  }
+
+  .education-outcomes .outcome-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .education-outcomes .outcome-workspace-nav {
+    display: flex;
+    gap: .35rem;
+    overflow-x: auto;
+    padding: .75rem;
+    border-right: 0;
+    border-bottom: 1px solid var(--workspace-line);
+    scrollbar-width: thin;
+  }
+
+  .education-outcomes .workspace-nav-label {
+    display: none;
+  }
+
+  .education-outcomes .outcome-workspace-nav a {
+    flex: 0 0 auto;
+    margin: 0;
+    padding: .55rem .7rem;
+    white-space: nowrap;
+  }
+
+  .education-outcomes .outcome-card-header {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .education-outcomes .outcome-insights {
+    display: block;
+  }
+
+  .education-outcomes .outcome-insights > p:not(.insight-kicker) {
+    margin-bottom: 1rem;
+  }
+
+  .education-outcomes .insight-question {
+    margin-bottom: 1rem;
+  }
+
+  .education-outcomes .outcome-insights .button {
+    width: 100%;
+    white-space: normal;
+  }
+
+  .education-outcomes .overview-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .education-outcomes .workspace-chart-scroll::before,
+  .education-outcomes .figure-scroll::before {
+    position: sticky;
+    left: .5rem;
+    z-index: 2;
+    display: block;
+    width: max-content;
+    margin: 0 0 .45rem;
+    padding: .28rem .5rem;
+    border-radius: 999px;
+    background: var(--workspace-navy);
+    color: #fff;
+    content: "Swipe to explore";
+    font-size: .72rem;
+    font-weight: 700;
+  }
+
+  .education-outcomes .mobile-briefing-cta {
+    position: static !important;
+    width: auto !important;
+    margin: 1rem !important;
+    transform: none !important;
+  }
+}
+
 @media (max-width: 600px) {
+  .education-outcomes .hero {
+    padding: 2.5rem 0;
+  }
+
+  .education-outcomes .hero h1 {
+    font-size: clamp(2.2rem, 11vw, 3.2rem);
+  }
+
+  .education-outcomes .outcomes-dashboard {
+    padding-inline: .5rem;
+  }
+
+  .education-outcomes .outcome-dashboard-shell {
+    border-radius: .85rem;
+  }
+
+  .education-outcomes .outcome-workspace-content {
+    padding: .9rem;
+  }
+
+  .education-outcomes .overview-metrics {
+    gap: .55rem;
+  }
+
+  .education-outcomes .overview-metrics div {
+    min-height: 6.5rem;
+    padding: .8rem;
+  }
+
   .education-outcomes .outcome-logo-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

@@ -17,6 +17,9 @@ const workspace = document.querySelector('.outcome-workspace');
 if (workspace) {
   const links = Array.from(workspace.querySelectorAll('.outcome-workspace-nav a'));
   const panels = links.map((link) => document.getElementById(link.hash.slice(1))?.closest('article'));
+  const insightTitle = document.querySelector('#insight-title');
+  const insightCopy = document.querySelector('#insight-copy');
+  const insightQuestion = document.querySelector('#insight-question');
 
   if (links.length && panels.every(Boolean)) {
     const selectPanel = (index) => {
@@ -24,6 +27,13 @@ if (workspace) {
         panel.hidden = i !== index;
         if (i === index) links[i].setAttribute('aria-current', 'true');
         else links[i].removeAttribute('aria-current');
+      }
+      if (insightTitle) insightTitle.textContent = links[index].dataset.insightTitle || '';
+      if (insightCopy) insightCopy.textContent = links[index].dataset.insightCopy || '';
+      if (insightQuestion) insightQuestion.textContent = links[index].dataset.insightQuestion || '';
+      const navigation = links[index].parentElement;
+      if (navigation && navigation.scrollWidth > navigation.clientWidth) {
+        requestAnimationFrame(() => links[index].scrollIntoView({ block: 'nearest', inline: 'nearest' }));
       }
       const chartWindow = panels[index].querySelector('iframe')?.contentWindow;
       if (chartWindow) requestAnimationFrame(() => chartWindow.dispatchEvent(new Event('resize')));
@@ -44,6 +54,9 @@ if (workspace) {
     }
     window.addEventListener('hashchange', syncHash);
     syncHash();
+    if (location.hash) {
+      requestAnimationFrame(() => document.querySelector('.outcomes-dashboard')?.scrollIntoView({ block: 'start' }));
+    }
   }
 }
 
@@ -51,6 +64,55 @@ const logoGrid = document.querySelector('#institution-logos');
 const logoToggle = document.querySelector('#institution-logos-toggle');
 
 if (logoGrid && logoToggle && logoGrid.children.length > 36) {
+  const featuredLogoOrder = [
+    '075-166027_harvard-business-school.png',
+    '181-243744_stanford-graduate-school-of-business.png',
+    '164-215062_the-wharton-school.png',
+    '144-166683_mit-sloan-school-of-management.png',
+    '129-144050_university-of-chicago-booth-school-of-business.png',
+    '131-147767_kellogg-school-of-management.png',
+    '153-190150_columbia-business-school.png',
+    '150-182670_tuck-school-of-business.png',
+    '056-130794_yale-school-of-management.png',
+    '160-198419_duke-universitys-fuqua-school-of-business.png',
+    '049-110635_haas-school-of-business.png',
+    '145-170976_michigan-ross-school-of-business.png',
+    '156-193900_nyu-stern-school-of-business.png',
+    '178-234076_darden-school-of-business.png',
+    '154-190415_cornell-sc-johnson-college-of-business.png',
+    '119-110662_ucla-anderson-school-of-management.png',
+    '072-152080_mendoza-college-of-business.png',
+    '161-199120_unc-kenan-flagler-business-school.png',
+    '167-221999_owen-graduate-school-of-management.png',
+    '071-151351_kelley-school-of-business.png',
+    '149-179867_olin-business-school.png',
+    '091-211440_tepper-school-of-business.png',
+    '058-131496_mcdonough-school-of-business.png',
+    '171-228778_mccombs-school-of-business.png',
+    '122-123961_usc-marshall-school-of-business.png',
+    '128-139658_goizueta-business-school.png',
+    '169-227757_rice-business.png',
+    '064-139755_scheller-college-of-business.png',
+    '088-204796_max-m-fisher-college-of-business.png',
+    '100-228723_mays-business-school.png',
+    '170-228246_cox-school-of-business.png',
+    '138-164580_babson-college.png',
+    '162-199847_wake-forest-university-school-of-business.png',
+    '175-230038_byu-marriott-school-of-business.png',
+    '135-160755_a-b-freeman-school-of-business.png',
+    '106-236948_michael-g-foster-school-of-business.png'
+  ];
+  const featuredRanks = new Map(featuredLogoOrder.map((name, index) => [name, index]));
+  const logoItems = Array.from(logoGrid.children);
+  logoItems.sort((a, b) => {
+    const aName = a.querySelector('img')?.src.split('/').pop().split('?')[0] || '';
+    const bName = b.querySelector('img')?.src.split('/').pop().split('?')[0] || '';
+    const aRank = featuredRanks.get(aName) ?? Number.MAX_SAFE_INTEGER;
+    const bRank = featuredRanks.get(bName) ?? Number.MAX_SAFE_INTEGER;
+    return aRank - bRank;
+  });
+  for (const logo of logoItems) logoGrid.append(logo);
+
   const extraLogos = Array.from(logoGrid.children).slice(36);
 
   const setLogoGridExpanded = (expanded) => {
