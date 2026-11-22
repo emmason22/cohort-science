@@ -30,70 +30,86 @@
   color: inherit;
   font-size: clamp(1.3rem, 2.4vw, 1.8rem);
 }
-.education-outcomes .outcome-jump-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .45rem;
+.education-outcomes .outcome-workspace {
+  display: grid;
+  grid-template-columns: 13rem minmax(0, 1fr);
 }
-.education-outcomes .outcome-jump-nav a {
-  padding: .4rem .7rem;
-  color: #fff;
-  background: rgb(255 255 255 / 9%);
-  border: 1px solid rgb(255 255 255 / 25%);
-  border-radius: .375rem;
-  font-size: .875rem;
-  font-weight: 600;
+.education-outcomes .outcome-workspace-nav {
+  align-self: stretch;
+  padding: 1rem .7rem;
+  background: #f4f7fb;
+  border-right: 1px solid var(--line);
+  border-radius: 0 0 0 1rem;
+}
+.education-outcomes .workspace-nav-label {
+  margin: .85rem .65rem .3rem;
+  color: var(--muted);
+  font-size: .85rem;
+  font-weight: 700;
+}
+.education-outcomes .outcome-workspace-nav a {
+  display: block;
+  padding: .45rem .65rem;
+  color: var(--brand-dark);
+  border-radius: .35rem;
+  font-size: .9rem;
   text-decoration: none;
 }
-.education-outcomes .outcome-jump-nav a:hover,
-.education-outcomes .outcome-jump-nav a:focus-visible {
-  background: rgb(255 255 255 / 18%);
-  text-decoration: underline;
+.education-outcomes .outcome-workspace-nav a:hover {
+  background: #e7eef7;
 }
-.education-outcomes .outcome-group {
-  padding: 1.1rem var(--dashboard-padding) 1.5rem;
+.education-outcomes .outcome-workspace-nav a[aria-current="true"] {
+  color: #fff;
+  background: var(--brand);
+  font-weight: 600;
 }
-.education-outcomes .outcome-group + .outcome-group {
-  border-top: 1px solid var(--line);
-}
-.education-outcomes .outcome-group > h3 {
-  margin: 0 0 .85rem;
-  color: var(--brand-dark);
-  scroll-margin-top: 6rem;
-}
-.education-outcomes .outcome-examples {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
-  border-radius: .625rem;
-  overflow: clip;
+.education-outcomes .outcome-workspace-content {
+  min-width: 0;
+  padding: var(--dashboard-padding);
 }
 .education-outcomes .outcome-example {
   min-width: 0;
-  padding: 0 clamp(.55rem, 1vw, .9rem) .9rem;
   background: var(--surface);
+  scroll-margin-top: 6rem;
 }
-.education-outcomes .outcome-example-wide {
-  grid-column: 1 / -1;
+.education-outcomes .outcome-example + .outcome-example {
+  margin-top: 1.5rem;
+}
+.education-outcomes .outcome-workspace-ready .outcome-example {
+  margin-top: 0;
 }
 .education-outcomes .outcome-card-header {
-  margin-inline: calc(-1 * clamp(.55rem, 1vw, .9rem));
-  margin-bottom: .55rem;
-  padding: .65rem clamp(.55rem, 1vw, .9rem);
-  background: #f5f8fc;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: .2rem 1rem;
+  margin-bottom: .9rem;
+  padding-bottom: .75rem;
   border-bottom: 1px solid var(--line);
 }
-.education-outcomes .outcome-card-header .eyebrow {
-  margin: 0 0 .25rem;
-  color: var(--brand);
-}
-.education-outcomes .outcome-card-header h4 {
+.education-outcomes .workspace-context {
+  grid-column: 1 / -1;
   margin: 0;
-  font-family: Inter, sans-serif;
-  font-size: 1.05rem;
+  color: var(--muted);
+  font-size: .88rem;
+  font-weight: 600;
+}
+.education-outcomes .outcome-card-header h3 {
+  margin: 0;
   color: var(--brand-dark);
+  font-size: clamp(1.35rem, 2.6vw, 2rem);
+}
+.education-outcomes .workspace-full {
+  font-size: .85rem;
+}
+.education-outcomes .workspace-chart-scroll {
+  overflow-x: auto;
+}
+.education-outcomes .workspace-chart-scroll .outcome-frame {
+  min-width: 720px;
+}
+.education-outcomes .workspace-sankey .outcome-frame {
+  min-width: 960px;
 }
 .education-outcomes .outcome-example > p {
   margin-inline: .4rem;
@@ -117,6 +133,7 @@
 }
 .education-outcomes .figure-scroll img {
   display: block;
+  min-width: 760px;
   width: 100%;
   height: auto;
 }
@@ -156,8 +173,24 @@
   object-fit: contain;
 }
 @media (max-width: 760px) {
-  .education-outcomes .outcome-examples {
-    grid-template-columns: 1fr;
+  .education-outcomes .outcome-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .education-outcomes .outcome-workspace-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: .15rem .3rem;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+  }
+  .education-outcomes .workspace-nav-label {
+    flex-basis: 100%;
+    margin-top: .5rem;
+  }
+  .education-outcomes .outcome-card-header {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 @media (max-width: 900px) {
