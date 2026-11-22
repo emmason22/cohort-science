@@ -5,10 +5,42 @@
   max-width: 38rem;
 }
 .education-outcomes .outcomes-dashboard {
-  background: #eef3f8;
+  background: #edf2f7;
 }
 .education-outcomes .outcomes-dashboard h2 {
-  margin-bottom: 1.5rem;
+  margin-bottom: .85rem;
+}
+.education-outcomes .outcome-jump-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-bottom: 2rem;
+}
+.education-outcomes .outcome-jump-nav a {
+  padding: .4rem .75rem;
+  color: var(--brand);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: .375rem;
+  font-size: .875rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.education-outcomes .outcome-jump-nav a:hover,
+.education-outcomes .outcome-jump-nav a:focus-visible {
+  border-color: var(--brand);
+  text-decoration: underline;
+}
+.education-outcomes .outcome-group + .outcome-group {
+  margin-top: 2rem;
+}
+.education-outcomes .outcome-group > h3 {
+  margin: 0 0 .7rem;
+  color: var(--brand-dark);
+  scroll-margin-top: 6rem;
+}
+.education-outcomes .outcome-example-wide {
+  grid-column: 1 / -1;
 }
 .education-outcomes .outcome-examples {
   display: grid;
@@ -27,7 +59,7 @@
   margin-inline: calc(-1 * clamp(.75rem, 1.4vw, 1.25rem));
   margin-bottom: .75rem;
   padding: .85rem clamp(.75rem, 1.4vw, 1.25rem) .75rem;
-  background: #f7fafd;
+  background: #f5f8fc;
   border-bottom: 1px solid var(--line);
   border-radius: .875rem .875rem 0 0;
 }
@@ -35,7 +67,7 @@
   margin: 0 0 .3rem;
   color: var(--brand);
 }
-.education-outcomes .outcome-card-header h3 {
+.education-outcomes .outcome-card-header h4 {
   margin: 0;
   font-family: Inter, sans-serif;
   font-size: 1.15rem;
@@ -69,6 +101,9 @@
 .education-outcomes figcaption {
   margin-top: .75rem;
   font-size: .875rem;
+}
+.education-outcomes .outcomes-coverage {
+  background: #fff;
 }
 .education-outcomes .outcome-logo-grid {
   display: grid;
