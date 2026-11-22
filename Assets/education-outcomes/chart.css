@@ -1,0 +1,34 @@
+/* Keep standalone chart controls legible inside the dashboard cards. */
+body {
+  font-family: Inter, Arial, sans-serif !important;
+  color: #152c42 !important;
+}
+.chart-card,
+.panel {
+  background: #fff !important;
+}
+.controls,
+.filter-bar {
+  row-gap: .5rem;
+}
+.controls button,
+.filter-bar select {
+  min-height: 2rem;
+}
+.controls button:focus-visible,
+.filter-bar select:focus-visible,
+.timeline-controls :focus-visible {
+  outline: 2px solid #0d3b66;
+  outline-offset: 2px;
+}
+.chart-header h2,
+.chart-card h2 {
+  color: #0d3b66;
+}
+.chart-header p,
+.source-note {
+  line-height: 1.45;
+}
+.states-table th {
+  background: #edf3f8;
+}

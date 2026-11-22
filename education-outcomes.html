@@ -11,10 +11,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="Assets/education-outcomes/page.css?v=compact-1">
+  <link rel="stylesheet" href="Assets/education-outcomes/page.css?v=dashboard-1">
   <script defer src="includes.js"></script>
   <script defer src="script.js"></script>
-  <script defer src="Assets/education-outcomes/page.js"></script>
+  <script defer src="Assets/education-outcomes/page.js?v=dashboard-1"></script>
 </head>
 <body class="education-outcomes">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -26,43 +26,57 @@
         <p>Explore how graduates move from education into work and how their careers progress over time.</p>
       </div>
     </section>
-    <section class="section-pad tone" aria-labelledby="example-title">
+    <section class="section-pad outcomes-dashboard" aria-labelledby="example-title">
       <div class="container">
         <h2 id="example-title">Example charts</h2>
         <div class="outcome-examples">
 <article class="outcome-example" aria-labelledby="example-1">
-  <p class="eyebrow">Dallas College</p>
-  <h3 id="example-1">Seniority Shift</h3>
-  <iframe class="outcome-frame" title="Dallas College · Seniority Shift" src="Assets/education-outcomes/dallas-seniority.html?v=compact-1" height="540" loading="lazy"></iframe>
+  <header class="outcome-card-header">
+    <p class="eyebrow">Dallas College</p>
+    <h3 id="example-1">Seniority Shift</h3>
+  </header>
+  <iframe class="outcome-frame" title="Dallas College · Seniority Shift" src="Assets/education-outcomes/dallas-seniority.html?v=dashboard-1" height="540" loading="lazy"></iframe>
 </article>
 <article class="outcome-example" aria-labelledby="example-2">
-  <p class="eyebrow">Dallas College</p>
-  <h3 id="example-2">Summary</h3>
-  <iframe class="outcome-frame" title="Dallas College · Summary" src="Assets/education-outcomes/dallas-summary.html?v=compact-1" height="650" loading="lazy"></iframe>
+  <header class="outcome-card-header">
+    <p class="eyebrow">Dallas College</p>
+    <h3 id="example-2">Summary</h3>
+  </header>
+  <iframe class="outcome-frame" title="Dallas College · Summary" src="Assets/education-outcomes/dallas-summary.html?v=dashboard-1" height="650" loading="lazy"></iframe>
 </article>
 <article class="outcome-example" aria-labelledby="example-3">
-  <p class="eyebrow">UTD BS Finance</p>
-  <h3 id="example-3">Feeder High Schools</h3>
-  <iframe class="outcome-frame" title="UTD BS Finance · Feeder High Schools" src="Assets/education-outcomes/utd-feeder-schools.html?v=compact-1" height="570" loading="lazy"></iframe>
+  <header class="outcome-card-header">
+    <p class="eyebrow">UTD BS Finance</p>
+    <h3 id="example-3">Feeder High Schools</h3>
+  </header>
+  <iframe class="outcome-frame" title="UTD BS Finance · Feeder High Schools" src="Assets/education-outcomes/utd-feeder-schools.html?v=dashboard-1" height="570" loading="lazy"></iframe>
 </article>
 <article class="outcome-example" aria-labelledby="example-4">
-  <p class="eyebrow">UTD BS Finance</p>
-  <h3 id="example-4">Salary Progression</h3>
-  <iframe class="outcome-frame" title="UTD BS Finance · Salary Progression" src="Assets/education-outcomes/utd-salary-progression.html?v=compact-1" height="550" loading="lazy"></iframe>
+  <header class="outcome-card-header">
+    <p class="eyebrow">UTD BS Finance</p>
+    <h3 id="example-4">Salary Progression</h3>
+  </header>
+  <iframe class="outcome-frame" title="UTD BS Finance · Salary Progression" src="Assets/education-outcomes/utd-salary-progression.html?v=dashboard-1" height="550" loading="lazy"></iframe>
 </article>
 <article class="outcome-example" aria-labelledby="example-5">
-  <p class="eyebrow">UTD BS Finance</p>
-  <h3 id="example-5">Geographic Mobility</h3>
-  <iframe class="outcome-frame" title="UTD BS Finance · Geographic Mobility" src="Assets/education-outcomes/utd-geographic-mobility.html?v=compact-1" height="810" loading="lazy"></iframe>
+  <header class="outcome-card-header">
+    <p class="eyebrow">UTD BS Finance</p>
+    <h3 id="example-5">Geographic Mobility</h3>
+  </header>
+  <iframe class="outcome-frame" title="UTD BS Finance · Geographic Mobility" src="Assets/education-outcomes/utd-geographic-mobility.html?v=dashboard-1" height="810" loading="lazy"></iframe>
 </article>
 <article class="outcome-example" aria-labelledby="example-6">
-  <p class="eyebrow">UTD BS Finance</p>
-  <h3 id="example-6">Industry Mobility Sankey</h3>
-  <iframe class="outcome-frame" title="UTD BS Finance · Industry Mobility Sankey" src="Assets/education-outcomes/utd-industry-mobility.html?v=compact-1" height="920" loading="lazy"></iframe>
+  <header class="outcome-card-header">
+    <p class="eyebrow">UTD BS Finance</p>
+    <h3 id="example-6">Industry Mobility Sankey</h3>
+  </header>
+  <iframe class="outcome-frame" title="UTD BS Finance · Industry Mobility Sankey" src="Assets/education-outcomes/utd-industry-mobility.html?v=dashboard-1" height="920" loading="lazy"></iframe>
 </article>
 <article class="outcome-example" aria-labelledby="example-7">
-  <p class="eyebrow">Baylor MBA · Exhibit 2</p>
-  <h3 id="example-7">Time to First Job</h3>
+  <header class="outcome-card-header">
+    <p class="eyebrow">Baylor MBA · Exhibit 2</p>
+    <h3 id="example-7">Time to First Job</h3>
+  </header>
   <p>Percent of each cohort; * cohorts 2023–2025 still filling in</p>
   <figure class="outcome-figure">
     <div class="figure-scroll" tabindex="0" role="region" aria-label="Time to First Job chart with peer comparison">
@@ -73,8 +87,10 @@
   </figure>
 </article>
 <article class="outcome-example" aria-labelledby="example-8">
-  <p class="eyebrow">Baylor MBA · Exhibit 4</p>
-  <h3 id="example-8">Top Employers</h3>
+  <header class="outcome-card-header">
+    <p class="eyebrow">Baylor MBA · Exhibit 4</p>
+    <h3 id="example-8">Top Employers</h3>
+  </header>
   <p>Width = share of hires among the six; segments = role mix; Texas Christian University and Southern Methodist University largest employers below</p>
   <figure class="outcome-figure">
     <div class="figure-scroll" tabindex="0" role="region" aria-label="Top Employers chart with peer comparison">
@@ -91,7 +107,7 @@
       <div class="container">
         <h2 id="coverage-title">We also have data for</h2>
         <p>Institution logos identify schools represented in our data.</p>
-        <ul class="outcome-logo-grid">
+        <ul class="outcome-logo-grid" id="institution-logos">
 <li class="logo-tile"><img src="Assets/education-outcomes/logos/125-131159_kogod-school-of-business.png" alt="American University - Kogod School Of Business" width="301" height="301" loading="lazy" decoding="async"></li>
 <li class="logo-tile"><img src="Assets/education-outcomes/logos/050-121691_school-of-business-society.png" alt="University Of Redlands" width="1200" height="451" loading="lazy" decoding="async"></li>
 <li class="logo-tile"><img src="Assets/education-outcomes/logos/023-179894_webster-university.png" alt="Webster University" width="611" height="300" loading="lazy" decoding="async"></li>
@@ -275,6 +291,9 @@
 <li class="logo-tile"><img src="Assets/education-outcomes/logos/006-130226_quinnipiac-university.png" alt="Quinnipiac University" width="850" height="230" loading="lazy" decoding="async"></li>
 <li class="logo-tile"><img src="Assets/education-outcomes/logos/028-212133_eastern-university.png" alt="Eastern University" width="850" height="181" loading="lazy" decoding="async"></li>
         </ul>
+        <div class="outcome-logo-actions">
+          <button class="button" id="institution-logos-toggle" type="button" aria-controls="institution-logos" aria-expanded="false" hidden>View more</button>
+        </div>
       </div>
     </section>
   </main>
