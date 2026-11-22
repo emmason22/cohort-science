@@ -1,0 +1,736 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 529.287456 418.32" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ 
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="ex5_figure_1">
+  <g id="ex5_patch_1">
+   <path d="M 0 418.32 
+L 529.287456 418.32 
+L 529.287456 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="ex5_axes_1">
+   <g id="ex5_patch_2">
+    <path d="M 7.2 159.264 
+L 332.797622 159.264 
+L 332.797622 151.385036 
+L 7.2 151.385036 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #002c77; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_3">
+    <path d="M 7.2 151.385036 
+L 332.797622 151.385036 
+L 332.797622 149.283979 
+L 7.2 149.283979 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #1f6bb8; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_4">
+    <path d="M 7.2 149.283979 
+L 332.797622 149.283979 
+L 332.797622 148.758715 
+L 7.2 148.758715 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #009de0; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_5">
+    <path d="M 7.2 148.758715 
+L 332.797622 148.758715 
+L 332.797622 108.838632 
+L 7.2 108.838632 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #6fb4dc; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_6">
+    <path d="M 7.2 108.838632 
+L 332.797622 108.838632 
+L 332.797622 102.010197 
+L 7.2 102.010197 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #9ad3f0; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_7">
+    <path d="M 7.2 102.010197 
+L 332.797622 102.010197 
+L 332.797622 69.443813 
+L 7.2 69.443813 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #b9a27e; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_8">
+    <path d="M 7.2 69.443813 
+L 332.797622 69.443813 
+L 332.797622 66.817492 
+L 7.2 66.817492 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #d8cbb5; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_9">
+    <path d="M 7.2 66.817492 
+L 332.797622 66.817492 
+L 332.797622 61.56485 
+L 7.2 61.56485 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #008497; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_10">
+    <path d="M 7.2 61.56485 
+L 332.797622 61.56485 
+L 332.797622 58.938528 
+L 7.2 58.938528 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #d3d6da; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_11">
+    <path d="M 7.2 58.938528 
+L 332.797622 58.938528 
+L 332.797622 57.888 
+L 7.2 57.888 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #eef0f2; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_12">
+    <path d="M 335.821622 159.264 
+L 378.770595 159.264 
+L 378.770595 151.754667 
+L 335.821622 151.754667 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #002c77; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_13">
+    <path d="M 335.821622 151.754667 
+L 378.770595 151.754667 
+L 378.770595 117.962667 
+L 335.821622 117.962667 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #1f6bb8; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_14">
+    <path d="M 335.821622 117.962667 
+L 378.770595 117.962667 
+L 378.770595 110.453333 
+L 335.821622 110.453333 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #009de0; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_15">
+    <path d="M 335.821622 110.453333 
+L 378.770595 110.453333 
+L 378.770595 102.944 
+L 335.821622 102.944 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #9ad3f0; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_16">
+    <path d="M 335.821622 102.944 
+L 378.770595 102.944 
+L 378.770595 95.434667 
+L 335.821622 95.434667 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #b9a27e; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_17">
+    <path d="M 335.821622 95.434667 
+L 378.770595 95.434667 
+L 378.770595 69.152 
+L 335.821622 69.152 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #008497; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_18">
+    <path d="M 335.821622 69.152 
+L 378.770595 69.152 
+L 378.770595 61.642667 
+L 335.821622 61.642667 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #d3d6da; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_19">
+    <path d="M 335.821622 61.642667 
+L 378.770595 61.642667 
+L 378.770595 57.888 
+L 335.821622 57.888 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #eef0f2; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_20">
+    <path d="M 381.794595 159.264 
+L 423.040865 159.264 
+L 423.040865 147.566769 
+L 381.794595 147.566769 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #1f6bb8; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_21">
+    <path d="M 381.794595 147.566769 
+L 423.040865 147.566769 
+L 423.040865 139.768615 
+L 381.794595 139.768615 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #009de0; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_22">
+    <path d="M 381.794595 139.768615 
+L 423.040865 139.768615 
+L 423.040865 81.282462 
+L 381.794595 81.282462 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #6fb4dc; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_23">
+    <path d="M 381.794595 81.282462 
+L 423.040865 81.282462 
+L 423.040865 77.383385 
+L 381.794595 77.383385 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #9ad3f0; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_24">
+    <path d="M 381.794595 77.383385 
+L 423.040865 77.383385 
+L 423.040865 65.686154 
+L 381.794595 65.686154 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #b9a27e; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_25">
+    <path d="M 381.794595 65.686154 
+L 423.040865 65.686154 
+L 423.040865 61.787077 
+L 381.794595 61.787077 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #d8cbb5; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_26">
+    <path d="M 381.794595 61.787077 
+L 423.040865 61.787077 
+L 423.040865 57.888 
+L 381.794595 57.888 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #008497; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_27">
+    <path d="M 426.064865 159.264 
+L 458.797622 159.264 
+L 458.797622 149.609143 
+L 426.064865 149.609143 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #002c77; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_28">
+    <path d="M 426.064865 149.609143 
+L 458.797622 149.609143 
+L 458.797622 144.781714 
+L 426.064865 144.781714 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #1f6bb8; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_29">
+    <path d="M 426.064865 144.781714 
+L 458.797622 144.781714 
+L 458.797622 82.025143 
+L 426.064865 82.025143 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #6fb4dc; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_30">
+    <path d="M 426.064865 82.025143 
+L 458.797622 82.025143 
+L 458.797622 72.370286 
+L 426.064865 72.370286 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #9ad3f0; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_31">
+    <path d="M 426.064865 72.370286 
+L 458.797622 72.370286 
+L 458.797622 57.888 
+L 426.064865 57.888 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #d8cbb5; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_32">
+    <path d="M 461.821622 159.264 
+L 487.743568 159.264 
+L 487.743568 153.300706 
+L 461.821622 153.300706 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #002c77; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_33">
+    <path d="M 461.821622 153.300706 
+L 487.743568 153.300706 
+L 487.743568 99.631059 
+L 461.821622 99.631059 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #1f6bb8; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_34">
+    <path d="M 461.821622 99.631059 
+L 487.743568 99.631059 
+L 487.743568 81.741176 
+L 461.821622 81.741176 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #009de0; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_35">
+    <path d="M 461.821622 81.741176 
+L 487.743568 81.741176 
+L 487.743568 75.777882 
+L 461.821622 75.777882 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #9ad3f0; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_36">
+    <path d="M 461.821622 75.777882 
+L 487.743568 75.777882 
+L 487.743568 63.851294 
+L 461.821622 63.851294 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #b9a27e; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_37">
+    <path d="M 461.821622 63.851294 
+L 487.743568 63.851294 
+L 487.743568 57.888 
+L 461.821622 57.888 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #d8cbb5; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_38">
+    <path d="M 490.767568 159.264 
+L 508.176 159.264 
+L 508.176 133.92 
+L 490.767568 133.92 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #1f6bb8; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_39">
+    <path d="M 490.767568 133.92 
+L 508.176 133.92 
+L 508.176 125.472 
+L 490.767568 125.472 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #d8cbb5; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_40">
+    <path d="M 490.767568 125.472 
+L 508.176 125.472 
+L 508.176 100.128 
+L 490.767568 100.128 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #008497; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_patch_41">
+    <path d="M 490.767568 100.128 
+L 508.176 100.128 
+L 508.176 57.888 
+L 490.767568 57.888 
+z
+" clip-path="url(#ex5_pd90460e197)" style="fill: #d3d6da; stroke: #ffffff; stroke-width: 0.5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_text_1">
+    <text style="font-size: 6.4px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: middle; fill: #222222" x="169.998811" y="130.454924" transform="rotate(-0 169.998811 130.454924)">39%</text>
+   </g>
+   <g id="ex5_text_2">
+    <text style="font-size: 6.4px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: middle; fill: #222222" x="169.998811" y="87.383255" transform="rotate(-0 169.998811 87.383255)">32%</text>
+   </g>
+   <g id="ex5_text_3">
+    <text style="font-weight: 700; font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; fill: #152e3d" transform="translate(124.972123 45.806182)">US federal govt &amp; military</text>
+    <text style="font-weight: 700; font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; fill: #152e3d" transform="translate(145.325592 53.84566)">65% of the six</text>
+   </g>
+   <g id="ex5_text_4">
+    <text style="font-size: 6.4px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="357.296108" y="136.514917" transform="rotate(-0 357.296108 136.514917)">33%</text>
+   </g>
+   <g id="ex5_text_5">
+    <text style="font-size: 6.4px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: middle; fill: #ffffff" x="357.296108" y="83.949583" transform="rotate(-0 357.296108 83.949583)">26%</text>
+   </g>
+   <g id="ex5_text_6">
+    <text style="font-weight: 700; font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; fill: #152e3d" transform="translate(321.925842 25.547169)">Berkshire Hathaway</text>
+    <text style="font-weight: 700; font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; fill: #152e3d" transform="translate(334.680436 33.57046)">9% of the six</text>
+   </g>
+   <g id="ex5_text_7">
+    <text style="font-size: 6.4px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: middle; fill: #222222" x="402.41773" y="112.181788" transform="rotate(-0 402.41773 112.181788)">58%</text>
+   </g>
+   <g id="ex5_text_8">
+    <text style="font-weight: 700; font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; fill: #152e3d" transform="translate(365.82762 45.822369)">Baylor Scott &amp; White</text>
+    <text style="font-weight: 700; font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; fill: #152e3d" transform="translate(379.802058 53.84566)">9% of the six</text>
+   </g>
+   <g id="ex5_text_9">
+    <text style="font-weight: 700; font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; fill: #152e3d" transform="translate(414.604353 26.278498)">HCA Healthcare</text>
+    <text style="font-weight: 700; font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; fill: #152e3d" transform="translate(419.815571 33.57046)">7% of the six</text>
+   </g>
+   <g id="ex5_text_10">
+    <text style="font-weight: 700; font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; fill: #152e3d" transform="translate(443.398501 45.806182)">Dell Technologies</text>
+    <text style="font-weight: 700; font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; fill: #152e3d" transform="translate(452.166923 53.84566)">6% of the six</text>
+   </g>
+   <g id="ex5_text_11">
+    <text style="font-weight: 700; font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; fill: #152e3d" transform="translate(485.082253 26.142638)">Amazon</text>
+    <text style="font-weight: 700; font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; fill: #152e3d" transform="translate(476.856112 33.57046)">4% of the six</text>
+   </g>
+  </g>
+  <g id="ex5_axes_2">
+   <g id="ex5_patch_42">
+    <path d="M 108 411.12 
+L 244.08 411.12 
+L 244.08 292.32 
+L 108 292.32 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="ex5_patch_43">
+    <path d="M 108 309.291429 
+L 208.8 309.291429 
+L 208.8 297.72 
+L 108 297.72 
+z
+" clip-path="url(#ex5_p32a808efdc)" style="fill: #1f6bb8"/>
+   </g>
+   <g id="ex5_patch_44">
+    <path d="M 108 328.577143 
+L 181.719403 328.577143 
+L 181.719403 317.005714 
+L 108 317.005714 
+z
+" clip-path="url(#ex5_p32a808efdc)" style="fill: #1f6bb8"/>
+   </g>
+   <g id="ex5_patch_45">
+    <path d="M 108 347.862857 
+L 168.179104 347.862857 
+L 168.179104 336.291429 
+L 108 336.291429 
+z
+" clip-path="url(#ex5_p32a808efdc)" style="fill: #1f6bb8"/>
+   </g>
+   <g id="ex5_patch_46">
+    <path d="M 108 367.148571 
+L 148.620896 367.148571 
+L 148.620896 355.577143 
+L 108 355.577143 
+z
+" clip-path="url(#ex5_p32a808efdc)" style="fill: #1f6bb8"/>
+   </g>
+   <g id="ex5_patch_47">
+    <path d="M 108 386.434286 
+L 136.585075 386.434286 
+L 136.585075 374.862857 
+L 108 374.862857 
+z
+" clip-path="url(#ex5_p32a808efdc)" style="fill: #1f6bb8"/>
+   </g>
+   <g id="ex5_patch_48">
+    <path d="M 108 405.72 
+L 135.080597 405.72 
+L 135.080597 394.148571 
+L 108 394.148571 
+z
+" clip-path="url(#ex5_p32a808efdc)" style="fill: #1f6bb8"/>
+   </g>
+   <g id="ex5_matplotlib.axis_1"/>
+   <g id="ex5_matplotlib.axis_2">
+    <g id="ex5_ytick_1">
+     <g id="ex5_text_12">
+      <text style="font-size: 7.8px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: end; fill: #555555" x="101" y="306.345021" transform="rotate(-0 101 306.345021)">Lockheed Martin</text>
+     </g>
+    </g>
+    <g id="ex5_ytick_2">
+     <g id="ex5_text_13">
+      <text style="font-size: 7.8px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: end; fill: #555555" x="101" y="325.630735" transform="rotate(-0 101 325.630735)">Berkshire Hathaway</text>
+     </g>
+    </g>
+    <g id="ex5_ytick_3">
+     <g id="ex5_text_14">
+      <text style="font-size: 7.8px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: end; fill: #555555" x="101" y="344.916449" transform="rotate(-0 101 344.916449)">ExxonMobil</text>
+     </g>
+    </g>
+    <g id="ex5_ytick_4">
+     <g id="ex5_text_15">
+      <text style="font-size: 7.8px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: end; fill: #555555" x="101" y="364.202164" transform="rotate(-0 101 364.202164)">Alcon AG</text>
+     </g>
+    </g>
+    <g id="ex5_ytick_5">
+     <g id="ex5_text_16">
+      <text style="font-size: 7.8px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: end; fill: #555555" x="101" y="383.487878" transform="rotate(-0 101 383.487878)">American Airlines</text>
+     </g>
+    </g>
+    <g id="ex5_ytick_6">
+     <g id="ex5_text_17">
+      <text style="font-size: 7.8px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: end; fill: #555555" x="101" y="402.773592" transform="rotate(-0 101 402.773592)">AT&amp;T</text>
+     </g>
+    </g>
+   </g>
+   <g id="ex5_patch_49">
+    <path d="M 108 411.12 
+L 108 292.32 
+" style="fill: none; stroke: #8a97a3; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="ex5_text_18">
+    <text style="font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start; fill: #152e3d" x="210.091444" y="305.420753" transform="rotate(-0 210.091444 305.420753)">6.2%</text>
+   </g>
+   <g id="ex5_text_19">
+    <text style="font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start; fill: #152e3d" x="183.010847" y="324.706468" transform="rotate(-0 183.010847 324.706468)">4.6%</text>
+   </g>
+   <g id="ex5_text_20">
+    <text style="font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start; fill: #152e3d" x="169.470548" y="343.992182" transform="rotate(-0 169.470548 343.992182)">3.7%</text>
+   </g>
+   <g id="ex5_text_21">
+    <text style="font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start; fill: #152e3d" x="149.912339" y="363.277896" transform="rotate(-0 149.912339 363.277896)">2.5%</text>
+   </g>
+   <g id="ex5_text_22">
+    <text style="font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start; fill: #152e3d" x="137.876518" y="382.56361" transform="rotate(-0 137.876518 382.56361)">1.8%</text>
+   </g>
+   <g id="ex5_text_23">
+    <text style="font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start; fill: #152e3d" x="136.372041" y="401.849325" transform="rotate(-0 136.372041 401.849325)">1.7%</text>
+   </g>
+   <g id="ex5_text_24">
+    <text style="font-weight: 700; font-size: 7.6px; font-family: Arial, 'Liberation Sans', sans-serif; fill: #152e3d" transform="translate(108 278.04832)">Texas Christian University</text>
+    <text style="font-weight: 700; font-size: 7.6px; font-family: Arial, 'Liberation Sans', sans-serif; fill: #152e3d" transform="translate(108 286.32)">largest first-job employers (% of first jobs)</text>
+   </g>
+  </g>
+  <g id="ex5_axes_3">
+   <g id="ex5_patch_50">
+    <path d="M 360 411.12 
+L 496.08 411.12 
+L 496.08 292.32 
+L 360 292.32 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="ex5_patch_51">
+    <path d="M 360 309.291429 
+L 460.8 309.291429 
+L 460.8 297.72 
+L 360 297.72 
+z
+" clip-path="url(#ex5_pa7455b17c3)" style="fill: #1f6bb8"/>
+   </g>
+   <g id="ex5_patch_52">
+    <path d="M 360 328.577143 
+L 452.537705 328.577143 
+L 452.537705 317.005714 
+L 360 317.005714 
+z
+" clip-path="url(#ex5_pa7455b17c3)" style="fill: #1f6bb8"/>
+   </g>
+   <g id="ex5_patch_53">
+    <path d="M 360 347.862857 
+L 450.885246 347.862857 
+L 450.885246 336.291429 
+L 360 336.291429 
+z
+" clip-path="url(#ex5_pa7455b17c3)" style="fill: #1f6bb8"/>
+   </g>
+   <g id="ex5_patch_54">
+    <path d="M 360 367.148571 
+L 432.708197 367.148571 
+L 432.708197 355.577143 
+L 360 355.577143 
+z
+" clip-path="url(#ex5_pa7455b17c3)" style="fill: #1f6bb8"/>
+   </g>
+   <g id="ex5_patch_55">
+    <path d="M 360 386.434286 
+L 424.445902 386.434286 
+L 424.445902 374.862857 
+L 360 374.862857 
+z
+" clip-path="url(#ex5_pa7455b17c3)" style="fill: #1f6bb8"/>
+   </g>
+   <g id="ex5_patch_56">
+    <path d="M 360 405.72 
+L 412.878689 405.72 
+L 412.878689 394.148571 
+L 360 394.148571 
+z
+" clip-path="url(#ex5_pa7455b17c3)" style="fill: #1f6bb8"/>
+   </g>
+   <g id="ex5_matplotlib.axis_3"/>
+   <g id="ex5_matplotlib.axis_4">
+    <g id="ex5_ytick_7">
+     <g id="ex5_text_25">
+      <text style="font-size: 7.8px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: end; fill: #555555" x="353" y="306.345021" transform="rotate(-0 353 306.345021)">AT&amp;T</text>
+     </g>
+    </g>
+    <g id="ex5_ytick_8">
+     <g id="ex5_text_26">
+      <text style="font-size: 7.8px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: end; fill: #555555" x="353" y="325.630735" transform="rotate(-0 353 325.630735)">JPMorgan Chase &amp; Co.</text>
+     </g>
+    </g>
+    <g id="ex5_ytick_9">
+     <g id="ex5_text_27">
+      <text style="font-size: 7.8px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: end; fill: #555555" x="353" y="344.916449" transform="rotate(-0 353 344.916449)">PricewaterhouseCoopers</text>
+     </g>
+    </g>
+    <g id="ex5_ytick_10">
+     <g id="ex5_text_28">
+      <text style="font-size: 7.8px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: end; fill: #555555" x="353" y="364.202164" transform="rotate(-0 353 364.202164)">Amazon.com</text>
+     </g>
+    </g>
+    <g id="ex5_ytick_11">
+     <g id="ex5_text_29">
+      <text style="font-size: 7.8px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: end; fill: #555555" x="353" y="383.487878" transform="rotate(-0 353 383.487878)">American Airlines</text>
+     </g>
+    </g>
+    <g id="ex5_ytick_12">
+     <g id="ex5_text_30">
+      <text style="font-size: 7.8px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: end; fill: #555555" x="353" y="402.773592" transform="rotate(-0 353 402.773592)">PepsiCo</text>
+     </g>
+    </g>
+   </g>
+   <g id="ex5_patch_57">
+    <path d="M 360 411.12 
+L 360 292.32 
+" style="fill: none; stroke: #8a97a3; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="ex5_text_31">
+    <text style="font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start; fill: #152e3d" x="465.088462" y="305.420753" transform="rotate(-0 465.088462 305.420753)">1.9%</text>
+   </g>
+   <g id="ex5_text_32">
+    <text style="font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start; fill: #152e3d" x="456.826167" y="324.706468" transform="rotate(-0 456.826167 324.706468)">1.7%</text>
+   </g>
+   <g id="ex5_text_33">
+    <text style="font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start; fill: #152e3d" x="455.173708" y="343.992182" transform="rotate(-0 455.173708 343.992182)">1.7%</text>
+   </g>
+   <g id="ex5_text_34">
+    <text style="font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start; fill: #152e3d" x="436.996658" y="363.277896" transform="rotate(-0 436.996658 363.277896)">1.4%</text>
+   </g>
+   <g id="ex5_text_35">
+    <text style="font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start; fill: #152e3d" x="428.734363" y="382.56361" transform="rotate(-0 428.734363 382.56361)">1.2%</text>
+   </g>
+   <g id="ex5_text_36">
+    <text style="font-size: 7.4px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start; fill: #152e3d" x="417.16715" y="401.849325" transform="rotate(-0 417.16715 401.849325)">1.0%</text>
+   </g>
+   <g id="ex5_text_37">
+    <text style="font-weight: 700; font-size: 7.6px; font-family: Arial, 'Liberation Sans', sans-serif; fill: #152e3d" transform="translate(360 278.04832)">Southern Methodist University</text>
+    <text style="font-weight: 700; font-size: 7.6px; font-family: Arial, 'Liberation Sans', sans-serif; fill: #152e3d" transform="translate(360 286.32)">largest first-job employers (% of first jobs)</text>
+   </g>
+  </g>
+  <g id="ex5_legend_1">
+   <g id="ex5_patch_58">
+    <path d="M 60.32475 178.113797 
+L 67.52475 178.113797 
+L 67.52475 173.073797 
+L 60.32475 173.073797 
+z
+" style="fill: #002c77; stroke: #002c77; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_text_38">
+    <text style="font-size: 7.2px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start" x="73.28475" y="178.113797" transform="rotate(-0 73.28475 178.113797)">Financial services</text>
+   </g>
+   <g id="ex5_patch_59">
+    <path d="M 60.32475 188.470828 
+L 67.52475 188.470828 
+L 67.52475 183.430828 
+L 60.32475 183.430828 
+z
+" style="fill: #1f6bb8; stroke: #1f6bb8; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_text_39">
+    <text style="font-size: 7.2px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start" x="73.28475" y="188.470828" transform="rotate(-0 73.28475 188.470828)">Information technology</text>
+   </g>
+   <g id="ex5_patch_60">
+    <path d="M 60.32475 198.827859 
+L 67.52475 198.827859 
+L 67.52475 193.787859 
+L 60.32475 193.787859 
+z
+" style="fill: #009de0; stroke: #009de0; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_text_40">
+    <text style="font-size: 7.2px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start" x="73.28475" y="198.827859" transform="rotate(-0 73.28475 198.827859)">Sales &amp; customer service</text>
+   </g>
+   <g id="ex5_patch_61">
+    <path d="M 163.14975 178.113797 
+L 170.34975 178.113797 
+L 170.34975 173.073797 
+L 163.14975 173.073797 
+z
+" style="fill: #6fb4dc; stroke: #6fb4dc; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_text_41">
+    <text style="font-size: 7.2px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start" x="176.10975" y="178.113797" transform="rotate(-0 176.10975 178.113797)">Healthcare</text>
+   </g>
+   <g id="ex5_patch_62">
+    <path d="M 163.14975 188.470828 
+L 170.34975 188.470828 
+L 170.34975 183.430828 
+L 163.14975 183.430828 
+z
+" style="fill: #9ad3f0; stroke: #9ad3f0; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_text_42">
+    <text style="font-size: 7.2px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start" x="176.10975" y="188.470828" transform="rotate(-0 176.10975 188.470828)">Marketing</text>
+   </g>
+   <g id="ex5_patch_63">
+    <path d="M 163.14975 198.827859 
+L 170.34975 198.827859 
+L 170.34975 193.787859 
+L 163.14975 193.787859 
+z
+" style="fill: #b9a27e; stroke: #b9a27e; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_text_43">
+    <text style="font-size: 7.2px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start" x="176.10975" y="198.827859" transform="rotate(-0 176.10975 198.827859)">Office, admin &amp; HR support</text>
+   </g>
+   <g id="ex5_patch_64">
+    <path d="M 272.248875 178.113797 
+L 279.448875 178.113797 
+L 279.448875 173.073797 
+L 272.248875 173.073797 
+z
+" style="fill: #d8cbb5; stroke: #d8cbb5; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_text_44">
+    <text style="font-size: 7.2px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start" x="285.208875" y="178.113797" transform="rotate(-0 285.208875 178.113797)">Engineering</text>
+   </g>
+   <g id="ex5_patch_65">
+    <path d="M 272.248875 188.470828 
+L 279.448875 188.470828 
+L 279.448875 183.430828 
+L 272.248875 183.430828 
+z
+" style="fill: #008497; stroke: #008497; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_text_45">
+    <text style="font-size: 7.2px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start" x="285.208875" y="188.470828" transform="rotate(-0 285.208875 188.470828)">Logistics &amp; operations</text>
+   </g>
+   <g id="ex5_patch_66">
+    <path d="M 364.284 178.113797 
+L 371.484 178.113797 
+L 371.484 173.073797 
+L 364.284 173.073797 
+z
+" style="fill: #d3d6da; stroke: #d3d6da; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_text_46">
+    <text style="font-size: 7.2px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start" x="377.244" y="178.113797" transform="rotate(-0 377.244 178.113797)">Hospitality &amp; food service</text>
+   </g>
+   <g id="ex5_patch_67">
+    <path d="M 364.284 188.470828 
+L 371.484 188.470828 
+L 371.484 183.430828 
+L 364.284 183.430828 
+z
+" style="fill: #eef0f2; stroke: #eef0f2; stroke-linejoin: miter"/>
+   </g>
+   <g id="ex5_text_47">
+    <text style="font-size: 7.2px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start" x="377.244" y="188.470828" transform="rotate(-0 377.244 188.470828)">Education</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="ex5_pd90460e197">
+   <rect x="7.2" y="7.2" width="504" height="152.064"/>
+  </clipPath>
+  <clipPath id="ex5_p32a808efdc">
+   <rect x="108" y="292.32" width="136.08" height="118.8"/>
+  </clipPath>
+  <clipPath id="ex5_pa7455b17c3">
+   <rect x="360" y="292.32" width="136.08" height="118.8"/>
+  </clipPath>
+ </defs>
+</svg>

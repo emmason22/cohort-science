@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><title>Chart 4 — Salary Progression</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  body{font-family:'DM Sans',sans-serif;background:#E8EBF0;color:#1A2B45;margin:0;padding:24px;}
+  .chart-card{position:relative;background:#F8F9FB;border-radius:14px;padding:28px;box-shadow:0 2px 16px rgba(27,79,138,0.08);max-width:1100px;margin:0 auto;}
+  .chart-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;margin-bottom:22px;}
+  .chart-header h2{font-family:'DM Serif Display',serif;font-size:20px;color:#1A2B45;margin:0;}
+  .chart-header p{font-size:13px;color:#5A7090;margin:4px 0 0;}
+  .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .toggle-btn{font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;border:1.5px solid #DDE3EC;background:#fff;color:#5A7090;cursor:pointer;transition:all .15s;font-family:inherit;}
+  .toggle-btn.active{background:#1B4F8A;color:#fff;border-color:#1B4F8A;}
+  .multi-wrap{position:relative;}
+  .multi-btn{font-size:12px;font-weight:600;padding:6px 28px 6px 12px;border-radius:20px;border:1.5px solid #DDE3EC;background:#fff;color:#1A2B45;cursor:pointer;font-family:inherit;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%235A7090'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 10px center;}
+  .multi-drop{position:absolute;top:calc(100% + 6px);right:0;background:#fff;border:1.5px solid #DDE3EC;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,0.13);min-width:240px;padding:6px 0;display:none;max-height:340px;overflow-y:auto;z-index:300;}
+  .multi-drop.open{display:block;}
+  .multi-hdr{position:sticky;top:0;background:#fff;padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#5A7090;font-weight:600;border-bottom:1px solid #DDE3EC;display:flex;justify-content:space-between;align-items:center;}
+  .multi-hdr button{font-size:11px;border:none;background:none;color:#3A8DC5;cursor:pointer;font-weight:600;font-family:inherit;}
+  .multi-item{display:flex;align-items:center;gap:10px;padding:7px 14px;cursor:pointer;font-size:12.5px;}
+  .multi-item:hover{background:#f0f4f9;}
+  .multi-item input{accent-color:#1B4F8A;cursor:pointer;}
+  .multi-item .dot-swatch{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+  .canvas-wrap{position:relative;height:480px;}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:1px solid #DDE3EC;}
+  .legend-item{display:flex;align-items:center;gap:7px;font-size:11.5px;color:#5A7090;cursor:pointer;}
+  .legend-item.disabled{opacity:0.35;}
+  .legend-line{width:22px;height:3px;}
+  .legend-line.dashed{background:repeating-linear-gradient(to right, currentColor 0, currentColor 4px, transparent 4px, transparent 7px);}
+</style><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><style>
+html{color-scheme:light}body{margin:0!important;padding:12px!important;background:#fff!important;color:#142c44}button,select,input{font:inherit}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #1755c5;outline-offset:2px}.chart-card,.panel{margin:0!important;max-width:none!important}.chart-card{padding:12px!important;box-shadow:none!important}.plotly-graph-div{max-width:100%}.table-responsive,.states-table-wrap{overflow:auto}
+@media(max-width:600px){body{padding:6px!important}.chart-card{padding:8px!important}.layout-row{display:block!important}.stat-panel{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px!important}.controls{flex-wrap:wrap}.timeline-ticks{font-size:8px!important}}
+</style></head><body>
+<div class="chart-card">
+  <div class="chart-header">
+    <div>
+      <h2>How do salaries evolve over the course of a career?</h2>
+      <p id="subtitle">Mean salary at Year 0, 1, 2 … after graduating</p>
+    </div>
+    <div class="controls">
+      <button class="toggle-btn active" id="absBtn">$ Absolute</button>
+      <button class="toggle-btn" id="idxBtn">Indexed</button>
+      <div class="multi-wrap" id="cohortWrap" style="display:none">
+        <button class="multi-btn" id="cohortBtn">Cohorts Selected ▾</button>
+        <div class="multi-drop" id="cohortDrop">
+          <div class="multi-hdr"><span>Select Cohorts</span>
+            <div style="display:flex;gap:8px;"><button id="selAll">All</button><button id="selNone">None</button></div>
+          </div>
+          <div id="cohortItems"></div>
+        </div>
+      </div>
+      <button class="toggle-btn active" id="showAllBtn">Show All Cohorts</button>
+    </div>
+  </div>
+  <div class="canvas-wrap"><canvas id="chartSal"></canvas></div>
+  <div class="legend" id="legend"></div>
+
+
+
+<script>
+const DATA_NEW = {"2015": {"total_n": 14, "by_year": {"0": {"mean": 70909.0, "n": 11}, "1": {"mean": 92800.0, "n": 10}, "2": {"mean": 86100.0, "n": 10}, "3": {"mean": 102000.0, "n": 10}, "4": {"mean": 103400.0, "n": 5}, "5": {"mean": 89500.0, "n": 4}, "6": {"mean": 75714.0, "n": 7}, "7": {"mean": 112400.0, "n": 5}, "8": {"mean": 177500.0, "n": 4}, "9": {"mean": 133500.0, "n": 2}, "10": {"mean": 92500.0, "n": 2}}}, "2016": {"total_n": 19, "by_year": {"0": {"mean": 73100.0, "n": 10}, "1": {"mean": 75583.0, "n": 12}, "2": {"mean": 87538.0, "n": 13}, "3": {"mean": 102556.0, "n": 9}, "4": {"mean": 90143.0, "n": 7}, "5": {"mean": 114429.0, "n": 7}, "6": {"mean": 111375.0, "n": 8}, "7": {"mean": 123000.0, "n": 4}, "8": {"mean": 85800.0, "n": 5}, "9": {"mean": 55000.0, "n": 1}, "10": {"mean": null, "n": 0}}}, "2017": {"total_n": 22, "by_year": {"0": {"mean": 68133.0, "n": 15}, "1": {"mean": 71385.0, "n": 13}, "2": {"mean": 100692.0, "n": 13}, "3": {"mean": 65625.0, "n": 8}, "4": {"mean": 105091.0, "n": 11}, "5": {"mean": 59000.0, "n": 5}, "6": {"mean": 81857.0, "n": 7}, "7": {"mean": 92000.0, "n": 8}, "8": {"mean": 92500.0, "n": 2}, "9": {"mean": 111000.0, "n": 2}, "10": {"mean": null, "n": 0}}}, "2018": {"total_n": 32, "by_year": {"0": {"mean": 91048.0, "n": 21}, "1": {"mean": 81067.0, "n": 15}, "2": {"mean": 88333.0, "n": 15}, "3": {"mean": 73727.0, "n": 11}, "4": {"mean": 95765.0, "n": 17}, "5": {"mean": 91000.0, "n": 8}, "6": {"mean": 111167.0, "n": 12}, "7": {"mean": 85750.0, "n": 4}, "8": {"mean": null, "n": 0}, "9": {"mean": null, "n": 0}, "10": {"mean": null, "n": 0}}}, "2019": {"total_n": 13, "by_year": {"0": {"mean": 86250.0, "n": 8}, "1": {"mean": 77125.0, "n": 8}, "2": {"mean": 63250.0, "n": 4}, "3": {"mean": 92167.0, "n": 6}, "4": {"mean": 72500.0, "n": 6}, "5": {"mean": 82500.0, "n": 4}, "6": {"mean": 89333.0, "n": 3}, "7": {"mean": 55000.0, "n": 1}, "8": {"mean": null, "n": 0}, "9": {"mean": null, "n": 0}, "10": {"mean": null, "n": 0}}}, "2020": {"total_n": 37, "by_year": {"0": {"mean": 72200.0, "n": 25}, "1": {"mean": 71769.0, "n": 26}, "2": {"mean": 72421.0, "n": 19}, "3": {"mean": 74947.0, "n": 19}, "4": {"mean": 93938.0, "n": 16}, "5": {"mean": 88125.0, "n": 8}, "6": {"mean": 82000.0, "n": 5}, "7": {"mean": null, "n": 0}, "8": {"mean": null, "n": 0}, "9": {"mean": null, "n": 0}, "10": {"mean": null, "n": 0}}}, "2021": {"total_n": 48, "by_year": {"0": {"mean": 74056.0, "n": 36}, "1": {"mean": 69667.0, "n": 36}, "2": {"mean": 74870.0, "n": 23}, "3": {"mean": 100250.0, "n": 20}, "4": {"mean": 95650.0, "n": 20}, "5": {"mean": 98400.0, "n": 5}, "6": {"mean": null, "n": 0}, "7": {"mean": null, "n": 0}, "8": {"mean": null, "n": 0}, "9": {"mean": null, "n": 0}, "10": {"mean": null, "n": 0}}}, "2022": {"total_n": 54, "by_year": {"0": {"mean": 83306.0, "n": 36}, "1": {"mean": 71947.0, "n": 38}, "2": {"mean": 88696.0, "n": 23}, "3": {"mean": 82083.0, "n": 24}, "4": {"mean": 95500.0, "n": 4}, "5": {"mean": null, "n": 0}, "6": {"mean": null, "n": 0}, "7": {"mean": null, "n": 0}, "8": {"mean": null, "n": 0}, "9": {"mean": null, "n": 0}, "10": {"mean": null, "n": 0}}}, "2023": {"total_n": 66, "by_year": {"0": {"mean": 80860.0, "n": 43}, "1": {"mean": 74395.0, "n": 43}, "2": {"mean": 78622.0, "n": 37}, "3": {"mean": 101571.0, "n": 7}, "4": {"mean": null, "n": 0}, "5": {"mean": null, "n": 0}, "6": {"mean": null, "n": 0}, "7": {"mean": null, "n": 0}, "8": {"mean": null, "n": 0}, "9": {"mean": null, "n": 0}, "10": {"mean": null, "n": 0}}}, "2024": {"total_n": 65, "by_year": {"0": {"mean": 72196.0, "n": 46}, "1": {"mean": 77135.0, "n": 37}, "2": {"mean": 79867.0, "n": 15}, "3": {"mean": null, "n": 0}, "4": {"mean": null, "n": 0}, "5": {"mean": null, "n": 0}, "6": {"mean": null, "n": 0}, "7": {"mean": null, "n": 0}, "8": {"mean": null, "n": 0}, "9": {"mean": null, "n": 0}, "10": {"mean": null, "n": 0}}}, "2025": {"total_n": 67, "by_year": {"0": {"mean": 70869.0, "n": 61}, "1": {"mean": 68353.0, "n": 17}, "2": {"mean": null, "n": 0}, "3": {"mean": null, "n": 0}, "4": {"mean": null, "n": 0}, "5": {"mean": null, "n": 0}, "6": {"mean": null, "n": 0}, "7": {"mean": null, "n": 0}, "8": {"mean": null, "n": 0}, "9": {"mean": null, "n": 0}, "10": {"mean": null, "n": 0}}}};
+const DATA_OLD = {"2000": {"total_n": 1, "by_year": {"0": {"mean": null, "n": 0}, "1": {"mean": null, "n": 0}, "2": {"mean": 168000.0, "n": 1}, "3": {"mean": null, "n": 0}, "4": {"mean": null, "n": 0}, "5": {"mean": null, "n": 0}, "6": {"mean": null, "n": 0}, "7": {"mean": null, "n": 0}, "8": {"mean": null, "n": 0}, "9": {"mean": 168000.0, "n": 1}, "10": {"mean": null, "n": 0}}}, "2001": {"total_n": 3, "by_year": {"0": {"mean": 107500.0, "n": 2}, "1": {"mean": null, "n": 0}, "2": {"mean": null, "n": 0}, "3": {"mean": 58000.0, "n": 1}, "4": {"mean": null, "n": 0}, "5": {"mean": 58000.0, "n": 1}, "6": {"mean": 58000.0, "n": 1}, "7": {"mean": 125000.0, "n": 1}, "8": {"mean": 91500.0, "n": 2}, "9": {"mean": null, "n": 0}, "10": {"mean": null, "n": 0}}}, "2002": {"total_n": 2, "by_year": {"0": {"mean": null, "n": 0}, "1": {"mean": null, "n": 0}, "2": {"mean": 63000.0, "n": 1}, "3": {"mean": null, "n": 0}, "4": {"mean": 105000.0, "n": 1}, "5": {"mean": null, "n": 0}, "6": {"mean": 105000.0, "n": 1}, "7": {"mean": 58000.0, "n": 1}, "8": {"mean": 35000.0, "n": 1}, "9": {"mean": 140000.0, "n": 1}, "10": {"mean": null, "n": 0}}}, "2003": {"total_n": 6, "by_year": {"0": {"mean": 95000.0, "n": 1}, "1": {"mean": 55333.0, "n": 3}, "2": {"mean": null, "n": 0}, "3": {"mean": 100750.0, "n": 4}, "4": {"mean": 72500.0, "n": 4}, "5": {"mean": 64500.0, "n": 4}, "6": {"mean": null, "n": 0}, "7": {"mean": 131500.0, "n": 2}, "8": {"mean": null, "n": 0}, "9": {"mean": 129333.0, "n": 3}, "10": {"mean": 195000.0, "n": 2}}}, "2004": {"total_n": 1, "by_year": {"0": {"mean": null, "n": 0}, "1": {"mean": null, "n": 0}, "2": {"mean": 63000.0, "n": 1}, "3": {"mean": null, "n": 0}, "4": {"mean": null, "n": 0}, "5": {"mean": null, "n": 0}, "6": {"mean": null, "n": 0}, "7": {"mean": 45000.0, "n": 1}, "8": {"mean": null, "n": 0}, "9": {"mean": null, "n": 0}, "10": {"mean": null, "n": 0}}}, "2005": {"total_n": 4, "by_year": {"0": {"mean": 42000.0, "n": 1}, "1": {"mean": 76000.0, "n": 1}, "2": {"mean": 154000.0, "n": 2}, "3": {"mean": null, "n": 0}, "4": {"mean": 124000.0, "n": 2}, "5": {"mean": null, "n": 0}, "6": {"mean": 95000.0, "n": 1}, "7": {"mean": null, "n": 0}, "8": {"mean": 137500.0, "n": 2}, "9": {"mean": null, "n": 0}, "10": {"mean": 58000.0, "n": 1}}}, "2006": {"total_n": 13, "by_year": {"0": {"mean": 66667.0, "n": 6}, "1": {"mean": 60000.0, "n": 3}, "2": {"mean": 79833.0, "n": 6}, "3": {"mean": 73333.0, "n": 6}, "4": {"mean": 103333.0, "n": 6}, "5": {"mean": 95000.0, "n": 4}, "6": {"mean": 93571.0, "n": 7}, "7": {"mean": 65800.0, "n": 5}, "8": {"mean": 97400.0, "n": 5}, "9": {"mean": 131000.0, "n": 3}, "10": {"mean": 105500.0, "n": 6}}}, "2007": {"total_n": 10, "by_year": {"0": {"mean": 91857.0, "n": 7}, "1": {"mean": 45000.0, "n": 3}, "2": {"mean": 77500.0, "n": 2}, "3": {"mean": 95000.0, "n": 2}, "4": {"mean": 98333.0, "n": 6}, "5": {"mean": 88500.0, "n": 2}, "6": {"mean": 113333.0, "n": 6}, "7": {"mean": 87750.0, "n": 4}, "8": {"mean": 95667.0, "n": 3}, "9": {"mean": 102000.0, "n": 3}, "10": {"mean": 140000.0, "n": 1}}}, "2008": {"total_n": 13, "by_year": {"0": {"mean": 67500.0, "n": 4}, "1": {"mean": 75200.0, "n": 5}, "2": {"mean": 67250.0, "n": 4}, "3": {"mean": 92444.0, "n": 9}, "4": {"mean": 74000.0, "n": 6}, "5": {"mean": 70667.0, "n": 9}, "6": {"mean": 86000.0, "n": 5}, "7": {"mean": 104000.0, "n": 6}, "8": {"mean": 155714.0, "n": 7}, "9": {"mean": 106273.0, "n": 11}, "10": {"mean": 146000.0, "n": 3}}}, "2009": {"total_n": 3, "by_year": {"0": {"mean": null, "n": 0}, "1": {"mean": 63000.0, "n": 1}, "2": {"mean": 135000.0, "n": 1}, "3": {"mean": null, "n": 0}, "4": {"mean": 58000.0, "n": 2}, "5": {"mean": 87500.0, "n": 2}, "6": {"mean": 115000.0, "n": 3}, "7": {"mean": 139333.0, "n": 3}, "8": {"mean": 85000.0, "n": 1}, "9": {"mean": 146500.0, "n": 2}, "10": {"mean": 146500.0, "n": 2}}}, "2010": {"total_n": 11, "by_year": {"0": {"mean": 76000.0, "n": 5}, "1": {"mean": 53750.0, "n": 4}, "2": {"mean": 69200.0, "n": 5}, "3": {"mean": 56000.0, "n": 7}, "4": {"mean": 67600.0, "n": 5}, "5": {"mean": 64286.0, "n": 7}, "6": {"mean": 93500.0, "n": 6}, "7": {"mean": 84400.0, "n": 5}, "8": {"mean": 152500.0, "n": 4}, "9": {"mean": 94400.0, "n": 5}, "10": {"mean": 107500.0, "n": 4}}}, "2011": {"total_n": 11, "by_year": {"0": {"mean": 50500.0, "n": 4}, "1": {"mean": 84200.0, "n": 5}, "2": {"mean": 74667.0, "n": 6}, "3": {"mean": 104600.0, "n": 5}, "4": {"mean": 133000.0, "n": 6}, "5": {"mean": 78500.0, "n": 2}, "6": {"mean": 101000.0, "n": 3}, "7": {"mean": 119000.0, "n": 4}, "8": {"mean": 133000.0, "n": 5}, "9": {"mean": 122500.0, "n": 2}, "10": {"mean": 127500.0, "n": 2}}}, "2012": {"total_n": 8, "by_year": {"0": {"mean": 81167.0, "n": 6}, "1": {"mean": 99000.0, "n": 5}, "2": {"mean": 78250.0, "n": 4}, "3": {"mean": 105167.0, "n": 6}, "4": {"mean": 98200.0, "n": 5}, "5": {"mean": 109500.0, "n": 4}, "6": {"mean": 132000.0, "n": 4}, "7": {"mean": 58000.0, "n": 1}, "8": {"mean": 93800.0, "n": 5}, "9": {"mean": 77200.0, "n": 5}, "10": {"mean": 65333.0, "n": 3}}}, "2013": {"total_n": 15, "by_year": {"0": {"mean": 75714.0, "n": 7}, "1": {"mean": 62444.0, "n": 9}, "2": {"mean": 99545.0, "n": 11}, "3": {"mean": 58333.0, "n": 6}, "4": {"mean": 73875.0, "n": 8}, "5": {"mean": 103625.0, "n": 8}, "6": {"mean": 88667.0, "n": 9}, "7": {"mean": 104333.0, "n": 6}, "8": {"mean": 111500.0, "n": 4}, "9": {"mean": 92500.0, "n": 4}, "10": {"mean": 128600.0, "n": 5}}}, "2014": {"total_n": 14, "by_year": {"0": {"mean": 73500.0, "n": 8}, "1": {"mean": 88636.0, "n": 11}, "2": {"mean": 103833.0, "n": 6}, "3": {"mean": 103000.0, "n": 9}, "4": {"mean": 87000.0, "n": 6}, "5": {"mean": 103000.0, "n": 4}, "6": {"mean": 130750.0, "n": 4}, "7": {"mean": 75667.0, "n": 3}, "8": {"mean": 110000.0, "n": 2}, "9": {"mean": 111000.0, "n": 5}, "10": {"mean": 94000.0, "n": 4}}}};
+const DATA_OVERALL = {"0": {"mean": 76045.0, "n": 312}, "1": {"mean": 74192.0, "n": 255}, "2": {"mean": 82157.0, "n": 172}, "3": {"mean": 87211.0, "n": 114}, "4": {"mean": 94942.0, "n": 86}, "5": {"mean": 90463.0, "n": 41}, "6": {"mean": 95381.0, "n": 42}, "7": {"mean": 99455.0, "n": 22}, "8": {"mean": 120364.0, "n": 11}, "9": {"mean": 108800.0, "n": 5}, "10": {"mean": 92500.0, "n": 2}};
+const NEW_YEARS = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
+const OLD_YEARS = [2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014];
+const COHORT_COLORS = {"2015": "#0A2540", "2016": "#1B4F8A", "2017": "#22669C", "2018": "#3A8DC5", "2019": "#5BA0CC", "2020": "#7CBFE0", "2021": "#A37D4E", "2022": "#C19A6B", "2023": "#8B6F4D", "2024": "#5D6D7E", "2025": "#2E2E2E"};
+const OLD_COLOR = "#B8C4D6";
+const MAX_YSG = 10;
+const LABELS = Array.from({length: MAX_YSG+1}, (_, i) => "Year " + i);
+
+let mode = "abs";
+let showAll = true;
+let selectedCohorts = new Set(NEW_YEARS);
+
+const ALL_COHORTS = [...NEW_YEARS, ...OLD_YEARS]
+  .filter(y => DATA_NEW[y] || DATA_OLD[y])
+  .sort((a,b) => a-b);
+
+function getCohortData(y){ return DATA_NEW[y] || DATA_OLD[y]; }
+function isOldYear(y){ return OLD_YEARS.includes(y); }
+
+function indexSeries(rawSeries){
+  let baseIdx = -1;
+  for (let i=0; i<rawSeries.length; i++) {
+    if (rawSeries[i] != null) { baseIdx = i; break; }
+  }
+  if (baseIdx < 0) return rawSeries.map(()=>null);
+  const base = rawSeries[baseIdx];
+  return rawSeries.map(v => v != null ? Math.round(v/base*1000)/10 : null);
+}
+
+function buildCohortDataset(y){
+  const cd = getCohortData(y);
+  if (!cd) return null;
+  const raw = LABELS.map((_, ysg) => cd.by_year[ysg]?.mean ?? null);
+  const ns  = LABELS.map((_, ysg) => cd.by_year[ysg]?.n ?? 0);
+  const data = mode === "abs" ? raw.map(v => v != null ? v/1000 : null) : indexSeries(raw);
+  const color = isOldYear(y) ? OLD_COLOR : (COHORT_COLORS[y] || "#5A7090");
+  return {
+    label: `${y} Grads (n=${cd.total_n})`,
+    _cohortLabel: `${y} Grads`,
+    _color: color,
+    data, _raw: raw, _ns: ns, _y: y,
+    borderColor: color, backgroundColor: color + "22",
+    borderWidth: 2, pointRadius: 4, pointHoverRadius: 6,
+    tension: 0.35, fill: false, spanGaps: false,
+    pointBackgroundColor: color, pointBorderColor: color,
+  };
+}
+
+function buildOverallDataset(){
+  const raw = LABELS.map((_, ysg) => DATA_OVERALL[ysg]?.mean ?? null);
+  const ns  = LABELS.map((_, ysg) => DATA_OVERALL[ysg]?.n ?? 0);
+  const data = mode === "abs" ? raw.map(v => v != null ? v/1000 : null) : indexSeries(raw);
+  const overallTotalN = DATA_OVERALL[0]?.n ?? 0;
+  return {
+    label: `Overall Avg (n=${overallTotalN})`,
+    _cohortLabel: "Overall Avg",
+    _color: "#1A2B45",
+    data, _raw: raw, _ns: ns, _y: null,
+    borderColor: "#1A2B45", backgroundColor: "transparent",
+    borderWidth: 3, borderDash: [6, 4],
+    pointRadius: 5, pointHoverRadius: 7, tension: 0.35, fill: false, spanGaps: false,
+    pointBackgroundColor: "#1A2B45", pointBorderColor: "#1A2B45",
+  };
+}
+
+function getActiveCohorts(){
+  if (showAll) return [...NEW_YEARS].filter(y => DATA_NEW[y]);
+  return [...selectedCohorts].sort((a,b)=>a-b);
+}
+
+function buildAllDatasets(){
+  const list = getActiveCohorts().map(y => buildCohortDataset(y)).filter(Boolean);
+  list.push(buildOverallDataset());
+  return list;
+}
+
+const ctx = document.getElementById("chartSal").getContext("2d");
+const chart = new Chart(ctx, {
+  type: "line",
+  data: { labels: LABELS, datasets: buildAllDatasets() },
+  options: {
+    responsive: true, maintainAspectRatio: false, animation: {duration:400},
+    plugins: {
+      legend: {display:false},
+      tooltip: {
+        displayColors: true,
+        callbacks: {
+          title: (items) => {
+            const ds = items[0].dataset;
+            return `${ds._cohortLabel} · ${items[0].label}`;
+          },
+          labelColor: (ctx) => ({borderColor: ctx.dataset._color, backgroundColor: ctx.dataset._color}),
+          label: (ctx) => {
+            const ds = ctx.dataset;
+            const i = ctx.dataIndex;
+            const raw = ds._raw[i];
+            const n = ds._ns[i];
+            if (raw == null) return ` no data`;
+            const dollar = "$" + (raw/1000).toFixed(0) + "K";
+            if (mode === "abs") return ` ${dollar} (n=${n})`;
+            return ` ${ctx.parsed.y.toFixed(1)} index (≈${dollar}, n=${n})`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: {grid:{display:false}, ticks:{font:{size:12,weight:"600"}, color:"#1A2B45"}, title:{display:true, text:"Year/s after Graduation", font:{size:11}, color:"#5A7090"}},
+      y: {
+        grid:{color:"#DDE3EC"},
+        ticks:{font:{size:11}, color:"#5A7090", callback: v => mode === "abs" ? "$" + v + "K" : v},
+        title:{display:true, text: mode === "abs" ? "Avg Salary (USD)" : "Index (Year 0 = 100)",
+                font:{size:11}, color:"#5A7090"}
+      }
+    }
+  }
+});
+
+function rebuild(){
+  chart.data.datasets = buildAllDatasets();
+  chart.options.scales.y.title.text = mode === "abs" ? "Avg Salary (USD)" : "Index (Year 0 = 100)";
+  chart.options.scales.y.ticks.callback = v => mode === "abs" ? "$" + v + "K" : v;
+  document.getElementById("subtitle").textContent =
+    mode === "abs" ? "Mean salary at Year 0, 1, 2 … after graduating"
+                   : "Indexed to 100 at Year 0 · tooltip shows implied $ amount";
+  chart.update();
+  rebuildLegend();
+  updateCohortBtnLabel();
+}
+
+function setMode(m){
+  mode = m;
+  document.getElementById("absBtn").classList.toggle("active", m === "abs");
+  document.getElementById("idxBtn").classList.toggle("active", m === "idx");
+  rebuild();
+}
+document.getElementById("absBtn").onclick = () => setMode("abs");
+document.getElementById("idxBtn").onclick = () => setMode("idx");
+
+document.getElementById("showAllBtn").onclick = () => {
+  showAll = !showAll;
+  document.getElementById("showAllBtn").classList.toggle("active", showAll);
+  document.getElementById("cohortWrap").style.display = showAll ? "none" : "inline-block";
+  rebuild();
+};
+
+function updateCohortBtnLabel(){
+  const n = selectedCohorts.size;
+  document.getElementById("cohortBtn").textContent =
+    n === 0 ? "No Cohorts ▾" : (n === 1 ? `1 Cohort Selected ▾` : `${n} Cohorts Selected ▾`);
+}
+
+const cohortItemsContainer = document.getElementById("cohortItems");
+ALL_COHORTS.forEach(y => {
+  const cd = getCohortData(y);
+  if (!cd) return;
+  const item = document.createElement("div");
+  item.className = "multi-item";
+  const checked = selectedCohorts.has(y) ? "checked" : "";
+  const color = isOldYear(y) ? OLD_COLOR : (COHORT_COLORS[y] || "#5A7090");
+  item.innerHTML = `<input type="checkbox" id="chk_${y}" ${checked}>
+    <span class="dot-swatch" style="background:${color}"></span>
+    <label for="chk_${y}" style="cursor:pointer;flex:1;">${y} Grads (n=${cd.total_n})</label>`;
+  cohortItemsContainer.appendChild(item);
+  item.querySelector("input").onchange = (e) => {
+    if (e.target.checked) selectedCohorts.add(y); else selectedCohorts.delete(y);
+    rebuild();
+  };
+});
+document.getElementById("selAll").onclick = () => {
+  ALL_COHORTS.forEach(y => { if (getCohortData(y)) selectedCohorts.add(y); });
+  document.querySelectorAll("#cohortItems input").forEach(cb => cb.checked = true);
+  rebuild();
+};
+document.getElementById("selNone").onclick = () => {
+  selectedCohorts.clear();
+  document.querySelectorAll("#cohortItems input").forEach(cb => cb.checked = false);
+  rebuild();
+};
+document.getElementById("cohortBtn").onclick = (e) => {
+  e.stopPropagation();
+  document.getElementById("cohortDrop").classList.toggle("open");
+};
+document.addEventListener("click", () => document.getElementById("cohortDrop").classList.remove("open"));
+document.getElementById("cohortDrop").onclick = (e) => e.stopPropagation();
+
+function rebuildLegend(){
+  const lg = document.getElementById("legend");
+  lg.innerHTML = "";
+  chart.data.datasets.forEach((ds, di) => {
+    const el = document.createElement("div");
+    el.className = "legend-item";
+    const dashed = ds._y == null ? " dashed" : "";
+    el.innerHTML = `<span class="legend-line${dashed}" style="background-color:${ds.borderColor};color:${ds.borderColor};"></span>${ds.label}`;
+    el.onclick = () => {
+      const meta = chart.getDatasetMeta(di);
+      meta.hidden = !meta.hidden;
+      el.classList.toggle("disabled", meta.hidden);
+      chart.update();
+    };
+    lg.appendChild(el);
+  });
+}
+setMode("idx");
+</script>
+
+
+
+
+
+</body></html>

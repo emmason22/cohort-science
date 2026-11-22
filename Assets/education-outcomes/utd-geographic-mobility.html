@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BS Finance · Geographic Outcomes</title>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#f4f6fb; font-family:'DM Sans',sans-serif; color:#1a1f36; }
+header { background:#0A2540; color:white; padding:22px 40px; display:flex; align-items:center; gap:32px; flex-wrap:wrap; }
+header h1 { font-family:'DM Sans',sans-serif; font-size:22px; font-weight:800; }
+header p { font-size:12px; color:#8892a4; margin-top:3px; }
+.stat-row { display:flex; gap:12px; margin-left:auto; flex-wrap:wrap; }
+.stat-pill { background:#1A3A5C; border:1px solid #2B5278; border-radius:8px; padding:8px 18px; text-align:center; }
+.stat-pill .num { font-family:'DM Sans',sans-serif; font-size:20px; font-weight:700; color:#7CBFE0; }
+.stat-pill .lbl { font-size:10px; color:#8892a4; text-transform:uppercase; letter-spacing:0.07em; }
+.panel { padding:28px 40px; }
+.section-header { font-family:'DM Sans',sans-serif; font-size:18px; font-weight:600; color:#0A2540; margin:36px 0 12px; padding-bottom:8px; border-bottom:2px solid #0A2540; }
+.section-header:first-child { margin-top:0; }
+.insight-banner { background:white; border:1px solid #e5e9f0; border-left:4px solid #2B5278; border-radius:8px; padding:14px 20px; margin-bottom:20px; font-size:13px; line-height:1.5; }
+.insight-banner strong { color:#0A2540; }
+.chart-card { background:white; border:1px solid #e5e9f0; border-radius:12px; padding:20px 24px; margin-bottom:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+.chart-card h2 { font-family:'DM Sans',sans-serif; font-size:15px; font-weight:700; margin-bottom:4px; color:#0A2540; }
+.chart-card .subtitle { font-size:12px; color:#8892a4; margin-bottom:12px; }
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+.filter-bar { display:flex; gap:16px; align-items:flex-end; margin-bottom:18px; flex-wrap:wrap; }
+.filter-group { display:flex; flex-direction:column; gap:4px; }
+.filter-group label { font-size:11px; font-weight:600; color:#8892a4; text-transform:uppercase; letter-spacing:0.05em; }
+.filter-group select { font-size:12px; padding:7px 12px; border:1.5px solid #e5e9f0; border-radius:6px; background:white; color:#1a1f36; cursor:pointer; min-width:200px; outline:none; font-family:'DM Sans',sans-serif; }
+.filter-group select:focus { border-color:#2B5278; }
+.stats-strip { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px; }
+.mini-pill { background:#f4f6fb; border:1px solid #e5e9f0; border-radius:8px; padding:8px 16px; display:flex; flex-direction:column; align-items:center; min-width:110px; }
+.mini-pill .mp-num { font-family:'DM Sans',sans-serif; font-size:18px; font-weight:700; color:#0A2540; }
+.mini-pill .mp-lbl { font-size:10px; color:#8892a4; text-transform:uppercase; letter-spacing:0.05em; margin-top:2px; text-align:center; }
+.states-table-wrap { margin-top:8px; max-height:260px; overflow-y:auto; border:1px solid #e5e9f0; border-radius:8px; }
+.states-table { width:100%; border-collapse:collapse; font-size:12px; }
+.states-table thead th { background:#0A2540; color:white; padding:8px 12px; text-align:left; position:sticky; top:0; font-size:11px; text-transform:uppercase; letter-spacing:0.05em; }
+.states-table tbody tr:nth-child(even) { background:#f8fafc; }
+.states-table tbody tr:hover { background:#eef2ff; }
+.states-table tbody td { padding:7px 12px; border-bottom:1px solid #f0f2f8; color:#374151; }
+.states-table tbody td.num { text-align:right; font-weight:600; color:#2B5278; }
+.states-table tbody td.pct { text-align:right; color:#8892a4; }
+.calc-note { margin-top:10px; font-size:11px; color:#8892a4; line-height:1.6; }
+footer { text-align:center; padding:20px; font-size:11px; color:#b0b8cc; border-top:1px solid #e5e9f0; margin-top:20px; }
+
+/* Timeline slider */
+.timeline-wrap { background:#f4f6fb; border:1px solid #e5e9f0; border-radius:12px; padding:9px 24px 7px; margin-top:8px; }
+.timeline-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.timeline-label { font-family:'DM Sans',sans-serif; font-size:13px; font-weight:700; color:#0A2540; }
+.timeline-year-badge { font-family:'DM Sans',sans-serif; font-size:14px; font-weight:700; color:#2B5278; background:white; border:2px solid #2B5278; border-radius:6px; padding:2px 10px; min-width:70px; text-align:center; }
+.timeline-controls { display:flex; align-items:center; gap:10px; }
+.play-btn { background:#2B5278; color:white; border:none; border-radius:50%; width:34px; height:34px; font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background 0.2s; }
+.play-btn:hover { background:#0A2540; }
+.slider-track-wrap { flex:1; position:relative; padding:0 6px; }
+.timeline-slider { -webkit-appearance:none; appearance:none; width:100%; height:6px; border-radius:3px; background:linear-gradient(to right,#2B5278 0%,#2B5278 0%,#dde3ec 0%,#dde3ec 100%); outline:none; cursor:pointer; }
+.timeline-slider::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:20px; height:20px; border-radius:50%; background:#2B5278; border:3px solid white; box-shadow:0 2px 6px rgba(43,82,120,0.5); cursor:pointer; transition:transform 0.15s; }
+.timeline-slider::-webkit-slider-thumb:hover { transform:scale(1.15); }
+.timeline-slider::-moz-range-thumb { width:20px; height:20px; border-radius:50%; background:#2B5278; border:3px solid white; box-shadow:0 2px 6px rgba(43,82,120,0.5); cursor:pointer; }
+.timeline-ticks { display:flex; justify-content:space-between; margin-top:8px; padding:0 6px; }
+.timeline-ticks span { font-size:10px; color:#8892a4; font-weight:500; cursor:pointer; transition:color 0.15s; user-select:none; }
+.timeline-ticks span:hover { color:#2B5278; }
+.timeline-ticks span.tick-active { color:#2B5278; font-weight:700; }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><style>
+html{color-scheme:light}body{margin:0!important;padding:12px!important;background:#fff!important;color:#142c44}button,select,input{font:inherit}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #1755c5;outline-offset:2px}.chart-card,.panel{margin:0!important;max-width:none!important}.chart-card{padding:12px!important;box-shadow:none!important}.plotly-graph-div{max-width:100%}.table-responsive,.states-table-wrap{overflow:auto}
+@media(max-width:600px){body{padding:6px!important}.chart-card{padding:8px!important}.layout-row{display:block!important}.stat-panel{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px!important}.controls{flex-wrap:wrap}.timeline-ticks{font-size:8px!important}}
+</style></head>
+<body>
+
+
+
+<div class="panel">
+
+  <!-- ============ SECTION 1: GEO HEATMAP BY ROLE ============ -->
+  <div class="section-header">Where do graduates work?</div>
+  <div class="insight-banner">
+    <strong>How to read this section:</strong> The <strong>left map</strong> shows where graduates with the selected role ended up — darker states have more positions.
+    The <strong>right table</strong> breaks down every state present in the selection with exact job counts and share of total.
+    The <strong>stat strip</strong> summarises the picture: total positions, how many stayed in Texas, how many left, and the overall Outside Texas %.
+  </div>
+  <div class="chart-card">
+    <div class="stats-strip" id="role-map-stats"></div>
+    <div class="filter-bar">
+      <div class="filter-group">
+        <label>Role Group</label>
+        <select id="role-map-role" aria-label="Role group" onchange="updateRoleMap()"></select>
+      </div>
+    </div>
+    <div class="timeline-wrap">
+          <div class="timeline-header">
+            <span class="timeline-label">Graduation Year</span>
+            <span class="timeline-year-badge" id="rm-year-badge">All Years</span>
+          </div>
+          <div class="timeline-controls">
+            <button class="play-btn" id="rm-play-btn" onclick="toggleRoleMapPlay()" title="Play through years">▶</button>
+            <div class="slider-track-wrap">
+              <input type="range" class="timeline-slider" id="role-map-slider" aria-label="Graduation year"
+                min="0" max="11" value="0" step="1"
+                oninput="onRoleMapSlider(this.value)">
+              <div class="timeline-ticks" id="rm-ticks"></div>
+            </div>
+          </div>
+        </div>
+    <div id="role-map-chart" style="height:500px;width:100%;margin-top:4px;"></div>
+    <div style="margin-top:20px;">
+      <div style="font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;margin-bottom:6px;color:#0A2540;">
+        States Breakdown <span id="states-count-label" style="font-size:11px;font-weight:400;color:#8892a4;"></span>
+      </div>
+      <div style="font-size:11px;color:#8892a4;margin-bottom:8px;line-height:1.5;">
+        <strong style="color:#374151;">% of Selection</strong> = jobs in that state ÷ total positions in current filter × 100.
+      </div>
+      <div class="states-table-wrap">
+        <table class="states-table">
+          <thead>
+            <tr><th>#</th><th>State</th><th style="text-align:right;">Jobs</th><th style="text-align:right;">% of Selection</th></tr>
+          </thead>
+          <tbody id="states-table-body"></tbody>
+        </table>
+      </div>
+      <div class="calc-note" id="migration-note"></div>
+    </div>
+  </div>
+
+</div>
+<script>
+const GEO_ROWS = [{"STATE":"New York","Role Group":"Wealth/Asset Mgmt","Grad Year":"2015","abbr":"NY","count":1},{"STATE":"Texas","Role Group":"Wealth/Asset Mgmt","Grad Year":"2015","abbr":"TX","count":4},{"STATE":"Texas","Role Group":"Corporate Finance/FP&A","Grad Year":"2015","abbr":"TX","count":2},{"STATE":"Texas","Role Group":"Corporate Finance/FP&A","Grad Year":"2017","abbr":"TX","count":12},{"STATE":"Texas","Role Group":"Tech/Software","Grad Year":"2018","abbr":"TX","count":1},{"STATE":"Texas","Role Group":"Corporate Finance/FP&A","Grad Year":"2018","abbr":"TX","count":45},{"STATE":"Washington","Role Group":"Leadership/Executive","Grad Year":"2017","abbr":"WA","count":1},{"STATE":"Washington","Role Group":"Other","Grad Year":"2017","abbr":"WA","count":2},{"STATE":"Washington","Role Group":"Corporate Finance/FP&A","Grad Year":"2017","abbr":"WA","count":2},{"STATE":"Illinois","Role Group":"Corporate Finance/FP&A","Grad Year":"2018","abbr":"IL","count":2},{"STATE":"Texas","Role Group":"Other","Grad Year":"2018","abbr":"TX","count":19},{"STATE":"Texas","Role Group":"Leadership/Executive","Grad Year":"2017","abbr":"TX","count":7},{"STATE":"Texas","Role Group":"Other","Grad Year":"2017","abbr":"TX","count":21},{"STATE":"Texas","Role Group":"Wealth/Asset Mgmt","Grad Year":"2017","abbr":"TX","count":3},{"STATE":"Minnesota","Role Group":"IB/PE/VC","Grad Year":"2018","abbr":"MN","count":1},{"STATE":"Colorado","Role Group":"Corporate Finance/FP&A","Grad Year":"2018","abbr":"CO","count":1},{"STATE":"Texas","Role Group":"IB/PE/VC","Grad Year":"2018","abbr":"TX","count":4},{"STATE":"Texas","Role Group":"Accounting/Audit/Tax","Grad Year":"2018","abbr":"TX","count":6},{"STATE":"New York","Role Group":"Corporate Finance/FP&A","Grad Year":"2018","abbr":"NY","count":13},{"STATE":"Texas","Role Group":"Banking/Lending","Grad Year":"2018","abbr":"TX","count":3},{"STATE":"New York","Role Group":"Other","Grad Year":"2018","abbr":"NY","count":5},{"STATE":"Maryland","Role Group":"Corporate Finance/FP&A","Grad Year":"2016","abbr":"MD","count":1},{"STATE":"Maryland","Role Group":"Other","Grad Year":"2016","abbr":"MD","count":6},{"STATE":"Texas","Role Group":"Banking/Lending","Grad Year":"2022","abbr":"TX","count":3},{"STATE":"Texas","Role Group":"Sales & Trading/Markets","Grad Year":"2022","abbr":"TX","count":1},{"STATE":"Texas","Role Group":"Corporate Finance/FP&A","Grad Year":"2022","abbr":"TX","count":41},{"STATE":"California","Role Group":"Accounting/Audit/Tax","Grad Year":"2015","abbr":"CA","count":7},{"STATE":"Massachusetts","Role Group":"Accounting/Audit/Tax","Grad Year":"2015","abbr":"MA","count":4},{"STATE":"Massachusetts","Role Group":"Other","Grad Year":"2015","abbr":"MA","count":4},{"STATE":"New York","Role Group":"Other","Grad Year":"2015","abbr":"NY","count":2},{"STATE":"California","Role Group":"Data/Analytics","Grad Year":"2018","abbr":"CA","count":1},{"STATE":"California","Role Group":"Tech/Software","Grad Year":"2018","abbr":"CA","count":1},{"STATE":"California","Role Group":"Other","Grad Year":"2018","abbr":"CA","count":2},{"STATE":"Texas","Role Group":"Corporate Finance/FP&A","Grad Year":"2016","abbr":"TX","count":18},{"STATE":"Texas","Role Group":"Risk/Compliance","Grad Year":"2018","abbr":"TX","count":2},{"STATE":"Texas","Role Group":"Marketing/Sales","Grad Year":"2018","abbr":"TX","count":1},{"STATE":"Virginia","Role Group":"Corporate Finance/FP&A","Grad Year":"2021","abbr":"VA","count":4},{"STATE":"Texas","Role Group":"Corporate Finance/FP&A","Grad Year":"2021","abbr":"TX","count":56},{"STATE":"New York","Role Group":"Banking/Lending","Grad Year":"2021","abbr":"NY","count":1},{"STATE":"New York","Role Group":"Risk/Compliance","Grad Year":"2021","abbr":"NY","count":3},{"STATE":"New York","Role Group":"Corporate Finance/FP&A","Grad Year":"2021","abbr":"NY","count":14},{"STATE":"California","Role Group":"Corporate Finance/FP&A","Grad Year":"2019","abbr":"CA","count":2},{"STATE":"Texas","Role Group":"Corporate Finance/FP&A","Grad Year":"2019","abbr":"TX","count":20},{"STATE":"Texas","Role Group":"Other","Grad Year":"2019","abbr":"TX","count":13},{"STATE":"Michigan","Role Group":"Consulting/Strategy","Grad Year":"2018","abbr":"MI","count":2},{"STATE":"Michigan","Role Group":"Leadership/Executive","Grad Year":"2018","abbr":"MI","count":1},{"STATE":"Michigan","Role Group":"Risk/Compliance","Grad Year":"2018","abbr":"MI","count":1},{"STATE":"Washington","Role Group":"Other","Grad Year":"2020","abbr":"WA","count":1},{"STATE":"Massachusetts","Role Group":"Other","Grad Year":"2020","abbr":"MA","count":3},{"STATE":"Washington, D.C.","Role Group":"Corporate Finance/FP&A","Grad Year":"2020","abbr":"DC","count":2},{"STATE":"Massachusetts","Role Group":"Corporate Finance/FP&A","Grad Year":"2015","abbr":"MA","count":12},{"STATE":"New Hampshire","Role Group":"Corporate Finance/FP&A","Grad Year":"2015","abbr":"NH","count":1},{"STATE":"Texas","Role Group":"Tech/Software","Grad Year":"2024","abbr":"TX","count":1},{"STATE":"Texas","Role Group":"Accounting/Audit/Tax","Grad Year":"2019","abbr":"TX","count":2},{"STATE":"Massachusetts","Role Group":"Other","Grad Year":"2023","abbr":"MA","count":1},{"STATE":"Massachusetts","Role Group":"Corporate Finance/FP&A","Grad Year":"2023","abbr":"MA","count":2},{"STATE":"Michigan","Role Group":"Data/Analytics","Grad Year":"2017","abbr":"MI","count":1},{"STATE":"Texas","Role Group":"Consulting/Strategy","Grad Year":"2017","abbr":"TX","count":1},{"STATE":"Michigan","Role Group":"Leadership/Executive","Grad Year":"2017","abbr":"MI","count":1},{"STATE":"Michigan","Role Group":"Consulting/Strategy","Grad Year":"2017","abbr":"MI","count":3},{"STATE":"Michigan","Role Group":"Other","Grad Year":"2017","abbr":"MI","count":1},{"STATE":"New York","Role Group":"Corporate Finance/FP&A","Grad Year":"2017","abbr":"NY","count":3},{"STATE":"Texas","Role Group":"Risk/Compliance","Grad Year":"2017","abbr":"TX","count":2},{"STATE":"New Jersey","Role Group":"Other","Grad Year":"2017","abbr":"NJ","count":1},{"STATE":"North Carolina","Role Group":"Leadership/Executive","Grad Year":"2017","abbr":"NC","count":2},{"STATE":"North Carolina","Role Group":"Corporate Finance/FP&A","Grad Year":"2017","abbr":"NC","count":1},{"STATE":"California","Role Group":"Corporate Finance/FP&A","Grad Year":"2018","abbr":"CA","count":3},{"STATE":"Texas","Role Group":"Consulting/Strategy","Grad Year":"2018","abbr":"TX","count":2},{"STATE":"New York","Role Group":"Leadership/Executive","Grad Year":"2020","abbr":"NY","count":1},{"STATE":"New York","Role Group":"Consulting/Strategy","Grad Year":"2020","abbr":"NY","count":3},{"STATE":"Texas","Role Group":"Corporate Finance/FP&A","Grad Year":"2020","abbr":"TX","count":35},{"STATE":"New Jersey","Role Group":"Other","Grad Year":"2018","abbr":"NJ","count":1},{"STATE":"Texas","Role Group":"Corporate Finance/FP&A","Grad Year":"2024","abbr":"TX","count":37},{"STATE":"Virginia","Role Group":"Risk/Compliance","Grad Year":"2019","abbr":"VA","count":1},{"STATE":"Virginia","Role Group":"Other","Grad Year":"2019","abbr":"VA","count":3},{"STATE":"Texas","Role Group":"Accounting/Audit/Tax","Grad Year":"2016","abbr":"TX","count":3},{"STATE":"Ohio","Role Group":"Other","Grad Year":"2018","abbr":"OH","count":2},{"STATE":"Illinois","Role Group":"Accounting/Audit/Tax","Grad Year":"2016","abbr":"IL","count":4},{"STATE":"Texas","Role Group":"Data/Analytics","Grad Year":"2018","abbr":"TX","count":1},{"STATE":"Texas","Role Group":"Other","Grad Year":"2020","abbr":"TX","count":14},{"STATE":"Texas","Role Group":"Other","Grad Year":"2015","abbr":"TX","count":13},{"STATE":"Tennessee","Role Group":"Other","Grad Year":"2015","abbr":"TN","count":1},{"STATE":"Texas","Role Group":"Accounting/Audit/Tax","Grad Year":"2015","abbr":"TX","count":4},{"STATE":"California","Role Group":"Leadership/Executive","Grad Year":"2015","abbr":"CA","count":1},{"STATE":"California","Role Group":"Other","Grad Year":"2015","abbr":"CA","count":9},{"STATE":"California","Role Group":"Risk/Compliance","Grad Year":"2015","abbr":"CA","count":1},{"STATE":"Colorado","Role Group":"Other","Grad Year":"2018","abbr":"CO","count":1},{"STATE":"New York","Role Group":"Marketing/Sales","Grad Year":"2018","abbr":"NY","count":3},{"STATE":"Texas","Role Group":"Banking/Lending","Grad Year":"2020","abbr":"TX","count":3},{"STATE":"Texas","Role Group":"Leadership/Executive","Grad Year":"2016","abbr":"TX","count":10},{"STATE":"North Carolina","Role Group":"Other","Grad Year":"2016","abbr":"NC","count":1},{"STATE":"Texas","Role Group":"Other","Grad Year":"2016","abbr":"TX","count":21},{"STATE":"Illinois","Role Group":"Other","Grad Year":"2017","abbr":"IL","count":1},{"STATE":"Florida","Role Group":"Corporate Finance/FP&A","Grad Year":"2017","abbr":"FL","count":2},{"STATE":"Texas","Role Group":"Accounting/Audit/Tax","Grad Year":"2020","abbr":"TX","count":4},{"STATE":"Texas","Role Group":"Operations/PM","Grad Year":"2018","abbr":"TX","count":1},{"STATE":"Texas","Role Group":"Leadership/Executive","Grad Year":"2018","abbr":"TX","count":2},{"STATE":"Utah","Role Group":"Other","Grad Year":"2018","abbr":"UT","count":1},{"STATE":"New York","Role Group":"Corporate Finance/FP&A","Grad Year":"2020","abbr":"NY","count":4},{"STATE":"Texas","Role Group":"Wealth/Asset Mgmt","Grad Year":"2016","abbr":"TX","count":6},{"STATE":"California","Role Group":"Other","Grad Year":"2019","abbr":"CA","count":3},{"STATE":"Washington","Role Group":"Other","Grad Year":"2019","abbr":"WA","count":1},{"STATE":"Minnesota","Role Group":"Corporate Finance/FP&A","Grad Year":"2023","abbr":"MN","count":7},{"STATE":"Missouri","Role Group":"Corporate Finance/FP&A","Grad Year":"2023","abbr":"MO","count":1},{"STATE":"Tennessee","Role Group":"Corporate Finance/FP&A","Grad Year":"2023","abbr":"TN","count":1},{"STATE":"Virginia","Role Group":"Other","Grad Year":"2017","abbr":"VA","count":1},{"STATE":"Texas","Role Group":"Accounting/Audit/Tax","Grad Year":"2017","abbr":"TX","count":3},{"STATE":"Texas","Role Group":"Marketing/Sales","Grad Year":"2017","abbr":"TX","count":1},{"STATE":"Texas","Role Group":"Other","Grad Year":"2023","abbr":"TX","count":22},{"STATE":"Texas","Role Group":"Risk/Compliance","Grad Year":"2020","abbr":"TX","count":3},{"STATE":"Washington, D.C.","Role Group":"IB/PE/VC","Grad Year":"2019","abbr":"DC","count":1},{"STATE":"Texas","Role Group":"IB/PE/VC","Grad Year":"2019","abbr":"TX","count":5},{"STATE":"Colorado","Role Group":"Other","Grad Year":"2019","abbr":"CO","count":1},{"STATE":"New York","Role Group":"Corporate Finance/FP&A","Grad Year":"2019","abbr":"NY","count":1},{"STATE":"Louisiana","Role Group":"Leadership/Executive","Grad Year":"2020","abbr":"LA","count":1},{"STATE":"Louisiana","Role Group":"Corporate Finance/FP&A","Grad Year":"2020","abbr":"LA","count":3},{"STATE":"Arizona","Role Group":"Banking/Lending","Grad Year":"2020","abbr":"AZ","count":1},{"STATE":"North Carolina","Role Group":"Banking/Lending","Grad Year":"2020","abbr":"NC","count":1},{"STATE":"Washington","Role Group":"Other","Grad Year":"2021","abbr":"WA","count":3},{"STATE":"Texas","Role Group":"Other","Grad Year":"2021","abbr":"TX","count":15},{"STATE":"Georgia","Role Group":"Other","Grad Year":"2018","abbr":"GA","count":1},{"STATE":"California","Role Group":"Other","Grad Year":"2017","abbr":"CA","count":3},{"STATE":"Texas","Role Group":"IB/PE/VC","Grad Year":"2016","abbr":"TX","count":6},{"STATE":"Texas","Role Group":"Banking/Lending","Grad Year":"2016","abbr":"TX","count":7},{"STATE":"North Carolina","Role Group":"Other","Grad Year":"2018","abbr":"NC","count":1},{"STATE":"Massachusetts","Role Group":"Corporate Finance/FP&A","Grad Year":"2019","abbr":"MA","count":2},{"STATE":"Oklahoma","Role Group":"Leadership/Executive","Grad Year":"2019","abbr":"OK","count":1},{"STATE":"Kentucky","Role Group":"Corporate Finance/FP&A","Grad Year":"2021","abbr":"KY","count":2},{"STATE":"New York","Role Group":"Accounting/Audit/Tax","Grad Year":"2021","abbr":"NY","count":2},{"STATE":"Texas","Role Group":"Consulting/Strategy","Grad Year":"2020","abbr":"TX","count":1},{"STATE":"New York","Role Group":"Leadership/Executive","Grad Year":"2015","abbr":"NY","count":2},{"STATE":"New York","Role Group":"IB/PE/VC","Grad Year":"2018","abbr":"NY","count":5},{"STATE":"Florida","Role Group":"Corporate Finance/FP&A","Grad Year":"2018","abbr":"FL","count":1},{"STATE":"Georgia","Role Group":"Corporate Finance/FP&A","Grad Year":"2021","abbr":"GA","count":2},{"STATE":"Wisconsin","Role Group":"IB/PE/VC","Grad Year":"2019","abbr":"WI","count":1},{"STATE":"New York","Role Group":"Accounting/Audit/Tax","Grad Year":"2019","abbr":"NY","count":1},{"STATE":"Virginia","Role Group":"Corporate Finance/FP&A","Grad Year":"2019","abbr":"VA","count":1},{"STATE":"California","Role Group":"Corporate Finance/FP&A","Grad Year":"2020","abbr":"CA","count":4},{"STATE":"California","Role Group":"Other","Grad Year":"2020","abbr":"CA","count":1},{"STATE":"California","Role Group":"Wealth/Asset Mgmt","Grad Year":"2020","abbr":"CA","count":1},{"STATE":"Georgia","Role Group":"Other","Grad Year":"2021","abbr":"GA","count":1},{"STATE":"Massachusetts","Role Group":"Corporate Finance/FP&A","Grad Year":"2021","abbr":"MA","count":6},{"STATE":"California","Role Group":"Corporate Finance/FP&A","Grad Year":"2023","abbr":"CA","count":2},{"STATE":"Texas","Role Group":"Tech/Software","Grad Year":"2020","abbr":"TX","count":2},{"STATE":"Georgia","Role Group":"Corporate Finance/FP&A","Grad Year":"2022","abbr":"GA","count":1},{"STATE":"Texas","Role Group":"IB/PE/VC","Grad Year":"2023","abbr":"TX","count":3},{"STATE":"Florida","Role Group":"Corporate Finance/FP&A","Grad Year":"2021","abbr":"FL","count":2},{"STATE":"Texas","Role Group":"Consulting/Strategy","Grad Year":"2021","abbr":"TX","count":3},{"STATE":"Texas","Role Group":"IB/PE/VC","Grad Year":"2021","abbr":"TX","count":10},{"STATE":"Texas","Role Group":"Risk/Compliance","Grad Year":"2021","abbr":"TX","count":11},{"STATE":"North Carolina","Role Group":"IB/PE/VC","Grad Year":"2021","abbr":"NC","count":1},{"STATE":"Minnesota","Role Group":"Other","Grad Year":"2020","abbr":"MN","count":1},{"STATE":"Virginia","Role Group":"Other","Grad Year":"2020","abbr":"VA","count":1},{"STATE":"Ohio","Role Group":"Other","Grad Year":"2020","abbr":"OH","count":1},{"STATE":"Rhode Island","Role Group":"Data/Analytics","Grad Year":"2020","abbr":"RI","count":1},{"STATE":"Rhode Island","Role Group":"Corporate Finance/FP&A","Grad Year":"2020","abbr":"RI","count":1},{"STATE":"Indiana","Role Group":"Tech/Software","Grad Year":"2020","abbr":"IN","count":1},{"STATE":"New York","Role Group":"Other","Grad Year":"2023","abbr":"NY","count":3},{"STATE":"Texas","Role Group":"Corporate Finance/FP&A","Grad Year":"2023","abbr":"TX","count":60},{"STATE":"New York","Role Group":"Corporate Finance/FP&A","Grad Year":"2023","abbr":"NY","count":5},{"STATE":"Colorado","Role Group":"Corporate Finance/FP&A","Grad Year":"2020","abbr":"CO","count":1},{"STATE":"Colorado","Role Group":"Corporate Finance/FP&A","Grad Year":"2022","abbr":"CO","count":1},{"STATE":"Colorado","Role Group":"Other","Grad Year":"2022","abbr":"CO","count":1},{"STATE":"New York","Role Group":"IB/PE/VC","Grad Year":"2020","abbr":"NY","count":5},{"STATE":"Texas","Role Group":"Leadership/Executive","Grad Year":"2021","abbr":"TX","count":2},{"STATE":"Texas","Role Group":"IB/PE/VC","Grad Year":"2024","abbr":"TX","count":5},{"STATE":"New York","Role Group":"IB/PE/VC","Grad Year":"2019","abbr":"NY","count":2},{"STATE":"New York","Role Group":"Other","Grad Year":"2019","abbr":"NY","count":5},{"STATE":"North Carolina","Role Group":"Corporate Finance/FP&A","Grad Year":"2019","abbr":"NC","count":1},{"STATE":"Texas","Role Group":"Accounting/Audit/Tax","Grad Year":"2021","abbr":"TX","count":7},{"STATE":"Texas","Role Group":"Leadership/Executive","Grad Year":"2022","abbr":"TX","count":5},{"STATE":"Virginia","Role Group":"Accounting/Audit/Tax","Grad Year":"2020","abbr":"VA","count":1},{"STATE":"Michigan","Role Group":"Accounting/Audit/Tax","Grad Year":"2020","abbr":"MI","count":2},{"STATE":"North Carolina","Role Group":"Marketing/Sales","Grad Year":"2020","abbr":"NC","count":1},{"STATE":"Michigan","Role Group":"Other","Grad Year":"2020","abbr":"MI","count":1},{"STATE":"Texas","Role Group":"Leadership/Executive","Grad Year":"2023","abbr":"TX","count":2},{"STATE":"Texas","Role Group":"Operations/PM","Grad Year":"2023","abbr":"TX","count":1},{"STATE":"California","Role Group":"Other","Grad Year":"2023","abbr":"CA","count":1},{"STATE":"Wisconsin","Role Group":"Other","Grad Year":"2023","abbr":"WI","count":1},{"STATE":"Illinois","Role Group":"Corporate Finance/FP&A","Grad Year":"2023","abbr":"IL","count":1},{"STATE":"New Jersey","Role Group":"Corporate Finance/FP&A","Grad Year":"2023","abbr":"NJ","count":4},{"STATE":"Illinois","Role Group":"Consulting/Strategy","Grad Year":"2023","abbr":"IL","count":1},{"STATE":"Washington","Role Group":"Corporate Finance/FP&A","Grad Year":"2023","abbr":"WA","count":6},{"STATE":"Texas","Role Group":"Other","Grad Year":"2022","abbr":"TX","count":33},{"STATE":"California","Role Group":"Other","Grad Year":"2022","abbr":"CA","count":3},{"STATE":"Texas","Role Group":"Consulting/Strategy","Grad Year":"2023","abbr":"TX","count":1},{"STATE":"Michigan","Role Group":"Other","Grad Year":"2021","abbr":"MI","count":1},{"STATE":"Massachusetts","Role Group":"Other","Grad Year":"2021","abbr":"MA","count":3},{"STATE":"New York","Role Group":"IB/PE/VC","Grad Year":"2021","abbr":"NY","count":2},{"STATE":"North Carolina","Role Group":"Wealth/Asset Mgmt","Grad Year":"2021","abbr":"NC","count":1},{"STATE":"Illinois","Role Group":"Corporate Finance/FP&A","Grad Year":"2021","abbr":"IL","count":1},{"STATE":"Colorado","Role Group":"Other","Grad Year":"2023","abbr":"CO","count":2},{"STATE":"New York","Role Group":"IB/PE/VC","Grad Year":"2023","abbr":"NY","count":2},{"STATE":"Texas","Role Group":"Tech/Software","Grad Year":"2021","abbr":"TX","count":1},{"STATE":"California","Role Group":"Other","Grad Year":"2021","abbr":"CA","count":1},{"STATE":"California","Role Group":"Sales & Trading/Markets","Grad Year":"2021","abbr":"CA","count":1},{"STATE":"Minnesota","Role Group":"Other","Grad Year":"2024","abbr":"MN","count":1},{"STATE":"Minnesota","Role Group":"Corporate Finance/FP&A","Grad Year":"2024","abbr":"MN","count":1},{"STATE":"New York","Role Group":"Corporate Finance/FP&A","Grad Year":"2024","abbr":"NY","count":4},{"STATE":"Massachusetts","Role Group":"Consulting/Strategy","Grad Year":"2023","abbr":"MA","count":1},{"STATE":"Texas","Role Group":"Accounting/Audit/Tax","Grad Year":"2023","abbr":"TX","count":6},{"STATE":"Illinois","Role Group":"Corporate Finance/FP&A","Grad Year":"2024","abbr":"IL","count":1},{"STATE":"Virginia","Role Group":"Other","Grad Year":"2021","abbr":"VA","count":1},{"STATE":"Texas","Role Group":"Wealth/Asset Mgmt","Grad Year":"2021","abbr":"TX","count":4},{"STATE":"Texas","Role Group":"Tech/Software","Grad Year":"2023","abbr":"TX","count":3},{"STATE":"Rhode Island","Role Group":"Corporate Finance/FP&A","Grad Year":"2023","abbr":"RI","count":1},{"STATE":"Rhode Island","Role Group":"Other","Grad Year":"2023","abbr":"RI","count":1},{"STATE":"Kansas","Role Group":"Corporate Finance/FP&A","Grad Year":"2023","abbr":"KS","count":1},{"STATE":"Kansas","Role Group":"Other","Grad Year":"2023","abbr":"KS","count":1},{"STATE":"South Carolina","Role Group":"Other","Grad Year":"2020","abbr":"SC","count":1},{"STATE":"South Carolina","Role Group":"Corporate Finance/FP&A","Grad Year":"2020","abbr":"SC","count":1},{"STATE":"Colorado","Role Group":"Other","Grad Year":"2020","abbr":"CO","count":1},{"STATE":"Texas","Role Group":"Accounting/Audit/Tax","Grad Year":"2022","abbr":"TX","count":9},{"STATE":"Texas","Role Group":"Risk/Compliance","Grad Year":"2022","abbr":"TX","count":3},{"STATE":"Minnesota","Role Group":"Wealth/Asset Mgmt","Grad Year":"2022","abbr":"MN","count":1},{"STATE":"Minnesota","Role Group":"Other","Grad Year":"2022","abbr":"MN","count":1},{"STATE":"New York","Role Group":"Accounting/Audit/Tax","Grad Year":"2022","abbr":"NY","count":1},{"STATE":"New York","Role Group":"Corporate Finance/FP&A","Grad Year":"2022","abbr":"NY","count":4},{"STATE":"Oklahoma","Role Group":"Banking/Lending","Grad Year":"2022","abbr":"OK","count":1},{"STATE":"Illinois","Role Group":"Consulting/Strategy","Grad Year":"2022","abbr":"IL","count":1},{"STATE":"Texas","Role Group":"Risk/Compliance","Grad Year":"2023","abbr":"TX","count":3},{"STATE":"California","Role Group":"Corporate Finance/FP&A","Grad Year":"2022","abbr":"CA","count":1},{"STATE":"California","Role Group":"IB/PE/VC","Grad Year":"2022","abbr":"CA","count":3},{"STATE":"Virginia","Role Group":"Corporate Finance/FP&A","Grad Year":"2023","abbr":"VA","count":2},{"STATE":"Texas","Role Group":"Leadership/Executive","Grad Year":"2020","abbr":"TX","count":1},{"STATE":"Texas","Role Group":"Operations/PM","Grad Year":"2020","abbr":"TX","count":1},{"STATE":"California","Role Group":"Other","Grad Year":"2024","abbr":"CA","count":1},{"STATE":"Washington, D.C.","Role Group":"Corporate Finance/FP&A","Grad Year":"2023","abbr":"DC","count":1},{"STATE":"New York","Role Group":"IB/PE/VC","Grad Year":"2022","abbr":"NY","count":1},{"STATE":"New York","Role Group":"Other","Grad Year":"2022","abbr":"NY","count":2},{"STATE":"Texas","Role Group":"Wealth/Asset Mgmt","Grad Year":"2023","abbr":"TX","count":2},{"STATE":"New York","Role Group":"Wealth/Asset Mgmt","Grad Year":"2023","abbr":"NY","count":1},{"STATE":"California","Role Group":"IB/PE/VC","Grad Year":"2023","abbr":"CA","count":1},{"STATE":"Pennsylvania","Role Group":"IB/PE/VC","Grad Year":"2023","abbr":"PA","count":2},{"STATE":"North Carolina","Role Group":"Corporate Finance/FP&A","Grad Year":"2022","abbr":"NC","count":3},{"STATE":"California","Role Group":"Consulting/Strategy","Grad Year":"2022","abbr":"CA","count":1},{"STATE":"New York","Role Group":"Banking/Lending","Grad Year":"2024","abbr":"NY","count":1},{"STATE":"Texas","Role Group":"Banking/Lending","Grad Year":"2024","abbr":"TX","count":4},{"STATE":"Texas","Role Group":"Other","Grad Year":"2024","abbr":"TX","count":12},{"STATE":"Illinois","Role Group":"Leadership/Executive","Grad Year":"2021","abbr":"IL","count":1},{"STATE":"Illinois","Role Group":"Risk/Compliance","Grad Year":"2021","abbr":"IL","count":1},{"STATE":"Washington","Role Group":"Corporate Finance/FP&A","Grad Year":"2021","abbr":"WA","count":2},{"STATE":"Illinois","Role Group":"Other","Grad Year":"2021","abbr":"IL","count":1},{"STATE":"Washington","Role Group":"Tech/Software","Grad Year":"2021","abbr":"WA","count":1},{"STATE":"Illinois","Role Group":"Tech/Software","Grad Year":"2021","abbr":"IL","count":1},{"STATE":"Texas","Role Group":"Tech/Software","Grad Year":"2025","abbr":"TX","count":3},{"STATE":"Massachusetts","Role Group":"Accounting/Audit/Tax","Grad Year":"2022","abbr":"MA","count":1},{"STATE":"California","Role Group":"Leadership/Executive","Grad Year":"2023","abbr":"CA","count":1},{"STATE":"Utah","Role Group":"Corporate Finance/FP&A","Grad Year":"2023","abbr":"UT","count":1},{"STATE":"Indiana","Role Group":"Corporate Finance/FP&A","Grad Year":"2023","abbr":"IN","count":1},{"STATE":"Washington","Role Group":"Leadership/Executive","Grad Year":"2023","abbr":"WA","count":1},{"STATE":"Florida","Role Group":"Corporate Finance/FP&A","Grad Year":"2023","abbr":"FL","count":1},{"STATE":"Texas","Role Group":"Risk/Compliance","Grad Year":"2024","abbr":"TX","count":3},{"STATE":"New York","Role Group":"Consulting/Strategy","Grad Year":"2024","abbr":"NY","count":1},{"STATE":"North Carolina","Role Group":"Corporate Finance/FP&A","Grad Year":"2024","abbr":"NC","count":1},{"STATE":"Massachusetts","Role Group":"Sales & Trading/Markets","Grad Year":"2025","abbr":"MA","count":1},{"STATE":"New York","Role Group":"Other","Grad Year":"2021","abbr":"NY","count":1},{"STATE":"California","Role Group":"Accounting/Audit/Tax","Grad Year":"2023","abbr":"CA","count":1},{"STATE":"North Carolina","Role Group":"Corporate Finance/FP&A","Grad Year":"2025","abbr":"NC","count":1},{"STATE":"Oklahoma","Role Group":"Other","Grad Year":"2021","abbr":"OK","count":1},{"STATE":"Texas","Role Group":"IB/PE/VC","Grad Year":"2022","abbr":"TX","count":1},{"STATE":"Texas","Role Group":"Other","Grad Year":"2025","abbr":"TX","count":13},{"STATE":"Texas","Role Group":"Consulting/Strategy","Grad Year":"2022","abbr":"TX","count":2},{"STATE":"Virginia","Role Group":"Corporate Finance/FP&A","Grad Year":"2024","abbr":"VA","count":3},{"STATE":"Colorado","Role Group":"Corporate Finance/FP&A","Grad Year":"2023","abbr":"CO","count":2},{"STATE":"Oregon","Role Group":"Corporate Finance/FP&A","Grad Year":"2022","abbr":"OR","count":2},{"STATE":"Illinois","Role Group":"Other","Grad Year":"2020","abbr":"IL","count":1},{"STATE":"Wisconsin","Role Group":"Consulting/Strategy","Grad Year":"2020","abbr":"WI","count":1},{"STATE":"Texas","Role Group":"IB/PE/VC","Grad Year":"2020","abbr":"TX","count":1},{"STATE":"Massachusetts","Role Group":"IB/PE/VC","Grad Year":"2023","abbr":"MA","count":2},{"STATE":"Pennsylvania","Role Group":"Corporate Finance/FP&A","Grad Year":"2025","abbr":"PA","count":1},{"STATE":"Texas","Role Group":"Corporate Finance/FP&A","Grad Year":"2025","abbr":"TX","count":26},{"STATE":"Texas","Role Group":"Banking/Lending","Grad Year":"2017","abbr":"TX","count":1},{"STATE":"Texas","Role Group":"Consulting/Strategy","Grad Year":"2024","abbr":"TX","count":2},{"STATE":"Kansas","Role Group":"Corporate Finance/FP&A","Grad Year":"2025","abbr":"KS","count":1},{"STATE":"California","Role Group":"IB/PE/VC","Grad Year":"2021","abbr":"CA","count":1},{"STATE":"Delaware","Role Group":"IB/PE/VC","Grad Year":"2021","abbr":"DE","count":1},{"STATE":"North Carolina","Role Group":"Corporate Finance/FP&A","Grad Year":"2021","abbr":"NC","count":1},{"STATE":"Texas","Role Group":"Banking/Lending","Grad Year":"2023","abbr":"TX","count":1},{"STATE":"Virginia","Role Group":"Tech/Software","Grad Year":"2022","abbr":"VA","count":2},{"STATE":"New York","Role Group":"Wealth/Asset Mgmt","Grad Year":"2024","abbr":"NY","count":1},{"STATE":"Arizona","Role Group":"Corporate Finance/FP&A","Grad Year":"2022","abbr":"AZ","count":1},{"STATE":"Illinois","Role Group":"Corporate Finance/FP&A","Grad Year":"2022","abbr":"IL","count":1},{"STATE":"Texas","Role Group":"IB/PE/VC","Grad Year":"2025","abbr":"TX","count":9},{"STATE":"Florida","Role Group":"Other","Grad Year":"2024","abbr":"FL","count":2},{"STATE":"New York","Role Group":"Accounting/Audit/Tax","Grad Year":"2024","abbr":"NY","count":2},{"STATE":"Arkansas","Role Group":"Other","Grad Year":"2022","abbr":"AR","count":1},{"STATE":"New Jersey","Role Group":"Corporate Finance/FP&A","Grad Year":"2024","abbr":"NJ","count":2},{"STATE":"New York","Role Group":"Tech/Software","Grad Year":"2024","abbr":"NY","count":1},{"STATE":"Texas","Role Group":"Marketing/Sales","Grad Year":"2022","abbr":"TX","count":2},{"STATE":"Tennessee","Role Group":"Corporate Finance/FP&A","Grad Year":"2024","abbr":"TN","count":1},{"STATE":"Texas","Role Group":"Marketing/Sales","Grad Year":"2025","abbr":"TX","count":2},{"STATE":"New York","Role Group":"Risk/Compliance","Grad Year":"2024","abbr":"NY","count":5},{"STATE":"New York","Role Group":"Accounting/Audit/Tax","Grad Year":"2023","abbr":"NY","count":1},{"STATE":"Massachusetts","Role Group":"Corporate Finance/FP&A","Grad Year":"2024","abbr":"MA","count":2},{"STATE":"Texas","Role Group":"Accounting/Audit/Tax","Grad Year":"2024","abbr":"TX","count":1},{"STATE":"California","Role Group":"Risk/Compliance","Grad Year":"2024","abbr":"CA","count":1},{"STATE":"Massachusetts","Role Group":"Accounting/Audit/Tax","Grad Year":"2024","abbr":"MA","count":1},{"STATE":"Texas","Role Group":"Wealth/Asset Mgmt","Grad Year":"2022","abbr":"TX","count":3},{"STATE":"Florida","Role Group":"Corporate Finance/FP&A","Grad Year":"2022","abbr":"FL","count":2},{"STATE":"California","Role Group":"Accounting/Audit/Tax","Grad Year":"2022","abbr":"CA","count":1},{"STATE":"Michigan","Role Group":"Accounting/Audit/Tax","Grad Year":"2022","abbr":"MI","count":1},{"STATE":"Texas","Role Group":"Marketing/Sales","Grad Year":"2024","abbr":"TX","count":3},{"STATE":"California","Role Group":"IB/PE/VC","Grad Year":"2025","abbr":"CA","count":1},{"STATE":"Ohio","Role Group":"IB/PE/VC","Grad Year":"2025","abbr":"OH","count":1},{"STATE":"Texas","Role Group":"Consulting/Strategy","Grad Year":"2025","abbr":"TX","count":2},{"STATE":"Colorado","Role Group":"Corporate Finance/FP&A","Grad Year":"2025","abbr":"CO","count":1},{"STATE":"Massachusetts","Role Group":"Risk/Compliance","Grad Year":"2024","abbr":"MA","count":1},{"STATE":"New Jersey","Role Group":"Other","Grad Year":"2024","abbr":"NJ","count":1},{"STATE":"Texas","Role Group":"Risk/Compliance","Grad Year":"2019","abbr":"TX","count":5},{"STATE":"Illinois","Role Group":"Other","Grad Year":"2025","abbr":"IL","count":1},{"STATE":"New York","Role Group":"IB/PE/VC","Grad Year":"2025","abbr":"NY","count":1},{"STATE":"Utah","Role Group":"Marketing/Sales","Grad Year":"2024","abbr":"UT","count":1},{"STATE":"Maryland","Role Group":"Corporate Finance/FP&A","Grad Year":"2025","abbr":"MD","count":1},{"STATE":"New York","Role Group":"Corporate Finance/FP&A","Grad Year":"2025","abbr":"NY","count":9},{"STATE":"Pennsylvania","Role Group":"Accounting/Audit/Tax","Grad Year":"2024","abbr":"PA","count":1},{"STATE":"Washington","Role Group":"Other","Grad Year":"2022","abbr":"WA","count":1},{"STATE":"California","Role Group":"Consulting/Strategy","Grad Year":"2024","abbr":"CA","count":1},{"STATE":"Florida","Role Group":"Wealth/Asset Mgmt","Grad Year":"2025","abbr":"FL","count":2},{"STATE":"Washington, D.C.","Role Group":"IB/PE/VC","Grad Year":"2025","abbr":"DC","count":1},{"STATE":"California","Role Group":"Tech/Software","Grad Year":"2025","abbr":"CA","count":1},{"STATE":"Massachusetts","Role Group":"Corporate Finance/FP&A","Grad Year":"2025","abbr":"MA","count":1},{"STATE":"Ohio","Role Group":"Marketing/Sales","Grad Year":"2023","abbr":"OH","count":1},{"STATE":"New York","Role Group":"Wealth/Asset Mgmt","Grad Year":"2020","abbr":"NY","count":1},{"STATE":"Nebraska","Role Group":"Other","Grad Year":"2025","abbr":"NE","count":2},{"STATE":"Nebraska","Role Group":"Corporate Finance/FP&A","Grad Year":"2025","abbr":"NE","count":2},{"STATE":"Ohio","Role Group":"Corporate Finance/FP&A","Grad Year":"2025","abbr":"OH","count":1},{"STATE":"Pennsylvania","Role Group":"Other","Grad Year":"2024","abbr":"PA","count":1},{"STATE":"Wyoming","Role Group":"Leadership/Executive","Grad Year":"2024","abbr":"WY","count":1},{"STATE":"Texas","Role Group":"Leadership/Executive","Grad Year":"2024","abbr":"TX","count":1},{"STATE":"Texas","Role Group":"Risk/Compliance","Grad Year":"2025","abbr":"TX","count":3},{"STATE":"Illinois","Role Group":"Corporate Finance/FP&A","Grad Year":"2025","abbr":"IL","count":2},{"STATE":"Texas","Role Group":"Accounting/Audit/Tax","Grad Year":"2025","abbr":"TX","count":2},{"STATE":"Texas","Role Group":"Sales & Trading/Markets","Grad Year":"2025","abbr":"TX","count":1},{"STATE":"Arkansas","Role Group":"Other","Grad Year":"2024","abbr":"AR","count":2},{"STATE":"Texas","Role Group":"Operations/PM","Grad Year":"2024","abbr":"TX","count":1},{"STATE":"Texas","Role Group":"Wealth/Asset Mgmt","Grad Year":"2025","abbr":"TX","count":1},{"STATE":"Florida","Role Group":"IB/PE/VC","Grad Year":"2025","abbr":"FL","count":1},{"STATE":"New York","Role Group":"Leadership/Executive","Grad Year":"2017","abbr":"NY","count":1},{"STATE":"New York","Role Group":"Other","Grad Year":"2025","abbr":"NY","count":3},{"STATE":"Pennsylvania","Role Group":"Other","Grad Year":"2017","abbr":"PA","count":2},{"STATE":"Pennsylvania","Role Group":"Corporate Finance/FP&A","Grad Year":"2017","abbr":"PA","count":3},{"STATE":"Texas","Role Group":"Marketing/Sales","Grad Year":"2016","abbr":"TX","count":1}];
+const ALL_ROLES   = ["Accounting/Audit/Tax", "Banking/Lending", "Consulting/Strategy", "Corporate Finance/FP&A", "Data/Analytics", "IB/PE/VC", "Leadership/Executive", "Marketing/Sales", "Operations/PM", "Other", "Risk/Compliance", "Sales & Trading/Markets", "Tech/Software", "Wealth/Asset Mgmt"];
+const ROLE_COLORS = {"Corporate Finance/FP&A": "#0A2540", "Accounting/Audit/Tax": "#1A3A5C", "IB/PE/VC": "#2B5278", "Risk/Compliance": "#3C6A95", "Consulting/Strategy": "#4D82B1", "Wealth/Asset Mgmt": "#5E9ACD", "Banking/Lending": "#7CBFE0", "Sales & Trading/Markets": "#8B6F3F", "Marketing/Sales": "#A88663", "Data/Analytics": "#9CAEBE", "Tech/Software": "#7E8FA0", "Operations/PM": "#6F7C8C", "Leadership/Executive": "#3A2D24", "Other": "#BDC3C7"};
+const YEAR_OPTIONS = ["All Years","2015","2016","2017","2018","2019","2020","2021","2022","2023","2024","2025"];
+
+const ZOOM_CONFIG = {
+  scrollZoom: true,
+  displayModeBar: true,
+  modeBarButtonsToAdd: ['zoom2d','pan2d','resetScale2d'],
+  modeBarButtonsToRemove: ['lasso2d','select2d']
+};
+
+function populateDropdowns() {
+  const roleMapRole = document.getElementById('role-map-role');
+  ['All Roles', ...ALL_ROLES].forEach(role => roleMapRole.add(new Option(role)));
+  const ticks = document.getElementById('rm-ticks');
+  YEAR_OPTIONS.forEach((y, i) => {
+    const span = document.createElement('span');
+    span.textContent = y === 'All Years' ? 'All' : y;
+    span.title = y;
+    span.onclick = () => {
+      document.getElementById('role-map-slider').value = i;
+      onRoleMapSlider(i);
+    };
+    if (i === 0) span.classList.add('tick-active');
+    ticks.appendChild(span);
+  });
+  updateSliderTrack(0);
+}
+
+function geoFilter(role, year) {
+  return GEO_ROWS.filter(r => {
+    const okRole = !role || role === 'All Roles' || r['Role Group'] === role;
+    const okYear = !year || year === 'All Years' || String(r['Grad Year']) === year;
+    return okRole && okYear;
+  });
+}
+
+function aggByState(rows) {
+  const counts = {};
+  for (const r of rows) { if (!r.abbr) continue; counts[r.abbr] = (counts[r.abbr] || 0) + r.count; }
+  return { locations: Object.keys(counts), z: Object.values(counts) };
+}
+
+// ── Timeline slider ───────────────────────────────────────────────────────────
+let rmPlayInterval = null;
+let rmPlaying = false;
+
+function onRoleMapSlider(idx) {
+  idx = parseInt(idx);
+  const year = YEAR_OPTIONS[idx];
+  document.getElementById('rm-year-badge').textContent = year;
+  document.querySelectorAll('#rm-ticks span').forEach((s, i) => {
+    s.classList.toggle('tick-active', i === idx);
+  });
+  updateSliderTrack(idx);
+  updateRoleMap();
+}
+
+function updateSliderTrack(idx) {
+  const pct = (idx / (YEAR_OPTIONS.length - 1)) * 100;
+  const slider = document.getElementById('role-map-slider');
+  slider.style.background = `linear-gradient(to right, #2B5278 ${pct}%, #2B5278 ${pct}%, #dde3ec ${pct}%, #dde3ec 100%)`;
+}
+
+function toggleRoleMapPlay() {
+  const btn = document.getElementById('rm-play-btn');
+  if (rmPlaying) {
+    clearInterval(rmPlayInterval);
+    rmPlaying = false;
+    btn.textContent = '▶';
+  } else {
+    rmPlaying = true;
+    btn.textContent = '⏸';
+    const slider = document.getElementById('role-map-slider');
+    let cur = parseInt(slider.value);
+    if (cur >= YEAR_OPTIONS.length - 1) { cur = 0; slider.value = 0; onRoleMapSlider(0); }
+    rmPlayInterval = setInterval(() => {
+      cur++;
+      if (cur >= YEAR_OPTIONS.length) {
+        clearInterval(rmPlayInterval);
+        rmPlaying = false;
+        btn.textContent = '▶';
+        return;
+      }
+      slider.value = cur;
+      onRoleMapSlider(cur);
+    }, 1200);
+  }
+}
+
+// ── SECTION 1: Geo Heatmap by Role ────────────────────────────────────────────
+function updateRoleMap() {
+  const role = document.getElementById('role-map-role').value;
+  const sliderIdx = parseInt(document.getElementById('role-map-slider').value);
+  const year = YEAR_OPTIONS[sliderIdx];
+  const rows = geoFilter(role, year);
+  const agg  = aggByState(rows);
+  const total     = rows.reduce((sum, row) => sum + row.count, 0);
+  const txCount   = rows.filter(r => r['STATE'] === 'Texas').reduce((sum, row) => sum + row.count, 0);
+  const outCount  = total - txCount;
+  const migRate   = total > 0 ? ((outCount / total) * 100).toFixed(1) : '0.0';
+  const statesSet = new Set(rows.map(r => r['STATE']).filter(Boolean));
+
+  document.getElementById('role-map-stats').innerHTML = [
+    { num: total.toLocaleString(),    lbl: 'Total Positions' },
+    { num: statesSet.size,            lbl: 'States Present'  },
+    { num: txCount.toLocaleString(),  lbl: 'In Texas'        },
+    { num: outCount.toLocaleString(), lbl: 'Outside Texas'   },
+    { num: migRate + '%',             lbl: 'Outside Texas %' },
+  ].map(p => `<div class="mini-pill"><div class="mp-num">${p.num}</div><div class="mp-lbl">${p.lbl}</div></div>`).join('');
+
+  document.getElementById('migration-note').innerHTML =
+    `<strong>Outside Texas %:</strong>
+     <span style="font-family:monospace;background:#eef2ff;padding:2px 6px;border-radius:4px;color:#2B5278;">
+       ${outCount.toLocaleString()} (outside TX) ÷ ${total.toLocaleString()} (total) × 100 = ${migRate}%
+     </span>`;
+
+  const stateCounts = {};
+  for (const r of rows) { if (!r['STATE']) continue; stateCounts[r['STATE']] = (stateCounts[r['STATE']] || 0) + r.count; }
+  const statesSorted = Object.entries(stateCounts).sort((a, b) => b[1] - a[1]);
+  document.getElementById('states-count-label').textContent = `(${statesSorted.length} states)`;
+  document.getElementById('states-table-body').innerHTML = statesSorted.map(([state, count], i) => {
+    const pct = total > 0 ? ((count / total) * 100).toFixed(1) : '0.0';
+    return `<tr><td style="color:#8892a4;">${i+1}</td><td>${state}</td><td class="num">${count.toLocaleString()}</td><td class="pct">${pct}%</td></tr>`;
+  }).join('');
+
+  Plotly.react('role-map-chart', [{
+    type: 'choropleth', locationmode: 'USA-states',
+    locations: agg.locations, z: agg.z, colorscale: 'Blues', showscale: true,
+    hovertemplate: '<b>%{location}</b><br>Jobs: %{z}<extra></extra>'
+  }], {
+    geo: { scope: 'usa', bgcolor: '#f9f9f9', projection: { type: 'albers usa' } },
+    paper_bgcolor: '#f9f9f9',
+    margin: { l:0, r:0, t:0, b:0 },
+    height: 500,
+    autosize: true
+  }, {
+    responsive: true,
+    topojsonURL: "./",
+    displayModeBar: false
+  });
+}
+
+populateDropdowns();
+updateRoleMap();
+</script></body></html>

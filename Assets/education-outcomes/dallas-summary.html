@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: #F8F7F4; padding: 16px 20px; font-family: Arial, sans-serif; }
+
+        .controls { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+        .cohort-label-static { font-size: 12px; color: #5F5E5A; font-weight: 600; }
+        .cohort-label-val { font-size: 12px; color: #1A3A5C; font-weight: 600; }
+        #cohort-meta { font-size: 11px; color: #888780; margin-left: 2px; }
+
+        .dd-wrap { position: relative; display: inline-block; }
+        .dd-btn {
+            padding: 5px 14px; font-size: 12px; cursor: pointer;
+            border: 0.5px solid #2E5F8A; border-radius: 20px;
+            background: #fff; color: #2E5F8A; font-family: Arial, sans-serif; white-space: nowrap;
+        }
+        .dd-btn:hover { background: #EDF2F7; }
+        .dd-menu {
+            display: none; position: absolute; top: calc(100% + 6px); left: 0;
+            background: #fff; border: 0.5px solid #D3D1C7; border-radius: 6px;
+            padding: 8px 0; min-width: 130px; z-index: 999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+        }
+        .dd-menu.open { display: block; }
+        .dd-section-label {
+            font-size: 9px; font-weight: 600; color: #B4B2A9;
+            letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 14px 2px;
+        }
+        .dd-divider { border-top: 0.5px solid #E8E7E2; margin: 4px 0; }
+        .dd-item {
+            display: flex; align-items: center; gap: 8px;
+            padding: 5px 14px; font-size: 12px; color: #5F5E5A;
+            cursor: pointer; user-select: none;
+        }
+        .dd-item:hover { background: #F8F7F4; }
+        .dd-item input[type=checkbox] { cursor: pointer; accent-color: #2E5F8A; }
+
+        .layout-row { display: grid; grid-template-columns: 1fr 260px; gap: 16px; align-items: start; }
+        .layout-row > .chart-container { min-width: 0; position: relative; }
+
+        .stat-panel { display: flex; flex-direction: column; gap: 10px; padding-top: 8px; }
+        .sc { background: #fff; border: 0.5px solid #D3D1C7; padding: 10px 12px; cursor: pointer; transition: background 0.15s, transform 0.15s; }
+        .sc:hover { background: #F8F7F4; transform: translateX(2px); }
+        .sc-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .sc-badge { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 3px; white-space: nowrap; }
+        .sc-n { font-size: 10px; color: #B4B2A9; }
+        .sc-metrics { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; }
+        .sc-metric { background: #F8F7F4; padding: 5px 7px; }
+        .sc-label { font-size: 9px; color: #888780; margin-bottom: 2px; }
+        .sc-value { font-size: 13px; font-weight: 700; color: #1A3A5C; }
+
+        /* ── Detail view ── */
+        .detail-view {
+            display: none; background: #fff; border: 0.5px solid #D3D1C7;
+            padding: 20px 24px; min-height: 560px;
+        }
+        .detail-view.open { display: block; }
+        .chart-container.hidden .plotly-graph-div { display: none; }
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 5px 12px; font-size: 12px; cursor: pointer;
+            border: 0.5px solid #B4B2A9; border-radius: 20px;
+            background: #fff; color: #5F5E5A; font-family: Arial, sans-serif;
+            margin-bottom: 16px;
+        }
+        .back-btn:hover { background: #F1EFE8; color: #2C2C2A; }
+        .detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+        .detail-title { font-size: 15px; font-weight: 600; color: #2C2C2A; }
+        .detail-subtitle { font-size: 11px; color: #888780; margin-top: 2px; }
+        .detail-n { font-size: 11px; color: #888780; }
+        .bar-grid { display: grid; grid-template-columns: 130px 1fr 80px 80px; column-gap: 12px; row-gap: 14px; font-size: 12px; align-items: center; }
+        .bar-label { color: #5F5E5A; }
+        .bar-track { position: relative; height: 24px; background: #F1EFE8; border-radius: 3px; }
+        .bar-fill { position: absolute; left: 0; top: 0; height: 24px; border-radius: 3px; }
+        .bar-avg { position: absolute; top: -3px; height: 30px; width: 2px; background: #5F5E5A; }
+        .bar-avg::after {
+            content: ''; position: absolute; top: -6px; left: -3px;
+            width: 0; height: 0; border-left: 4px solid transparent;
+            border-right: 4px solid transparent; border-top: 6px solid #5F5E5A;
+        }
+        .bar-value { text-align: right; font-weight: 600; }
+        .bar-avg-label { text-align: right; font-size: 10px; color: #888780; }
+        .detail-legend { margin-top: 20px; font-size: 11px; color: #888780; display: flex; gap: 18px; align-items: center; }
+        .detail-legend-item { display: flex; align-items: center; gap: 6px; }
+        .detail-legend-swatch { width: 12px; height: 12px; border-radius: 2px; }
+
+        .interpretation {
+            background: #fff; border: 0.5px solid #D3D1C7;
+            padding: 20px 24px; margin-top: 14px;
+            color: #5F5E5A; font-size: 13px; line-height: 1.8;
+        }
+        .interpretation p { margin: 0 0 14px 0; }
+        .interpretation p:last-child { margin-bottom: 0; }
+        .interpretation b { color: #2C2C2A; }
+    </style>
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><style>
+html{color-scheme:light}body{margin:0!important;padding:12px!important;background:#fff!important;color:#142c44}button,select,input{font:inherit}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #1755c5;outline-offset:2px}.chart-card,.panel{margin:0!important;max-width:none!important}.chart-card{padding:12px!important;box-shadow:none!important}.plotly-graph-div{max-width:100%}.table-responsive,.states-table-wrap{overflow:auto}
+@media(max-width:600px){body{padding:6px!important}.chart-card{padding:8px!important}.layout-row{display:block!important}.stat-panel{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px!important}.controls{flex-wrap:wrap}.timeline-ticks{font-size:8px!important}}
+</style><title>Dallas Summary</title></head>
+<body>
+
+<div class="controls">
+    <span class="cohort-label-static">Cohort view:</span>
+    <span class="cohort-label-val" id="cohort-label-val">2011&ndash;2020</span>
+    <span id="cohort-meta">(n=195 with dated jobs &nbsp;&middot;&nbsp; 5-yr trajectory)</span>
+
+    <div class="dd-wrap" id="ddWrap">
+        <button class="dd-btn" onclick="toggleDropdown()">&#43; Add years &#9662;</button>
+        <div class="dd-menu" id="ddMenu">
+            <div class="dd-section-label">Earlier cohorts</div>
+            <label class="dd-item"><input type="checkbox" value="2005" onchange="onYearCheck(this)"> 2005</label><label class="dd-item"><input type="checkbox" value="2006" onchange="onYearCheck(this)"> 2006</label><label class="dd-item"><input type="checkbox" value="2007" onchange="onYearCheck(this)"> 2007</label><label class="dd-item"><input type="checkbox" value="2008" onchange="onYearCheck(this)"> 2008</label><label class="dd-item"><input type="checkbox" value="2009" onchange="onYearCheck(this)"> 2009</label><label class="dd-item"><input type="checkbox" value="2010" onchange="onYearCheck(this)"> 2010</label>
+            <div class="dd-divider"></div>
+            <div class="dd-section-label">Default (2011&ndash;2020)</div>
+            <label class="dd-item"><input type="checkbox" value="2011" checked onchange="onYearCheck(this)"> 2011</label><label class="dd-item"><input type="checkbox" value="2012" checked onchange="onYearCheck(this)"> 2012</label><label class="dd-item"><input type="checkbox" value="2013" checked onchange="onYearCheck(this)"> 2013</label><label class="dd-item"><input type="checkbox" value="2014" checked onchange="onYearCheck(this)"> 2014</label><label class="dd-item"><input type="checkbox" value="2015" checked onchange="onYearCheck(this)"> 2015</label><label class="dd-item"><input type="checkbox" value="2016" checked onchange="onYearCheck(this)"> 2016</label><label class="dd-item"><input type="checkbox" value="2017" checked onchange="onYearCheck(this)"> 2017</label><label class="dd-item"><input type="checkbox" value="2018" checked onchange="onYearCheck(this)"> 2018</label><label class="dd-item"><input type="checkbox" value="2019" checked onchange="onYearCheck(this)"> 2019</label><label class="dd-item"><input type="checkbox" value="2020" checked onchange="onYearCheck(this)"> 2020</label>
+        </div>
+    </div>
+</div>
+
+<div class="layout-row">
+    <div class="chart-container" id="chartContainer">
+        <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script src="https://cdn.plot.ly/plotly-2.18.0.min.js"></script>                <div id="05c65f2f-9325-4e71-88df-79e2e8126cde" class="plotly-graph-div" style="height:700px; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("05c65f2f-9325-4e71-88df-79e2e8126cde")) {                    Plotly.newPlot(                        "05c65f2f-9325-4e71-88df-79e2e8126cde",                        [{"customdata":[1,1,1,1,1,1],"fill":"toself","fillcolor":"rgba(184,134,11,0.12)","hoveron":"points","hovertemplate":"%{text}<extra></extra>","line":{"color":"#B8860B","width":2.5},"marker":{"color":"#B8860B","line":{"color":"#1a1a2e","width":2.5},"size":14,"symbol":"circle"},"name":"C1 \u00b7 Academic Ladder Climber (n=25)","r":[0.509,1.0,0.345,0.678,0.351,0.509],"text":["<b>C1 \u00b7 Academic Ladder Climber</b><br>Skills count: <b>32.8</b>","<b>C1 \u00b7 Academic Ladder Climber</b><br>Jobs held: <b>3.1</b>","<b>C1 \u00b7 Academic Ladder Climber</b><br>Max seniority: <b>3.52</b>","<b>C1 \u00b7 Academic Ladder Climber</b><br>Exec attainment: <b>28.0%</b>","<b>C1 \u00b7 Academic Ladder Climber</b><br>Max salary: <b>$90.8k</b>","<b>C1 \u00b7 Academic Ladder Climber</b><br>Skills count: <b>32.8</b>"],"theta":["Skills count","Jobs held","Max seniority","Exec attainment","Max salary","Skills count"],"type":"scatterpolar"},{"customdata":[2,2,2,2,2,2],"fill":"toself","fillcolor":"rgba(74,158,219,0.12)","hoveron":"points","hovertemplate":"%{text}<extra></extra>","line":{"color":"#4A9EDB","width":2.5},"marker":{"color":"#4A9EDB","line":{"color":"#1a1a2e","width":2.5},"size":14,"symbol":"circle"},"name":"C2 \u00b7 Working Student (n=96)","r":[0.805,0.314,1.0,1.0,1.0,0.805],"text":["<b>C2 \u00b7 Working Student</b><br>Skills count: <b>45.0</b>","<b>C2 \u00b7 Working Student</b><br>Jobs held: <b>2.5</b>","<b>C2 \u00b7 Working Student</b><br>Max seniority: <b>4.38</b>","<b>C2 \u00b7 Working Student</b><br>Exec attainment: <b>46.9%</b>","<b>C2 \u00b7 Working Student</b><br>Max salary: <b>$117.5k</b>","<b>C2 \u00b7 Working Student</b><br>Skills count: <b>45.0</b>"],"theta":["Skills count","Jobs held","Max seniority","Exec attainment","Max salary","Skills count"],"type":"scatterpolar"},{"customdata":[3,3,3,3,3,3],"fill":"toself","fillcolor":"rgba(0,87,217,0.12)","hoveron":"points","hovertemplate":"%{text}<extra></extra>","line":{"color":"#0057D9","width":2.5},"marker":{"color":"#0057D9","line":{"color":"#1a1a2e","width":2.5},"size":14,"symbol":"circle"},"name":"C3 \u00b7 Certification Builder (n=9)","r":[0.912,0.543,0.2,0.2,0.2,0.912],"text":["<b>C3 \u00b7 Certification Builder</b><br>Skills count: <b>49.4</b>","<b>C3 \u00b7 Certification Builder</b><br>Jobs held: <b>2.7</b>","<b>C3 \u00b7 Certification Builder</b><br>Max seniority: <b>3.33</b>","<b>C3 \u00b7 Certification Builder</b><br>Exec attainment: <b>0.0%</b>","<b>C3 \u00b7 Certification Builder</b><br>Max salary: <b>$84.6k</b>","<b>C3 \u00b7 Certification Builder</b><br>Skills count: <b>49.4</b>"],"theta":["Skills count","Jobs held","Max seniority","Exec attainment","Max salary","Skills count"],"type":"scatterpolar"},{"customdata":[4,4,4,4,4,4],"fill":"toself","fillcolor":"rgba(107,168,136,0.12)","hoveron":"points","hovertemplate":"%{text}<extra></extra>","line":{"color":"#6BA888","width":2.5},"marker":{"color":"#6BA888","line":{"color":"#1a1a2e","width":2.5},"size":14,"symbol":"circle"},"name":"C4 \u00b7 Self-Skill Builder (n=28)","r":[1.0,0.429,0.52,0.748,0.565,1.0],"text":["<b>C4 \u00b7 Self-Skill Builder</b><br>Skills count: <b>53.0</b>","<b>C4 \u00b7 Self-Skill Builder</b><br>Jobs held: <b>2.6</b>","<b>C4 \u00b7 Self-Skill Builder</b><br>Max seniority: <b>3.75</b>","<b>C4 \u00b7 Self-Skill Builder</b><br>Exec attainment: <b>32.1%</b>","<b>C4 \u00b7 Self-Skill Builder</b><br>Max salary: <b>$99.6k</b>","<b>C4 \u00b7 Self-Skill Builder</b><br>Skills count: <b>53.0</b>"],"theta":["Skills count","Jobs held","Max seniority","Exec attainment","Max salary","Skills count"],"type":"scatterpolar"},{"customdata":[5,5,5,5,5,5],"fill":"toself","fillcolor":"rgba(160,168,184,0.12)","hoveron":"points","hovertemplate":"%{text}<extra></extra>","line":{"color":"#A0A8B8","width":2.5},"marker":{"color":"#A0A8B8","line":{"color":"#1a1a2e","width":2.5},"size":14,"symbol":"circle"},"name":"C5 \u00b7 Core Graduate (n=37)","r":[0.2,0.2,0.421,0.522,0.358,0.2],"text":["<b>C5 \u00b7 Core Graduate</b><br>Skills count: <b>20.1</b>","<b>C5 \u00b7 Core Graduate</b><br>Jobs held: <b>2.4</b>","<b>C5 \u00b7 Core Graduate</b><br>Max seniority: <b>3.62</b>","<b>C5 \u00b7 Core Graduate</b><br>Exec attainment: <b>18.9%</b>","<b>C5 \u00b7 Core Graduate</b><br>Max salary: <b>$91.1k</b>","<b>C5 \u00b7 Core Graduate</b><br>Skills count: <b>20.1</b>"],"theta":["Skills count","Jobs held","Max seniority","Exec attainment","Max salary","Skills count"],"type":"scatterpolar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"polar":{"radialaxis":{"visible":true,"range":[0,1],"tickvals":[0.2,0.4,0.6,0.8,1.0],"ticktext":["","","","",""],"gridcolor":"#E8E7E2","gridwidth":0.8,"linecolor":"#D3D1C7"},"angularaxis":{"tickfont":{"size":12,"color":"#5F5E5A"},"gridcolor":"#E8E7E2","linecolor":"#D3D1C7"},"bgcolor":"#fff"},"legend":{"font":{"size":11,"color":"#5F5E5A"},"orientation":"h","yanchor":"top","y":-0.1,"xanchor":"center","x":0.5,"bgcolor":"#fff","bordercolor":"#D3D1C7","borderwidth":0.5},"title":{"text":""},"margin":{"t":20,"b":60,"l":40,"r":80},"hovermode":"closest","clickmode":"event+select","hoverdistance":40,"spikedistance":40,"height":700,"autosize":true,"paper_bgcolor":"#F8F7F4","plot_bgcolor":"#F8F7F4"},                        {"responsive": true}                    )                };                            </script>        </div>
+
+        <div class="detail-view" id="detailView">
+            <button class="back-btn" onclick="closeDetail()">&larr; Back to radar</button>
+            <div class="detail-header">
+                <div>
+                    <div class="detail-title" id="detailTitle">C1 &middot; Academic Ladder Climber</div>
+                    <div class="detail-subtitle" id="detailSubtitle">5-year post-graduation window &nbsp;&middot;&nbsp; vs cohort weighted average</div>
+                </div>
+                <div class="detail-n" id="detailN">n=25 &middot; 12.8% of cohort</div>
+            </div>
+            <div class="bar-grid" id="barGrid"></div>
+            <div class="detail-legend">
+                <div class="detail-legend-item"><span class="detail-legend-swatch" id="detailSwatch" style="background:#B8860B;"></span>Selected cluster</div>
+                <div class="detail-legend-item">
+                    <span style="display:inline-block;width:2px;height:16px;background:#5F5E5A;"></span>
+                    <span style="margin-left:3px;">Cohort weighted average (n=195)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="stat-panel" id="stat-panel">
+
+    <div class="sc" id="sc-card-1" data-cluster="1" style="border-left:3px solid #B8860B;">
+      <div class="sc-head">
+        <span class="sc-badge" id="sc-badge-1" style="color:#8B6508;background:#FDF6E3;">C1 &middot; Academic Ladder Climber</span>
+        <span class="sc-n" id="sc-n1">n=25 &middot; 12.8%</span>
+      </div>
+      <div class="sc-metrics">
+        <div class="sc-metric"><div class="sc-label">Avg max seniority</div><div class="sc-value" id="sc-s1">3.52</div></div>
+        <div class="sc-metric"><div class="sc-label">Exec rate</div><div class="sc-value" id="sc-e1">28.0%</div></div>
+        <div class="sc-metric"><div class="sc-label">Avg max salary</div><div class="sc-value" id="sc-m1">$90.8k</div></div>
+      </div>
+    </div>
+
+    <div class="sc" id="sc-card-2" data-cluster="2" style="border-left:3px solid #4A9EDB;">
+      <div class="sc-head">
+        <span class="sc-badge" id="sc-badge-2" style="color:#1E6EA0;background:#EBF5FC;">C2 &middot; Working Student</span>
+        <span class="sc-n" id="sc-n2">n=96 &middot; 49.2%</span>
+      </div>
+      <div class="sc-metrics">
+        <div class="sc-metric"><div class="sc-label">Avg max seniority</div><div class="sc-value" id="sc-s2">4.38</div></div>
+        <div class="sc-metric"><div class="sc-label">Exec rate</div><div class="sc-value" id="sc-e2">46.9%</div></div>
+        <div class="sc-metric"><div class="sc-label">Avg max salary</div><div class="sc-value" id="sc-m2">$117.5k</div></div>
+      </div>
+    </div>
+
+    <div class="sc" id="sc-card-3" data-cluster="3" style="border-left:3px solid #0057D9;">
+      <div class="sc-head">
+        <span class="sc-badge" id="sc-badge-3" style="color:#0040A0;background:#E6EEFA;">C3 &middot; Certification Builder</span>
+        <span class="sc-n" id="sc-n3">n=9 &middot; 4.6%</span>
+      </div>
+      <div class="sc-metrics">
+        <div class="sc-metric"><div class="sc-label">Avg max seniority</div><div class="sc-value" id="sc-s3">3.33</div></div>
+        <div class="sc-metric"><div class="sc-label">Exec rate</div><div class="sc-value" id="sc-e3">0.0%</div></div>
+        <div class="sc-metric"><div class="sc-label">Avg max salary</div><div class="sc-value" id="sc-m3">$84.6k</div></div>
+      </div>
+    </div>
+
+    <div class="sc" id="sc-card-4" data-cluster="4" style="border-left:3px solid #6BA888;">
+      <div class="sc-head">
+        <span class="sc-badge" id="sc-badge-4" style="color:#3D7A5C;background:#EAF5EF;">C4 &middot; Self-Skill Builder</span>
+        <span class="sc-n" id="sc-n4">n=28 &middot; 14.4%</span>
+      </div>
+      <div class="sc-metrics">
+        <div class="sc-metric"><div class="sc-label">Avg max seniority</div><div class="sc-value" id="sc-s4">3.75</div></div>
+        <div class="sc-metric"><div class="sc-label">Exec rate</div><div class="sc-value" id="sc-e4">32.1%</div></div>
+        <div class="sc-metric"><div class="sc-label">Avg max salary</div><div class="sc-value" id="sc-m4">$99.6k</div></div>
+      </div>
+    </div>
+
+    <div class="sc" id="sc-card-5" data-cluster="5" style="border-left:3px solid #A0A8B8;">
+      <div class="sc-head">
+        <span class="sc-badge" id="sc-badge-5" style="color:#5A6070;background:#F0F1F4;">C5 &middot; Core Graduate</span>
+        <span class="sc-n" id="sc-n5">n=37 &middot; 19.0%</span>
+      </div>
+      <div class="sc-metrics">
+        <div class="sc-metric"><div class="sc-label">Avg max seniority</div><div class="sc-value" id="sc-s5">3.62</div></div>
+        <div class="sc-metric"><div class="sc-label">Exec rate</div><div class="sc-value" id="sc-e5">18.9%</div></div>
+        <div class="sc-metric"><div class="sc-label">Avg max salary</div><div class="sc-value" id="sc-m5">$91.1k</div></div>
+      </div>
+    </div>
+    </div>
+</div>
+
+<div class="interpretation">
+    <p>
+        <b>Working Student leads on salary and seniority</b> &mdash;
+        C2 reaches the highest average max salary ($117.5k) within the 5-year window,
+        and C2 reaches the highest average max seniority (4.38). Together with an
+        Executive attainment rate of 46.9% for C2, the data points to this
+        cluster as the strongest early-career performer across the main outcome metrics.
+    </p>
+    <p>
+        <b>Job volume doesn&rsquo;t guarantee seniority</b> &mdash;
+        C1 holds the most jobs in the 5-year window (3.1 avg),
+        while C3 posts the lowest Executive attainment rate (0.0%).
+        Early-career movement alone &mdash; without the right engagement during school &mdash; doesn&rsquo;t
+        reliably translate into upper-seniority placement.
+    </p>
+    <p>
+        <b>Click any cluster card on the right &mdash; or legend item below the radar &mdash; to see that cluster&rsquo;s
+        five metrics as bars against the cohort weighted average.</b>
+    </p>
+</div>
+
+<script>
+const ALL_DATASETS   = {"2011-2020": {"norm": {"1": [0.509, 1.0, 0.345, 0.678, 0.351], "2": [0.805, 0.314, 1.0, 1.0, 1.0], "3": [0.912, 0.543, 0.2, 0.2, 0.2], "4": [1.0, 0.429, 0.52, 0.748, 0.565], "5": [0.2, 0.2, 0.421, 0.522, 0.358]}, "raw": {"1": [32.8, 3.1, 3.52, 28.0, 90.8], "2": [45.0, 2.5, 4.38, 46.9, 117.5], "3": [49.4, 2.7, 3.33, 0.0, 84.6], "4": [53.0, 2.6, 3.75, 32.1, 99.6], "5": [20.1, 2.4, 3.62, 18.9, 91.1]}, "raw_fmt": {"1": ["32.8", "3.1", "3.52", "28.0%", "$90.8k"], "2": ["45.0", "2.5", "4.38", "46.9%", "$117.5k"], "3": ["49.4", "2.7", "3.33", "0.0%", "$84.6k"], "4": ["53.0", "2.6", "3.75", "32.1%", "$99.6k"], "5": ["20.1", "2.4", "3.62", "18.9%", "$91.1k"]}, "sizes": {"1": 25, "2": 96, "3": 9, "4": 28, "5": 37}, "cavg": [40.2, 2.6, 3.98, 34.9, 105.0], "cavg_fmt": ["40.2", "2.6", "3.98", "34.9%", "$105.0k"]}, "2005": {"norm": {"1": [0.2, 0.2, 0.2, 0.2, 0.2], "2": [0.2, 0.2, 0.2, 0.2, 0.2], "3": [0.2, 0.2, 0.2, 0.2, 0.2], "4": [0.2, 0.2, 0.2, 0.2, 0.2], "5": [1.0, 1.0, 1.0, 0.2, 1.0]}, "raw": {"1": [0, 0, 0, 0, 0], "2": [0, 0, 0, 0, 0], "3": [0, 0, 0, 0, 0], "4": [0, 0, 0, 0, 0], "5": [21.0, 2.0, 2.0, 0.0, 55.0]}, "raw_fmt": {"1": ["0", "0", "0.00", "0.0%", "$0k"], "2": ["0", "0", "0.00", "0.0%", "$0k"], "3": ["0", "0", "0.00", "0.0%", "$0k"], "4": ["0", "0", "0.00", "0.0%", "$0k"], "5": ["21.0", "2.0", "2.0", "0.0%", "$55.0k"]}, "sizes": {"1": 0, "2": 0, "3": 0, "4": 0, "5": 1}, "cavg": [21.0, 2.0, 2.0, 0.0, 55.0], "cavg_fmt": ["21.0", "2.0", "2.0", "0.0%", "$55.0k"]}, "2006": {"norm": {"1": [0.845, 1.0, 0.733, 0.2, 0.681], "2": [1.0, 0.92, 0.749, 0.5, 0.738], "3": [0.2, 0.2, 0.2, 0.2, 0.2], "4": [0.2, 0.2, 0.2, 0.2, 0.2], "5": [0.731, 0.6, 1.0, 1.0, 1.0]}, "raw": {"1": [34.0, 2.0, 4.0, 0.0, 95.0], "2": [42.2, 1.8, 4.12, 37.5, 106.2], "3": [0, 0, 0, 0, 0], "4": [0, 0, 0, 0, 0], "5": [28.0, 1.0, 6.0, 100.0, 158.0]}, "raw_fmt": {"1": ["34.0", "2.0", "4.0", "0.0%", "$95.0k"], "2": ["42.2", "1.8", "4.12", "37.5%", "$106.2k"], "3": ["0", "0", "0.00", "0.0%", "$0k"], "4": ["0", "0", "0.00", "0.0%", "$0k"], "5": ["28.0", "1.0", "6.0", "100.0%", "$158.0k"]}, "sizes": {"1": 1, "2": 8, "3": 0, "4": 0, "5": 1}, "cavg": [40.0, 1.7, 4.3, 40.0, 110.3], "cavg_fmt": ["40.0", "1.7", "4.3", "40.0%", "$110.3k"]}, "2007": {"norm": {"1": [0.2, 0.2, 0.2, 0.2, 0.2], "2": [1.0, 1.0, 1.0, 1.0, 1.0], "3": [0.2, 0.2, 0.2, 0.2, 0.2], "4": [0.2, 0.2, 0.2, 0.2, 0.2], "5": [0.335, 0.867, 0.374, 0.2, 0.569]}, "raw": {"1": [0, 0, 0, 0, 0], "2": [35.6, 1.2, 4.6, 40.0, 112.6], "3": [0, 0, 0, 0, 0], "4": [0, 0, 0, 0, 0], "5": [6.0, 1.0, 1.0, 0.0, 52.0]}, "raw_fmt": {"1": ["0", "0", "0.00", "0.0%", "$0k"], "2": ["35.6", "1.2", "4.6", "40.0%", "$112.6k"], "3": ["0", "0", "0.00", "0.0%", "$0k"], "4": ["0", "0", "0.00", "0.0%", "$0k"], "5": ["6.0", "1.0", "1.0", "0.0%", "$52.0k"]}, "sizes": {"1": 0, "2": 5, "3": 0, "4": 0, "5": 1}, "cavg": [30.7, 1.2, 4.0, 33.3, 102.5], "cavg_fmt": ["30.7", "1.2", "4.0", "33.3%", "$102.5k"]}, "2008": {"norm": {"1": [0.2, 0.2, 0.2, 0.2, 0.2], "2": [0.801, 0.936, 1.0, 1.0, 1.0], "3": [0.2, 0.2, 0.2, 0.2, 0.2], "4": [1.0, 1.0, 0.84, 0.2, 0.802], "5": [0.436, 0.936, 0.733, 0.2, 0.728]}, "raw": {"1": [0, 0, 0, 0, 0], "2": [55.2, 2.3, 5.0, 50.0, 122.3], "3": [0, 0, 0, 0, 0], "4": [73.5, 2.5, 4.0, 0.0, 92.0], "5": [21.7, 2.3, 3.33, 0.0, 80.7]}, "raw_fmt": {"1": ["0", "0", "0.00", "0.0%", "$0k"], "2": ["55.2", "2.3", "5.0", "50.0%", "$122.3k"], "3": ["0", "0", "0.00", "0.0%", "$0k"], "4": ["73.5", "2.5", "4.0", "0.0%", "$92.0k"], "5": ["21.7", "2.3", "3.33", "0.0%", "$80.7k"]}, "sizes": {"1": 0, "2": 6, "3": 0, "4": 2, "5": 3}, "cavg": [49.4, 2.4, 4.36, 27.3, 105.5], "cavg_fmt": ["49.4", "2.4", "4.36", "27.3%", "$105.5k"]}, "2009": {"norm": {"1": [0.631, 1.0, 0.556, 0.2, 0.754], "2": [0.592, 0.6, 1.0, 1.0, 1.0], "3": [0.2, 0.2, 0.2, 0.2, 0.2], "4": [1.0, 0.547, 0.911, 0.2, 0.998], "5": [0.431, 0.467, 0.556, 0.2, 0.623]}, "raw": {"1": [28.0, 3.0, 2.0, 0.0, 72.0], "2": [25.5, 1.5, 4.5, 25.0, 104.0], "3": [0, 0, 0, 0, 0], "4": [52.0, 1.3, 4.0, 0.0, 103.7], "5": [15.0, 1.0, 2.0, 0.0, 55.0]}, "raw_fmt": {"1": ["28.0", "3.0", "2.0", "0.0%", "$72.0k"], "2": ["25.5", "1.5", "4.5", "25.0%", "$104.0k"], "3": ["0", "0", "0.00", "0.0%", "$0k"], "4": ["52.0", "1.3", "4.0", "0.0%", "$103.7k"], "5": ["15.0", "1.0", "2.0", "0.0%", "$55.0k"]}, "sizes": {"1": 1, "2": 4, "3": 0, "4": 3, "5": 1}, "cavg": [33.4, 1.6, 3.78, 11.1, 94.9], "cavg_fmt": ["33.4", "1.6", "3.78", "11.1%", "$94.9k"]}, "2010": {"norm": {"1": [0.552, 1.0, 0.467, 0.2, 0.584], "2": [0.849, 0.707, 0.567, 0.2, 0.596], "3": [0.2, 0.2, 0.2, 0.2, 0.2], "4": [1.0, 0.467, 1.0, 1.0, 1.0], "5": [0.461, 0.733, 0.733, 0.2, 0.723]}, "raw": {"1": [31.0, 3.0, 2.0, 0.0, 72.0], "2": [57.2, 1.9, 2.75, 0.0, 74.2], "3": [0, 0, 0, 0, 0], "4": [70.5, 1.0, 6.0, 100.0, 150.0], "5": [23.0, 2.0, 4.0, 0.0, 98.0]}, "raw_fmt": {"1": ["31.0", "3.0", "2.0", "0.0%", "$72.0k"], "2": ["57.2", "1.9", "2.75", "0.0%", "$74.2k"], "3": ["0", "0", "0.00", "0.0%", "$0k"], "4": ["70.5", "1.0", "6.0", "100.0%", "$150.0k"], "5": ["23.0", "2.0", "4.0", "0.0%", "$98.0k"]}, "sizes": {"1": 1, "2": 8, "3": 0, "4": 2, "5": 1}, "cavg": [54.4, 1.8, 3.33, 16.7, 88.7], "cavg_fmt": ["54.4", "1.8", "3.33", "16.7%", "$88.7k"]}, "2011": {"norm": {"1": [1.0, 0.52, 1.0, 0.2, 0.848], "2": [0.924, 0.776, 0.9, 0.6, 0.906], "3": [0.2, 0.2, 0.2, 0.2, 0.2], "4": [0.834, 1.0, 0.8, 0.2, 0.764], "5": [0.51, 0.68, 1.0, 1.0, 1.0]}, "raw": {"1": [58.0, 1.0, 4.0, 0.0, 92.0], "2": [52.5, 1.8, 3.5, 25.0, 100.2], "3": [0, 0, 0, 0, 0], "4": [46.0, 2.5, 3.0, 0.0, 80.0], "5": [22.5, 1.5, 4.0, 50.0, 113.5]}, "raw_fmt": {"1": ["58.0", "1.0", "4.0", "0.0%", "$92.0k"], "2": ["52.5", "1.8", "3.5", "25.0%", "$100.2k"], "3": ["0", "0", "0.00", "0.0%", "$0k"], "4": ["46.0", "2.5", "3.0", "0.0%", "$80.0k"], "5": ["22.5", "1.5", "4.0", "50.0%", "$113.5k"]}, "sizes": {"1": 1, "2": 4, "3": 0, "4": 2, "5": 2}, "cavg": [45.0, 1.8, 3.56, 22.2, 97.8], "cavg_fmt": ["45.0", "1.8", "3.56", "22.2%", "$97.8k"]}, "2012": {"norm": {"1": [0.356, 0.467, 0.333, 0.2, 0.356], "2": [0.925, 0.627, 0.733, 0.5, 0.752], "3": [0.2, 0.2, 0.2, 0.2, 0.2], "4": [1.0, 1.0, 1.0, 1.0, 1.0], "5": [0.327, 1.0, 0.733, 0.2, 0.685]}, "raw": {"1": [11.0, 1.0, 1.0, 0.0, 31.5], "2": [51.2, 1.6, 4.0, 37.5, 111.5], "3": [0, 0, 0, 0, 0], "4": [56.5, 3.0, 6.0, 100.0, 161.5], "5": [9.0, 3.0, 4.0, 0.0, 98.0]}, "raw_fmt": {"1": ["11.0", "1.0", "1.0", "0.0%", "$31.5k"], "2": ["51.2", "1.6", "4.0", "37.5%", "$111.5k"], "3": ["0", "0", "0.00", "0.0%", "$0k"], "4": ["56.5", "3.0", "6.0", "100.0%", "$161.5k"], "5": ["9.0", "3.0", "4.0", "0.0%", "$98.0k"]}, "sizes": {"1": 2, "2": 8, "3": 0, "4": 2, "5": 1}, "cavg": [42.6, 1.8, 3.85, 38.5, 105.8], "cavg_fmt": ["42.6", "1.8", "3.85", "38.5%", "$105.8k"]}, "2013": {"norm": {"1": [0.2, 0.2, 0.2, 0.2, 0.2], "2": [0.775, 1.0, 1.0, 1.0, 1.0], "3": [0.2, 0.2, 0.2, 0.2, 0.2], "4": [1.0, 0.88, 0.63, 0.2, 0.66], "5": [0.5, 0.6, 0.939, 0.2, 0.894]}, "raw": {"1": [0, 0, 0, 0, 0], "2": [47.9, 2.0, 4.33, 44.4, 113.0], "3": [0, 0, 0, 0, 0], "4": [66.7, 1.7, 2.33, 0.0, 65.0], "5": [25.0, 1.0, 4.0, 0.0, 98.0]}, "raw_fmt": {"1": ["0", "0", "0.00", "0.0%", "$0k"], "2": ["47.9", "2.0", "4.33", "44.4%", "$113.0k"], "3": ["0", "0", "0.00", "0.0%", "$0k"], "4": ["66.7", "1.7", "2.33", "0.0%", "$65.0k"], "5": ["25.0", "1.0", "4.0", "0.0%", "$98.0k"]}, "sizes": {"1": 0, "2": 9, "3": 0, "4": 3, "5": 1}, "cavg": [50.5, 1.8, 3.85, 30.8, 100.8], "cavg_fmt": ["50.5", "1.8", "3.85", "30.8%", "$100.8k"]}, "2014": {"norm": {"1": [0.561, 1.0, 0.733, 0.2, 0.75], "2": [0.842, 0.947, 0.816, 0.692, 0.964], "3": [1.0, 0.467, 0.733, 0.2, 0.812], "4": [0.2, 0.2, 0.2, 0.2, 0.2], "5": [0.569, 0.733, 1.0, 1.0, 1.0]}, "raw": {"1": [23.0, 3.0, 4.0, 0.0, 88.0], "2": [40.9, 2.8, 4.62, 61.5, 122.3], "3": [51.0, 1.0, 4.0, 0.0, 98.0], "4": [0, 0, 0, 0, 0], "5": [23.5, 2.0, 6.0, 100.0, 128.0]}, "raw_fmt": {"1": ["23.0", "3.0", "4.0", "0.0%", "$88.0k"], "2": ["40.9", "2.8", "4.62", "61.5%", "$122.3k"], "3": ["51.0", "1.0", "4.0", "0.0%", "$98.0k"], "4": ["0", "0", "0.00", "0.0%", "$0k"], "5": ["23.5", "2.0", "6.0", "100.0%", "$128.0k"]}, "sizes": {"1": 1, "2": 13, "3": 1, "4": 0, "5": 2}, "cavg": [38.4, 2.6, 4.71, 58.8, 119.5], "cavg_fmt": ["38.4", "2.6", "4.71", "58.8%", "$119.5k"]}, "2015": {"norm": {"1": [0.608, 0.771, 1.0, 1.0, 1.0], "2": [0.873, 0.886, 0.733, 0.44, 0.798], "3": [0.2, 0.2, 0.2, 0.2, 0.2], "4": [1.0, 0.829, 0.533, 0.2, 0.56], "5": [0.547, 1.0, 0.68, 0.2, 0.649]}, "raw": {"1": [27.0, 2.0, 6.0, 100.0, 150.0], "2": [44.6, 2.4, 4.0, 30.0, 112.1], "3": [0, 0, 0, 0, 0], "4": [53.0, 2.2, 2.5, 0.0, 67.5], "5": [23.0, 2.8, 3.6, 0.0, 84.2]}, "raw_fmt": {"1": ["27.0", "2.0", "6.0", "100.0%", "$150.0k"], "2": ["44.6", "2.4", "4.0", "30.0%", "$112.1k"], "3": ["0", "0", "0.00", "0.0%", "$0k"], "4": ["53.0", "2.2", "2.5", "0.0%", "$67.5k"], "5": ["23.0", "2.8", "3.6", "0.0%", "$84.2k"]}, "sizes": {"1": 2, "2": 10, "3": 0, "4": 4, "5": 5}, "cavg": [39.4, 2.4, 3.81, 23.8, 100.6], "cavg_fmt": ["39.4", "2.4", "3.81", "23.8%", "$100.6k"]}, "2016": {"norm": {"1": [1.0, 1.0, 0.783, 0.68, 0.537], "2": [0.852, 0.374, 1.0, 1.0, 1.0], "3": [0.238, 0.826, 0.459, 0.2, 0.371], "4": [0.89, 0.2, 0.2, 0.392, 0.2], "5": [0.2, 0.409, 0.676, 0.52, 0.621]}, "raw": {"1": [59.0, 4.5, 5.0, 50.0, 113.0], "2": [52.0, 2.7, 5.67, 83.3, 154.7], "3": [23.0, 4.0, 4.0, 0.0, 98.0], "4": [53.8, 2.2, 3.2, 20.0, 82.6], "5": [21.2, 2.8, 4.67, 33.3, 120.5]}, "raw_fmt": {"1": ["59.0", "4.5", "5.0", "50.0%", "$113.0k"], "2": ["52.0", "2.7", "5.67", "83.3%", "$154.7k"], "3": ["23.0", "4.0", "4.0", "0.0%", "$98.0k"], "4": ["53.8", "2.2", "3.2", "20.0%", "$82.6k"], "5": ["21.2", "2.8", "4.67", "33.3%", "$120.5k"]}, "sizes": {"1": 2, "2": 6, "3": 1, "4": 5, "5": 6}, "cavg": [42.5, 2.9, 4.6, 45.0, 119.4], "cavg_fmt": ["42.5", "2.9", "4.6", "45.0%", "$119.4k"]}, "2017": {"norm": {"1": [0.934, 1.0, 1.0, 1.0, 0.985], "2": [0.924, 0.84, 0.853, 0.68, 1.0], "3": [0.2, 0.2, 0.2, 0.2, 0.2], "4": [1.0, 0.867, 0.8, 0.6, 0.985], "5": [0.609, 0.84, 0.733, 0.36, 0.802]}, "raw": {"1": [28.0, 3.0, 6.0, 100.0, 128.0], "2": [27.6, 2.4, 4.9, 60.0, 130.5], "3": [0, 0, 0, 0, 0], "4": [30.5, 2.5, 4.5, 50.0, 128.0], "5": [15.6, 2.4, 4.0, 20.0, 98.2]}, "raw_fmt": {"1": ["28.0", "3.0", "6.0", "100.0%", "$128.0k"], "2": ["27.6", "2.4", "4.9", "60.0%", "$130.5k"], "3": ["0", "0", "0.00", "0.0%", "$0k"], "4": ["30.5", "2.5", "4.5", "50.0%", "$128.0k"], "5": ["15.6", "2.4", "4.0", "20.0%", "$98.2k"]}, "sizes": {"1": 1, "2": 10, "3": 0, "4": 2, "5": 5}, "cavg": [24.6, 2.4, 4.67, 50.0, 121.1], "cavg_fmt": ["24.6", "2.4", "4.67", "50.0%", "$121.1k"]}, "2018": {"norm": {"1": [0.257, 1.0, 1.0, 1.0, 1.0], "2": [0.794, 0.424, 0.694, 0.574, 0.559], "3": [0.81, 0.2, 0.6, 0.2, 0.457], "4": [1.0, 0.52, 0.2, 0.2, 0.2], "5": [0.2, 0.68, 0.4, 0.2, 0.332]}, "raw": {"1": [22.0, 4.5, 6.0, 100.0, 182.5], "2": [50.2, 2.7, 4.47, 46.7, 113.9], "3": [51.0, 2.0, 4.0, 0.0, 98.0], "4": [61.0, 3.0, 2.0, 0.0, 58.0], "5": [19.0, 3.5, 3.0, 0.0, 78.5]}, "raw_fmt": {"1": ["22.0", "4.5", "6.0", "100.0%", "$182.5k"], "2": ["50.2", "2.7", "4.47", "46.7%", "$113.9k"], "3": ["51.0", "2.0", "4.0", "0.0%", "$98.0k"], "4": ["61.0", "3.0", "2.0", "0.0%", "$58.0k"], "5": ["19.0", "3.5", "3.0", "0.0%", "$78.5k"]}, "sizes": {"1": 2, "2": 15, "3": 2, "4": 1, "5": 2}, "cavg": [45.4, 2.9, 4.32, 40.9, 112.9], "cavg_fmt": ["45.4", "2.9", "4.32", "40.9%", "$112.9k"]}, "2019": {"norm": {"1": [1.0, 0.859, 0.2, 0.2, 0.2], "2": [0.703, 0.576, 0.863, 1.0, 1.0], "3": [0.754, 0.2, 0.427, 0.2, 0.395], "4": [0.779, 1.0, 1.0, 0.2, 0.929], "5": [0.2, 0.624, 0.313, 0.2, 0.276]}, "raw": {"1": [53.7, 3.7, 1.67, 0.0, 54.7], "2": [42.0, 3.1, 3.6, 20.0, 102.2], "3": [44.0, 2.3, 2.33, 0.0, 66.3], "4": [45.0, 4.0, 4.0, 0.0, 98.0], "5": [22.2, 3.2, 2.0, 0.0, 59.2]}, "raw_fmt": {"1": ["53.7", "3.7", "1.67", "0.0%", "$54.7k"], "2": ["42.0", "3.1", "3.6", "20.0%", "$102.2k"], "3": ["44.0", "2.3", "2.33", "0.0%", "$66.3k"], "4": ["45.0", "4.0", "4.0", "0.0%", "$98.0k"], "5": ["22.2", "3.2", "2.0", "0.0%", "$59.2k"]}, "sizes": {"1": 3, "2": 10, "3": 3, "4": 1, "5": 4}, "cavg": [40.3, 3.1, 2.86, 9.5, 81.9], "cavg_fmt": ["40.3", "3.1", "2.86", "9.5%", "$81.9k"]}, "2020": {"norm": {"1": [0.353, 0.722, 0.244, 0.316, 0.247], "2": [0.673, 0.652, 0.827, 0.898, 0.868], "3": [1.0, 1.0, 0.445, 0.2, 0.371], "4": [0.767, 0.722, 1.0, 1.0, 1.0], "5": [0.2, 0.2, 0.2, 0.342, 0.2]}, "raw": {"1": [28.3, 3.2, 3.0, 9.1, 76.7], "2": [48.2, 3.0, 4.45, 54.5, 118.1], "3": [68.5, 4.0, 3.5, 0.0, 85.0], "4": [54.0, 3.2, 4.88, 62.5, 126.9], "5": [18.8, 1.7, 2.89, 11.1, 73.6]}, "raw_fmt": {"1": ["28.3", "3.2", "3.0", "9.1%", "$76.7k"], "2": ["48.2", "3.0", "4.45", "54.5%", "$118.1k"], "3": ["68.5", "4.0", "3.5", "0.0%", "$85.0k"], "4": ["54.0", "3.2", "4.88", "62.5%", "$126.9k"], "5": ["18.8", "1.7", "2.89", "11.1%", "$73.6k"]}, "sizes": {"1": 11, "2": 11, "3": 2, "4": 8, "5": 9}, "cavg": [39.0, 2.9, 3.76, 31.7, 97.3], "cavg_fmt": ["39.0", "2.9", "3.76", "31.7%", "$97.3k"]}};
+const CLUSTER_COLORS = {"1": "#B8860B", "2": "#4A9EDB", "3": "#0057D9", "4": "#6BA888", "5": "#A0A8B8"};
+const CLUSTER_LABELS = {"1": "C1 \u00b7 Academic Ladder Climber", "2": "C2 \u00b7 Working Student", "3": "C3 \u00b7 Certification Builder", "4": "C4 \u00b7 Self-Skill Builder", "5": "C5 \u00b7 Core Graduate"};
+const SPOKE_LABELS   = ["Skills count", "Jobs held", "Max seniority", "Exec attainment", "Max salary"];
+const FLOOR = 0.2, CEIL = 1.0;
+const DEFAULT_YEARS  = [2011,2012,2013,2014,2015,2016,2017,2018,2019,2020];
+let activeYears = new Set(DEFAULT_YEARS);
+let currentMerged = null;
+let selectedCluster = null;
+
+function hexToRgba(hex, alpha) {
+    const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+    return `rgba(${r},${g},${b},${alpha})`;
+}
+function getPlotDiv() { return document.querySelector('.plotly-graph-div'); }
+
+document.addEventListener('click', e => {
+    if (!document.getElementById('ddWrap').contains(e.target))
+        document.getElementById('ddMenu').classList.remove('open');
+});
+function toggleDropdown() { document.getElementById('ddMenu').classList.toggle('open'); }
+function onYearCheck(cb) {
+    const yr = parseInt(cb.value);
+    if (cb.checked) activeYears.add(yr); else activeYears.delete(yr);
+    if (selectedCluster !== null) closeDetail();
+    updateChart();
+}
+
+function mergeDatasets(years) {
+    const sorted = [...years].sort((a,b) => a-b);
+    const merged = {};
+    let totN_all = 0;
+    let totSkills = 0, totJobs = 0, totSen = 0, totExec = 0, totSal = 0;
+
+    for (let c = 1; c <= 5; c++) {
+        const cs = String(c);
+        let sumN=0, tSk=0, tJ=0, tS=0, tE=0, tSal=0;
+        sorted.forEach(yr => {
+            const d = ALL_DATASETS[String(yr)]; if (!d) return;
+            const n = d.sizes[cs]||0, fmt = d.raw_fmt[cs];
+            sumN += n;
+            tSk  += parseFloat(fmt[0])*n;
+            tJ   += parseFloat(fmt[1])*n;
+            tS   += parseFloat(fmt[2])*n;
+            tE   += parseFloat(fmt[3])*n;
+            tSal += parseFloat(fmt[4].replace('$','').replace('k',''))*n;
+        });
+        const n = sumN||1;
+        merged[cs] = {
+            n: sumN,
+            raw: [tSk/n, tJ/n, tS/n, tE/n, tSal/n],
+            fmt: [(tSk/n).toFixed(1),(tJ/n).toFixed(1),(tS/n).toFixed(2),
+                  (tE/n).toFixed(1)+'%','$'+(tSal/n).toFixed(1)+'k'],
+        };
+        totN_all += sumN;
+        totSkills += tSk; totJobs += tJ; totSen += tS; totExec += tE; totSal += tSal;
+    }
+
+    const nA = totN_all || 1;
+    merged['cavg']     = [totSkills/nA, totJobs/nA, totSen/nA, totExec/nA, totSal/nA];
+    merged['cavg_fmt'] = [(totSkills/nA).toFixed(1),(totJobs/nA).toFixed(1),(totSen/nA).toFixed(2),
+                          (totExec/nA).toFixed(1)+'%','$'+(totSal/nA).toFixed(1)+'k'];
+
+    const mins=Array(5).fill(Infinity), maxs=Array(5).fill(-Infinity);
+    for (let c=1;c<=5;c++) merged[String(c)].raw.forEach((v,i) => {
+        mins[i]=Math.min(mins[i],v); maxs[i]=Math.max(maxs[i],v);
+    });
+    for (let c=1;c<=5;c++) {
+        const cs=String(c);
+        merged[cs].norm = merged[cs].raw.map((v,i) =>
+            maxs[i]!==mins[i] ? Math.round((FLOOR+((v-mins[i])/(maxs[i]-mins[i]))*(CEIL-FLOOR))*1000)/1000 : FLOOR
+        );
+    }
+    return merged;
+}
+
+function updateChart() {
+    const years = [...activeYears];
+    if (years.length === 0) {
+        document.getElementById('cohort-meta').textContent = '(no years selected)';
+        document.getElementById('cohort-label-val').textContent = '—';
+        return;
+    }
+    const isDefault = years.length===10 && DEFAULT_YEARS.every(y => years.includes(y));
+    let merged;
+    if (isDefault) {
+        const d = ALL_DATASETS['2011-2020'];
+        merged = {};
+        for (let c=1;c<=5;c++) {
+            const cs=String(c);
+            merged[cs] = { n:d.sizes[cs], raw:d.raw[cs], fmt:d.raw_fmt[cs], norm:d.norm[cs] };
+        }
+        merged['cavg']     = d.cavg;
+        merged['cavg_fmt'] = d.cavg_fmt;
+    } else {
+        merged = mergeDatasets(years);
+    }
+    currentMerged = merged;
+
+    let totalN = 0;
+    for (let c=1;c<=5;c++) totalN += (merged[String(c)].n||0);
+    const safeTotal = totalN || 1;
+
+    const plotDiv=getPlotDiv(), traces=[];
+    for (let c=1;c<=5;c++) {
+        const cs=String(c), m=merged[cs];
+        const col=CLUSTER_COLORS[cs], lbl=CLUSTER_LABELS[cs];
+        const normArr = Array.isArray(m.norm) ? m.norm : Object.values(m.norm);
+        const fmt     = m.fmt||m.raw_fmt;
+        const tooltip = SPOKE_LABELS.map((sp,i) => `<b>${lbl}</b><br>${sp}: <b>${fmt[i]}</b>`);
+        tooltip.push(tooltip[0]);
+        traces.push({
+            type:'scatterpolar', r:[...normArr,normArr[0]], theta:[...SPOKE_LABELS,SPOKE_LABELS[0]],
+            fill:'toself', fillcolor:hexToRgba(col,0.12),
+            line:{color:col,width:2.5},
+            marker:{size:14,color:col,line:{width:2.5,color:'#1a1a2e'},symbol:'circle'},
+            name:`${lbl} (n=${m.n||0})`,
+            text:tooltip, hovertemplate:'%{text}<extra></extra>', hoveron:'points',
+            customdata: Array(SPOKE_LABELS.length+1).fill(c),
+        });
+        const pct = ((m.n||0) / safeTotal * 100).toFixed(1);
+        document.getElementById(`sc-n${c}`).textContent = `n=${m.n||0} · ${pct}%`;
+        document.getElementById(`sc-s${c}`).textContent = fmt[2];
+        document.getElementById(`sc-e${c}`).textContent = fmt[3];
+        document.getElementById(`sc-m${c}`).textContent = fmt[4];
+    }
+    Plotly.react(plotDiv, traces, plotDiv.layout);
+
+    plotDiv.removeAllListeners && plotDiv.removeAllListeners('plotly_legendclick');
+    plotDiv.on('plotly_legendclick', function(ev) {
+        const c = ev.curveNumber + 1;
+        openDetail(c);
+        return false;
+    });
+
+    const sorted = years.sort((a,b)=>a-b);
+    const labelVal = isDefault ? '2011–2020'
+        : sorted.length===1 ? String(sorted[0])
+        : sorted[0]+'–'+sorted[sorted.length-1]
+          +(sorted.length<(sorted[sorted.length-1]-sorted[0]+1) ? ` (${sorted.length} yrs)` : '');
+    document.getElementById('cohort-label-val').textContent = labelVal;
+    document.getElementById('cohort-meta').textContent =
+        `(n=${totalN} with dated jobs  ·  5-yr trajectory)`;
+}
+
+function fmtVal(idx, v) {
+    if (idx === 0) return v.toFixed(1);
+    if (idx === 1) return v.toFixed(1);
+    if (idx === 2) return v.toFixed(2);
+    if (idx === 3) return v.toFixed(1) + '%';
+    if (idx === 4) return '$' + v.toFixed(1) + 'k';
+    return String(v);
+}
+
+function openDetail(c) {
+    if (!currentMerged) return;
+    selectedCluster = c;
+    const cs = String(c);
+    const m  = currentMerged[cs];
+    if (!m) return;
+    const info = {
+        1:{col:'#B8860B', name:'C1 · Academic Ladder Climber'},
+        2:{col:'#4A9EDB', name:'C2 · Working Student'},
+        3:{col:'#0057D9', name:'C3 · Certification Builder'},
+        4:{col:'#6BA888', name:'C4 · Self-Skill Builder'},
+        5:{col:'#A0A8B8', name:'C5 · Core Graduate'},
+    }[c];
+    const rawArr = Array.isArray(m.raw) ? m.raw : Object.values(m.raw);
+    const cavg   = currentMerged.cavg;
+
+    let totalN = 0;
+    for (let k=1;k<=5;k++) totalN += (currentMerged[String(k)].n||0);
+    const pct = ((m.n||0) / (totalN||1) * 100).toFixed(1);
+
+    document.getElementById('detailTitle').textContent = info.name;
+    document.getElementById('detailN').textContent = `n=${m.n} · ${pct}% of cohort`;
+    document.getElementById('detailSwatch').style.background = info.col;
+
+    const grid = document.getElementById('barGrid');
+    grid.innerHTML = '';
+    for (let i = 0; i < SPOKE_LABELS.length; i++) {
+        const clusterVal = rawArr[i];
+        const avgVal     = cavg[i];
+        const maxRef = Math.max(clusterVal, avgVal, 0.01);
+        const scaleMax = maxRef * 1.25;
+        const pctFill = Math.min(100, (clusterVal / scaleMax) * 100);
+        const pctAvg  = Math.min(100, (avgVal / scaleMax) * 100);
+
+        grid.insertAdjacentHTML('beforeend', `
+            <div class="bar-label">${SPOKE_LABELS[i]}</div>
+            <div class="bar-track">
+                <div class="bar-fill" style="width:${pctFill}%; background:${info.col};"></div>
+                <div class="bar-avg"  style="left:calc(${pctAvg}% - 1px);"></div>
+            </div>
+            <div class="bar-value" style="color:${info.col};">${fmtVal(i, clusterVal)}</div>
+            <div class="bar-avg-label">avg ${fmtVal(i, avgVal)}</div>
+        `);
+    }
+
+    document.getElementById('chartContainer').classList.add('hidden');
+    document.getElementById('detailView').classList.add('open');
+}
+
+function closeDetail() {
+    selectedCluster = null;
+    document.getElementById('chartContainer').classList.remove('hidden');
+    document.getElementById('detailView').classList.remove('open');
+    const plotDiv = getPlotDiv();
+    if (plotDiv) Plotly.Plots.resize(plotDiv);
+}
+
+document.querySelectorAll('.sc').forEach(card => {
+    card.addEventListener('click', () => {
+        const c = parseInt(card.getAttribute('data-cluster'));
+        openDetail(c);
+    });
+});
+
+window.addEventListener('load', () => { updateChart(); });
+</script>
+</body>
+</html>

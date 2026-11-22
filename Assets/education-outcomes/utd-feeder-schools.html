@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><title>Chart 2 — Feeder HS</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  body{font-family:'DM Sans',sans-serif;background:#E8EBF0;color:#1A2B45;margin:0;padding:24px;}
+  .chart-card{position:relative;background:#F8F9FB;border-radius:14px;padding:28px;box-shadow:0 2px 16px rgba(27,79,138,0.08);max-width:1100px;margin:0 auto;}
+  .view{display:none;}.view.active{display:block;}
+  .chart-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;margin-bottom:22px;}
+  .chart-header h2{font-family:'DM Serif Display',serif;font-size:20px;color:#1A2B45;margin:0;}
+  .chart-header p{font-size:13px;color:#5A7090;margin:4px 0 0;}
+  .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .toggle-btn{font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;border:1.5px solid #DDE3EC;background:#fff;color:#5A7090;cursor:pointer;transition:all .15s;font-family:inherit;}
+  .toggle-btn.active{background:#1B4F8A;color:#fff;border-color:#1B4F8A;}
+  .other-pill{font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;border:1.5px solid #6B7BAD;background:#fff;color:#6B7BAD;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s;font-family:inherit;}
+  .other-pill.active{background:#6B7BAD;color:#fff;}
+  .multi-wrap{position:relative;}
+  .multi-btn{font-size:12px;font-weight:600;padding:6px 28px 6px 12px;border-radius:20px;border:1.5px solid #DDE3EC;background:#fff;color:#1A2B45;cursor:pointer;font-family:inherit;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%235A7090'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 10px center;}
+  .multi-drop{position:absolute;top:calc(100% + 6px);right:0;background:#fff;border:1.5px solid #DDE3EC;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,0.13);min-width:220px;padding:6px 0;display:none;max-height:320px;overflow-y:auto;z-index:300;}
+  .multi-drop.open{display:block;}
+  .multi-hdr{position:sticky;top:0;background:#fff;padding:8px 14px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#5A7090;font-weight:600;border-bottom:1px solid #DDE3EC;display:flex;justify-content:space-between;align-items:center;}
+  .multi-hdr button{font-size:11px;border:none;background:none;color:#3A8DC5;cursor:pointer;font-weight:600;font-family:inherit;}
+  .multi-item{display:flex;align-items:center;gap:10px;padding:7px 14px;cursor:pointer;font-size:12.5px;}
+  .multi-item:hover{background:#f0f4f9;}
+  .multi-item input{accent-color:#1B4F8A;cursor:pointer;}
+  .back-btn{font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;border:1.5px solid #DDE3EC;background:#fff;color:#5A7090;cursor:pointer;display:inline-flex;align-items:center;gap:6px;margin-bottom:16px;font-family:inherit;}
+  .back-btn:hover{background:#f0f4f9;}
+  .banner-pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+  .bpill{font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1.5px solid;}
+  .stat-row{display:flex;gap:12px;margin-bottom:18px;}
+  .stat{background:#F0F4F8;border-radius:10px;padding:10px 14px;flex:1;text-align:center;}
+  .stat-val{font-size:20px;font-weight:700;line-height:1;margin-bottom:4px;}
+  .stat-lbl{font-size:10px;color:#5A7090;text-transform:uppercase;letter-spacing:0.05em;}
+  .fh-row{display:flex;align-items:center;gap:10px;margin-bottom:5px;}
+  .fh-label{font-size:12px;font-weight:600;color:#1A2B45;width:36px;text-align:right;flex-shrink:0;}
+  .fh-bar{display:flex;height:28px;flex:1;border-radius:3px;overflow:hidden;}
+  .fh-seg{height:100%;display:flex;align-items:center;justify-content:center;transition:opacity .12s;}
+  .fh-seg:hover{opacity:0.78;}
+  .fh-seg.clickable{cursor:pointer;}
+  .fh-seg span{font-size:9px;font-weight:600;pointer-events:none;}
+  .fh-n{font-size:11px;color:#5A7090;width:44px;flex-shrink:0;}
+  .canvas-wrap{position:relative;height:560px;}
+  .legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:1px solid #DDE3EC;}
+  .legend-note{font-size:10px;color:#9A9890;margin-top:4px;width:100%;}
+  .legend-item{display:flex;align-items:center;gap:7px;font-size:11.5px;color:#5A7090;}
+  .legend-dot{width:11px;height:11px;border-radius:3px;border:1px solid rgba(0,0,0,0.05);}
+  .tt{position:fixed;background:#1A2B45;color:#fff;font-size:11px;padding:6px 10px;border-radius:6px;pointer-events:none;white-space:nowrap;z-index:9999;display:none;}
+  .tbl-wrap{max-height:420px;overflow-y:auto;border:1px solid #DDE3EC;border-radius:10px;margin-top:4px;}
+  .tbl{width:100%;border-collapse:collapse;font-size:11px;}
+  .tbl th{position:sticky;top:0;background:#F0F4F8;padding:7px 10px;font-size:10px;font-weight:700;color:#5A7090;text-align:left;border-bottom:1px solid #DDE3EC;white-space:nowrap;}
+  .tbl th.c{text-align:center;}
+  .tbl td{padding:6px 10px;border-bottom:0.5px solid #EEF0F4;color:#1A2B45;}
+  .tbl td.n{text-align:center;color:#7A8A9A;}
+  .tbl tr:hover td{background:#F8F9FB;}
+</style><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><style>
+html{color-scheme:light}body{margin:0!important;padding:12px!important;background:#fff!important;color:#142c44}button,select,input{font:inherit}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #1755c5;outline-offset:2px}.chart-card,.panel{margin:0!important;max-width:none!important}.chart-card{padding:12px!important;box-shadow:none!important}.plotly-graph-div{max-width:100%}.table-responsive,.states-table-wrap{overflow:auto}
+@media(max-width:600px){body{padding:6px!important}.chart-card{padding:8px!important}.layout-row{display:block!important}.stat-panel{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px!important}.controls{flex-wrap:wrap}.timeline-ticks{font-size:8px!important}}
+</style></head><body>
+<div class="chart-card">
+<div class="tt" id="tt"></div>
+
+<!-- ── VIEW 1: Main feeder HS chart ──────────────────────────────────────── -->
+<div class="view active" id="v1">
+  <div class="chart-header">
+    <div>
+      <h2>Which high schools feed UTD's BS Finance program over time?</h2>
+      <p>n = total grads from top 15 feeder schools and private schools combined · 2015–2025 default</p>
+    </div>
+    <div class="controls">
+      <div class="multi-wrap">
+        <button class="multi-btn" id="oldBtn">See Older Cohorts ▾</button>
+        <div class="multi-drop" id="oldDrop">
+          <div class="multi-hdr"><span>2000–2014 Cohorts</span>
+            <div style="display:flex;gap:8px;"><button id="oldAll">All</button><button id="oldNone">None</button></div>
+          </div>
+          <div id="oldItems"></div>
+        </div>
+      </div>
+      <button class="toggle-btn active" id="pctBtn">% Share</button>
+      <button class="toggle-btn" id="cntBtn">Raw Count</button>
+      
+    </div>
+  </div>
+  <div class="canvas-wrap"><canvas id="chartHS"></canvas></div>
+  <div class="legend" id="legend">
+    <div class="legend-note">n = total grads from top 15 feeder schools and private schools combined · remaining grads from other public schools not shown here</div>
+  </div>
+</div>
+
+</div>
+<script>
+const DATA_NEW   = {"2015": {"total": 15, "top15_total": 6, "denom": 8, "counts": {"Plano West Senior High School": 1, "Coppell High School": 0, "Plano East Senior High School": 2, "Allen High School": 0, "Liberty High School": 2, "Hebron High School": 0, "Plano Senior High School": 0, "Independence High School": 0, "Westwood High School": 1, "Centennial High School": 0, "Naaman Forest High School": 0, "Highland Park High School": 0, "Flower Mound High School": 0, "Richardson High School": 0, "Frisco High School": 0, "Private Schools": 2}, "pcts": {"Plano West Senior High School": 12.5, "Coppell High School": 0.0, "Plano East Senior High School": 25.0, "Allen High School": 0.0, "Liberty High School": 25.0, "Hebron High School": 0.0, "Plano Senior High School": 0.0, "Independence High School": 0.0, "Westwood High School": 12.5, "Centennial High School": 0.0, "Naaman Forest High School": 0.0, "Highland Park High School": 0.0, "Flower Mound High School": 0.0, "Richardson High School": 0.0, "Frisco High School": 0.0, "Private Schools": 25.0}}, "2016": {"total": 22, "top15_total": 9, "denom": 10, "counts": {"Plano West Senior High School": 1, "Coppell High School": 1, "Plano East Senior High School": 1, "Allen High School": 1, "Liberty High School": 0, "Hebron High School": 1, "Plano Senior High School": 2, "Independence High School": 0, "Westwood High School": 0, "Centennial High School": 0, "Naaman Forest High School": 1, "Highland Park High School": 0, "Flower Mound High School": 0, "Richardson High School": 0, "Frisco High School": 1, "Private Schools": 1}, "pcts": {"Plano West Senior High School": 10.0, "Coppell High School": 10.0, "Plano East Senior High School": 10.0, "Allen High School": 10.0, "Liberty High School": 0.0, "Hebron High School": 10.0, "Plano Senior High School": 20.0, "Independence High School": 0.0, "Westwood High School": 0.0, "Centennial High School": 0.0, "Naaman Forest High School": 10.0, "Highland Park High School": 0.0, "Flower Mound High School": 0.0, "Richardson High School": 0.0, "Frisco High School": 10.0, "Private Schools": 10.0}}, "2017": {"total": 27, "top15_total": 8, "denom": 10, "counts": {"Plano West Senior High School": 0, "Coppell High School": 1, "Plano East Senior High School": 0, "Allen High School": 5, "Liberty High School": 0, "Hebron High School": 1, "Plano Senior High School": 1, "Independence High School": 0, "Westwood High School": 0, "Centennial High School": 0, "Naaman Forest High School": 0, "Highland Park High School": 0, "Flower Mound High School": 0, "Richardson High School": 0, "Frisco High School": 0, "Private Schools": 2}, "pcts": {"Plano West Senior High School": 0.0, "Coppell High School": 10.0, "Plano East Senior High School": 0.0, "Allen High School": 50.0, "Liberty High School": 0.0, "Hebron High School": 10.0, "Plano Senior High School": 10.0, "Independence High School": 0.0, "Westwood High School": 0.0, "Centennial High School": 0.0, "Naaman Forest High School": 0.0, "Highland Park High School": 0.0, "Flower Mound High School": 0.0, "Richardson High School": 0.0, "Frisco High School": 0.0, "Private Schools": 20.0}}, "2018": {"total": 34, "top15_total": 15, "denom": 16, "counts": {"Plano West Senior High School": 0, "Coppell High School": 0, "Plano East Senior High School": 3, "Allen High School": 2, "Liberty High School": 2, "Hebron High School": 1, "Plano Senior High School": 4, "Independence High School": 0, "Westwood High School": 2, "Centennial High School": 0, "Naaman Forest High School": 0, "Highland Park High School": 1, "Flower Mound High School": 0, "Richardson High School": 0, "Frisco High School": 0, "Private Schools": 1}, "pcts": {"Plano West Senior High School": 0.0, "Coppell High School": 0.0, "Plano East Senior High School": 18.8, "Allen High School": 12.5, "Liberty High School": 12.5, "Hebron High School": 6.2, "Plano Senior High School": 25.0, "Independence High School": 0.0, "Westwood High School": 12.5, "Centennial High School": 0.0, "Naaman Forest High School": 0.0, "Highland Park High School": 6.2, "Flower Mound High School": 0.0, "Richardson High School": 0.0, "Frisco High School": 0.0, "Private Schools": 6.2}}, "2019": {"total": 17, "top15_total": 8, "denom": 8, "counts": {"Plano West Senior High School": 0, "Coppell High School": 2, "Plano East Senior High School": 1, "Allen High School": 0, "Liberty High School": 1, "Hebron High School": 0, "Plano Senior High School": 0, "Independence High School": 0, "Westwood High School": 1, "Centennial High School": 0, "Naaman Forest High School": 1, "Highland Park High School": 0, "Flower Mound High School": 0, "Richardson High School": 1, "Frisco High School": 1, "Private Schools": 0}, "pcts": {"Plano West Senior High School": 0.0, "Coppell High School": 25.0, "Plano East Senior High School": 12.5, "Allen High School": 0.0, "Liberty High School": 12.5, "Hebron High School": 0.0, "Plano Senior High School": 0.0, "Independence High School": 0.0, "Westwood High School": 12.5, "Centennial High School": 0.0, "Naaman Forest High School": 12.5, "Highland Park High School": 0.0, "Flower Mound High School": 0.0, "Richardson High School": 12.5, "Frisco High School": 12.5, "Private Schools": 0.0}}, "2020": {"total": 43, "top15_total": 14, "denom": 15, "counts": {"Plano West Senior High School": 3, "Coppell High School": 1, "Plano East Senior High School": 3, "Allen High School": 4, "Liberty High School": 1, "Hebron High School": 0, "Plano Senior High School": 0, "Independence High School": 1, "Westwood High School": 1, "Centennial High School": 0, "Naaman Forest High School": 0, "Highland Park High School": 0, "Flower Mound High School": 0, "Richardson High School": 0, "Frisco High School": 0, "Private Schools": 1}, "pcts": {"Plano West Senior High School": 20.0, "Coppell High School": 6.7, "Plano East Senior High School": 20.0, "Allen High School": 26.7, "Liberty High School": 6.7, "Hebron High School": 0.0, "Plano Senior High School": 0.0, "Independence High School": 6.7, "Westwood High School": 6.7, "Centennial High School": 0.0, "Naaman Forest High School": 0.0, "Highland Park High School": 0.0, "Flower Mound High School": 0.0, "Richardson High School": 0.0, "Frisco High School": 0.0, "Private Schools": 6.7}}, "2021": {"total": 53, "top15_total": 22, "denom": 25, "counts": {"Plano West Senior High School": 4, "Coppell High School": 5, "Plano East Senior High School": 4, "Allen High School": 0, "Liberty High School": 1, "Hebron High School": 3, "Plano Senior High School": 4, "Independence High School": 0, "Westwood High School": 0, "Centennial High School": 0, "Naaman Forest High School": 0, "Highland Park High School": 0, "Flower Mound High School": 0, "Richardson High School": 0, "Frisco High School": 1, "Private Schools": 3}, "pcts": {"Plano West Senior High School": 16.0, "Coppell High School": 20.0, "Plano East Senior High School": 16.0, "Allen High School": 0.0, "Liberty High School": 4.0, "Hebron High School": 12.0, "Plano Senior High School": 16.0, "Independence High School": 0.0, "Westwood High School": 0.0, "Centennial High School": 0.0, "Naaman Forest High School": 0.0, "Highland Park High School": 0.0, "Flower Mound High School": 0.0, "Richardson High School": 0.0, "Frisco High School": 4.0, "Private Schools": 12.0}}, "2022": {"total": 70, "top15_total": 32, "denom": 36, "counts": {"Plano West Senior High School": 5, "Coppell High School": 2, "Plano East Senior High School": 4, "Allen High School": 2, "Liberty High School": 2, "Hebron High School": 2, "Plano Senior High School": 0, "Independence High School": 6, "Westwood High School": 2, "Centennial High School": 0, "Naaman Forest High School": 2, "Highland Park High School": 1, "Flower Mound High School": 1, "Richardson High School": 0, "Frisco High School": 3, "Private Schools": 4}, "pcts": {"Plano West Senior High School": 13.9, "Coppell High School": 5.6, "Plano East Senior High School": 11.1, "Allen High School": 5.6, "Liberty High School": 5.6, "Hebron High School": 5.6, "Plano Senior High School": 0.0, "Independence High School": 16.7, "Westwood High School": 5.6, "Centennial High School": 0.0, "Naaman Forest High School": 5.6, "Highland Park High School": 2.8, "Flower Mound High School": 2.8, "Richardson High School": 0.0, "Frisco High School": 8.3, "Private Schools": 11.1}}, "2023": {"total": 87, "top15_total": 43, "denom": 45, "counts": {"Plano West Senior High School": 10, "Coppell High School": 10, "Plano East Senior High School": 2, "Allen High School": 4, "Liberty High School": 4, "Hebron High School": 2, "Plano Senior High School": 1, "Independence High School": 3, "Westwood High School": 1, "Centennial High School": 1, "Naaman Forest High School": 0, "Highland Park High School": 2, "Flower Mound High School": 3, "Richardson High School": 0, "Frisco High School": 0, "Private Schools": 2}, "pcts": {"Plano West Senior High School": 22.2, "Coppell High School": 22.2, "Plano East Senior High School": 4.4, "Allen High School": 8.9, "Liberty High School": 8.9, "Hebron High School": 4.4, "Plano Senior High School": 2.2, "Independence High School": 6.7, "Westwood High School": 2.2, "Centennial High School": 2.2, "Naaman Forest High School": 0.0, "Highland Park High School": 4.4, "Flower Mound High School": 6.7, "Richardson High School": 0.0, "Frisco High School": 0.0, "Private Schools": 4.4}}, "2024": {"total": 94, "top15_total": 44, "denom": 47, "counts": {"Plano West Senior High School": 5, "Coppell High School": 4, "Plano East Senior High School": 2, "Allen High School": 4, "Liberty High School": 6, "Hebron High School": 4, "Plano Senior High School": 1, "Independence High School": 1, "Westwood High School": 1, "Centennial High School": 3, "Naaman Forest High School": 3, "Highland Park High School": 2, "Flower Mound High School": 2, "Richardson High School": 5, "Frisco High School": 1, "Private Schools": 3}, "pcts": {"Plano West Senior High School": 10.6, "Coppell High School": 8.5, "Plano East Senior High School": 4.3, "Allen High School": 8.5, "Liberty High School": 12.8, "Hebron High School": 8.5, "Plano Senior High School": 2.1, "Independence High School": 2.1, "Westwood High School": 2.1, "Centennial High School": 6.4, "Naaman Forest High School": 6.4, "Highland Park High School": 4.3, "Flower Mound High School": 4.3, "Richardson High School": 10.6, "Frisco High School": 2.1, "Private Schools": 6.4}}, "2025": {"total": 112, "top15_total": 50, "denom": 52, "counts": {"Plano West Senior High School": 6, "Coppell High School": 7, "Plano East Senior High School": 8, "Allen High School": 5, "Liberty High School": 0, "Hebron High School": 3, "Plano Senior High School": 1, "Independence High School": 2, "Westwood High School": 4, "Centennial High School": 6, "Naaman Forest High School": 2, "Highland Park High School": 3, "Flower Mound High School": 2, "Richardson High School": 1, "Frisco High School": 0, "Private Schools": 2}, "pcts": {"Plano West Senior High School": 11.5, "Coppell High School": 13.5, "Plano East Senior High School": 15.4, "Allen High School": 9.6, "Liberty High School": 0.0, "Hebron High School": 5.8, "Plano Senior High School": 1.9, "Independence High School": 3.8, "Westwood High School": 7.7, "Centennial High School": 11.5, "Naaman Forest High School": 3.8, "Highland Park High School": 5.8, "Flower Mound High School": 3.8, "Richardson High School": 1.9, "Frisco High School": 0.0, "Private Schools": 3.8}}};
+const DATA_OLD   = {"2000": {"total": 2, "top15_total": 0, "denom": 1, "counts": {"Plano West Senior High School": 0, "Coppell High School": 0, "Plano East Senior High School": 0, "Allen High School": 0, "Liberty High School": 0, "Hebron High School": 0, "Plano Senior High School": 0, "Independence High School": 0, "Westwood High School": 0, "Centennial High School": 0, "Naaman Forest High School": 0, "Highland Park High School": 0, "Flower Mound High School": 0, "Richardson High School": 0, "Frisco High School": 0, "Private Schools": 1}, "pcts": {"Plano West Senior High School": 0.0, "Coppell High School": 0.0, "Plano East Senior High School": 0.0, "Allen High School": 0.0, "Liberty High School": 0.0, "Hebron High School": 0.0, "Plano Senior High School": 0.0, "Independence High School": 0.0, "Westwood High School": 0.0, "Centennial High School": 0.0, "Naaman Forest High School": 0.0, "Highland Park High School": 0.0, "Flower Mound High School": 0.0, "Richardson High School": 0.0, "Frisco High School": 0.0, "Private Schools": 100.0}}, "2001": {"total": 3, "top15_total": 1, "denom": 1, "counts": {"Plano West Senior High School": 0, "Coppell High School": 0, "Plano East Senior High School": 0, "Allen High School": 0, "Liberty High School": 0, "Hebron High School": 0, "Plano Senior High School": 1, "Independence High School": 0, "Westwood High School": 0, "Centennial High School": 0, "Naaman Forest High School": 0, "Highland Park High School": 0, "Flower Mound High School": 0, "Richardson High School": 0, "Frisco High School": 0, "Private Schools": 0}, "pcts": {"Plano West Senior High School": 0.0, "Coppell High School": 0.0, "Plano East Senior High School": 0.0, "Allen High School": 0.0, "Liberty High School": 0.0, "Hebron High School": 0.0, "Plano Senior High School": 100.0, "Independence High School": 0.0, "Westwood High School": 0.0, "Centennial High School": 0.0, "Naaman Forest High School": 0.0, "Highland Park High School": 0.0, "Flower Mound High School": 0.0, "Richardson High School": 0.0, "Frisco High School": 0.0, "Private Schools": 0.0}}, "2002": {"total": 2, "top15_total": 0, "denom": 0, "counts": {"Plano West Senior High School": 0, "Coppell High School": 0, "Plano East Senior High School": 0, "Allen High School": 0, "Liberty High School": 0, "Hebron High School": 0, "Plano Senior High School": 0, "Independence High School": 0, "Westwood High School": 0, "Centennial High School": 0, "Naaman Forest High School": 0, "Highland Park High School": 0, "Flower Mound High School": 0, "Richardson High School": 0, "Frisco High School": 0, "Private Schools": 0}, "pcts": {"Plano West Senior High School": 0.0, "Coppell High School": 0.0, "Plano East Senior High School": 0.0, "Allen High School": 0.0, "Liberty High School": 0.0, "Hebron High School": 0.0, "Plano Senior High School": 0.0, "Independence High School": 0.0, "Westwood High School": 0.0, "Centennial High School": 0.0, "Naaman Forest High School": 0.0, "Highland Park High School": 0.0, "Flower Mound High School": 0.0, "Richardson High School": 0.0, "Frisco High School": 0.0, "Private Schools": 0.0}}, "2003": {"total": 6, "top15_total": 0, "denom": 1, "counts": {"Plano West Senior High School": 0, "Coppell High School": 0, "Plano East Senior High School": 0, "Allen High School": 0, "Liberty High School": 0, "Hebron High School": 0, "Plano Senior High School": 0, "Independence High School": 0, "Westwood High School": 0, "Centennial High School": 0, "Naaman Forest High School": 0, "Highland Park High School": 0, "Flower Mound High School": 0, "Richardson High School": 0, "Frisco High School": 0, "Private Schools": 1}, "pcts": {"Plano West Senior High School": 0.0, "Coppell High School": 0.0, "Plano East Senior High School": 0.0, "Allen High School": 0.0, "Liberty High School": 0.0, "Hebron High School": 0.0, "Plano Senior High School": 0.0, "Independence High School": 0.0, "Westwood High School": 0.0, "Centennial High School": 0.0, "Naaman Forest High School": 0.0, "Highland Park High School": 0.0, "Flower Mound High School": 0.0, "Richardson High School": 0.0, "Frisco High School": 0.0, "Private Schools": 100.0}}, "2004": {"total": 2, "top15_total": 0, "denom": 0, "counts": {"Plano West Senior High School": 0, "Coppell High School": 0, "Plano East Senior High School": 0, "Allen High School": 0, "Liberty High School": 0, "Hebron High School": 0, "Plano Senior High School": 0, "Independence High School": 0, "Westwood High School": 0, "Centennial High School": 0, "Naaman Forest High School": 0, "Highland Park High School": 0, "Flower Mound High School": 0, "Richardson High School": 0, "Frisco High School": 0, "Private Schools": 0}, "pcts": {"Plano West Senior High School": 0.0, "Coppell High School": 0.0, "Plano East Senior High School": 0.0, "Allen High School": 0.0, "Liberty High School": 0.0, "Hebron High School": 0.0, "Plano Senior High School": 0.0, "Independence High School": 0.0, "Westwood High School": 0.0, "Centennial High School": 0.0, "Naaman Forest High School": 0.0, "Highland Park High School": 0.0, "Flower Mound High School": 0.0, "Richardson High School": 0.0, "Frisco High School": 0.0, "Private Schools": 0.0}}, "2005": {"total": 4, "top15_total": 2, "denom": 2, "counts": {"Plano West Senior High School": 0, "Coppell High School": 0, "Plano East Senior High School": 1, "Allen High School": 0, "Liberty High School": 0, "Hebron High School": 0, "Plano Senior High School": 0, "Independence High School": 0, "Westwood High School": 0, "Centennial High School": 0, "Naaman Forest High School": 0, "Highland Park High School": 0, "Flower Mound High School": 0, "Richardson High School": 1, "Frisco High School": 0, "Private Schools": 0}, "pcts": {"Plano West Senior High School": 0.0, "Coppell High School": 0.0, "Plano East Senior High School": 50.0, "Allen High School": 0.0, "Liberty High School": 0.0, "Hebron High School": 0.0, "Plano Senior High School": 0.0, "Independence High School": 0.0, "Westwood High School": 0.0, "Centennial High School": 0.0, "Naaman Forest High School": 0.0, "Highland Park High School": 0.0, "Flower Mound High School": 0.0, "Richardson High School": 50.0, "Frisco High School": 0.0, "Private Schools": 0.0}}, "2006": {"total": 14, "top15_total": 6, "denom": 6, "counts": {"Plano West Senior High School": 0, "Coppell High School": 0, "Plano East Senior High School": 1, "Allen High School": 0, "Liberty High School": 0, "Hebron High School": 0, "Plano Senior High School": 0, "Independence High School": 0, "Westwood High School": 0, "Centennial High School": 0, "Naaman Forest High School": 0, "Highland Park High School": 0, "Flower Mound High School": 2, "Richardson High School": 2, "Frisco High School": 1, "Private Schools": 0}, "pcts": {"Plano West Senior High School": 0.0, "Coppell High School": 0.0, "Plano East Senior High School": 16.7, "Allen High School": 0.0, "Liberty High School": 0.0, "Hebron High School": 0.0, "Plano Senior High School": 0.0, "Independence High School": 0.0, "Westwood High School": 0.0, "Centennial High School": 0.0, "Naaman Forest High School": 0.0, "Highland Park High School": 0.0, "Flower Mound High School": 33.3, "Richardson High School": 33.3, "Frisco High School": 16.7, "Private Schools": 0.0}}, "2007": {"total": 10, "top15_total": 3, "denom": 3, "counts": {"Plano West Senior High School": 1, "Coppell High School": 0, "Plano East Senior High School": 0, "Allen High School": 0, "Liberty High School": 0, "Hebron High School": 0, "Plano Senior High School": 2, "Independence High School": 0, "Westwood High School": 0, "Centennial High School": 0, "Naaman Forest High School": 0, "Highland Park High School": 0, "Flower Mound High School": 0, "Richardson High School": 0, "Frisco High School": 0, "Private Schools": 0}, "pcts": {"Plano West Senior High School": 33.3, "Coppell High School": 0.0, "Plano East Senior High School": 0.0, "Allen High School": 0.0, "Liberty High School": 0.0, "Hebron High School": 0.0, "Plano Senior High School": 66.7, "Independence High School": 0.0, "Westwood High School": 0.0, "Centennial High School": 0.0, "Naaman Forest High School": 0.0, "Highland Park High School": 0.0, "Flower Mound High School": 0.0, "Richardson High School": 0.0, "Frisco High School": 0.0, "Private Schools": 0.0}}, "2008": {"total": 16, "top15_total": 1, "denom": 2, "counts": {"Plano West Senior High School": 0, "Coppell High School": 0, "Plano East Senior High School": 0, "Allen High School": 0, "Liberty High School": 0, "Hebron High School": 0, "Plano Senior High School": 1, "Independence High School": 0, "Westwood High School": 0, "Centennial High School": 0, "Naaman Forest High School": 0, "Highland Park High School": 0, "Flower Mound High School": 0, "Richardson High School": 0, "Frisco High School": 0, "Private Schools": 1}, "pcts": {"Plano West Senior High School": 0.0, "Coppell High School": 0.0, "Plano East Senior High School": 0.0, "Allen High School": 0.0, "Liberty High School": 0.0, "Hebron High School": 0.0, "Plano Senior High School": 50.0, "Independence High School": 0.0, "Westwood High School": 0.0, "Centennial High School": 0.0, "Naaman Forest High School": 0.0, "Highland Park High School": 0.0, "Flower Mound High School": 0.0, "Richardson High School": 0.0, "Frisco High School": 0.0, "Private Schools": 50.0}}, "2009": {"total": 4, "top15_total": 2, "denom": 3, "counts": {"Plano West Senior High School": 0, "Coppell High School": 0, "Plano East Senior High School": 0, "Allen High School": 1, "Liberty High School": 0, "Hebron High School": 0, "Plano Senior High School": 0, "Independence High School": 0, "Westwood High School": 0, "Centennial High School": 0, "Naaman Forest High School": 0, "Highland Park High School": 0, "Flower Mound High School": 0, "Richardson High School": 1, "Frisco High School": 0, "Private Schools": 1}, "pcts": {"Plano West Senior High School": 0.0, "Coppell High School": 0.0, "Plano East Senior High School": 0.0, "Allen High School": 33.3, "Liberty High School": 0.0, "Hebron High School": 0.0, "Plano Senior High School": 0.0, "Independence High School": 0.0, "Westwood High School": 0.0, "Centennial High School": 0.0, "Naaman Forest High School": 0.0, "Highland Park High School": 0.0, "Flower Mound High School": 0.0, "Richardson High School": 33.3, "Frisco High School": 0.0, "Private Schools": 33.3}}, "2010": {"total": 11, "top15_total": 2, "denom": 3, "counts": {"Plano West Senior High School": 0, "Coppell High School": 0, "Plano East Senior High School": 0, "Allen High School": 1, "Liberty High School": 0, "Hebron High School": 0, "Plano Senior High School": 1, "Independence High School": 0, "Westwood High School": 0, "Centennial High School": 0, "Naaman Forest High School": 0, "Highland Park High School": 0, "Flower Mound High School": 0, "Richardson High School": 0, "Frisco High School": 0, "Private Schools": 1}, "pcts": {"Plano West Senior High School": 0.0, "Coppell High School": 0.0, "Plano East Senior High School": 0.0, "Allen High School": 33.3, "Liberty High School": 0.0, "Hebron High School": 0.0, "Plano Senior High School": 33.3, "Independence High School": 0.0, "Westwood High School": 0.0, "Centennial High School": 0.0, "Naaman Forest High School": 0.0, "Highland Park High School": 0.0, "Flower Mound High School": 0.0, "Richardson High School": 0.0, "Frisco High School": 0.0, "Private Schools": 33.3}}, "2011": {"total": 12, "top15_total": 6, "denom": 7, "counts": {"Plano West Senior High School": 0, "Coppell High School": 2, "Plano East Senior High School": 0, "Allen High School": 0, "Liberty High School": 0, "Hebron High School": 2, "Plano Senior High School": 1, "Independence High School": 0, "Westwood High School": 0, "Centennial High School": 0, "Naaman Forest High School": 0, "Highland Park High School": 0, "Flower Mound High School": 0, "Richardson High School": 0, "Frisco High School": 1, "Private Schools": 1}, "pcts": {"Plano West Senior High School": 0.0, "Coppell High School": 28.6, "Plano East Senior High School": 0.0, "Allen High School": 0.0, "Liberty High School": 0.0, "Hebron High School": 28.6, "Plano Senior High School": 14.3, "Independence High School": 0.0, "Westwood High School": 0.0, "Centennial High School": 0.0, "Naaman Forest High School": 0.0, "Highland Park High School": 0.0, "Flower Mound High School": 0.0, "Richardson High School": 0.0, "Frisco High School": 14.3, "Private Schools": 14.3}}, "2012": {"total": 8, "top15_total": 5, "denom": 6, "counts": {"Plano West Senior High School": 2, "Coppell High School": 0, "Plano East Senior High School": 0, "Allen High School": 1, "Liberty High School": 0, "Hebron High School": 1, "Plano Senior High School": 0, "Independence High School": 0, "Westwood High School": 0, "Centennial High School": 0, "Naaman Forest High School": 0, "Highland Park High School": 0, "Flower Mound High School": 1, "Richardson High School": 0, "Frisco High School": 0, "Private Schools": 1}, "pcts": {"Plano West Senior High School": 33.3, "Coppell High School": 0.0, "Plano East Senior High School": 0.0, "Allen High School": 16.7, "Liberty High School": 0.0, "Hebron High School": 16.7, "Plano Senior High School": 0.0, "Independence High School": 0.0, "Westwood High School": 0.0, "Centennial High School": 0.0, "Naaman Forest High School": 0.0, "Highland Park High School": 0.0, "Flower Mound High School": 16.7, "Richardson High School": 0.0, "Frisco High School": 0.0, "Private Schools": 16.7}}, "2013": {"total": 15, "top15_total": 7, "denom": 10, "counts": {"Plano West Senior High School": 0, "Coppell High School": 0, "Plano East Senior High School": 2, "Allen High School": 1, "Liberty High School": 0, "Hebron High School": 1, "Plano Senior High School": 2, "Independence High School": 0, "Westwood High School": 0, "Centennial High School": 0, "Naaman Forest High School": 0, "Highland Park High School": 0, "Flower Mound High School": 0, "Richardson High School": 1, "Frisco High School": 0, "Private Schools": 3}, "pcts": {"Plano West Senior High School": 0.0, "Coppell High School": 0.0, "Plano East Senior High School": 20.0, "Allen High School": 10.0, "Liberty High School": 0.0, "Hebron High School": 10.0, "Plano Senior High School": 20.0, "Independence High School": 0.0, "Westwood High School": 0.0, "Centennial High School": 0.0, "Naaman Forest High School": 0.0, "Highland Park High School": 0.0, "Flower Mound High School": 0.0, "Richardson High School": 10.0, "Frisco High School": 0.0, "Private Schools": 30.0}}, "2014": {"total": 15, "top15_total": 1, "denom": 2, "counts": {"Plano West Senior High School": 0, "Coppell High School": 0, "Plano East Senior High School": 1, "Allen High School": 0, "Liberty High School": 0, "Hebron High School": 0, "Plano Senior High School": 0, "Independence High School": 0, "Westwood High School": 0, "Centennial High School": 0, "Naaman Forest High School": 0, "Highland Park High School": 0, "Flower Mound High School": 0, "Richardson High School": 0, "Frisco High School": 0, "Private Schools": 1}, "pcts": {"Plano West Senior High School": 0.0, "Coppell High School": 0.0, "Plano East Senior High School": 50.0, "Allen High School": 0.0, "Liberty High School": 0.0, "Hebron High School": 0.0, "Plano Senior High School": 0.0, "Independence High School": 0.0, "Westwood High School": 0.0, "Centennial High School": 0.0, "Naaman Forest High School": 0.0, "Highland Park High School": 0.0, "Flower Mound High School": 0.0, "Richardson High School": 0.0, "Frisco High School": 0.0, "Private Schools": 50.0}}};
+const NEW_YEARS  = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
+const OLD_YEARS  = [2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014];
+const CATS       = ["Plano West Senior High School", "Coppell High School", "Plano East Senior High School", "Allen High School", "Liberty High School", "Hebron High School", "Plano Senior High School", "Independence High School", "Westwood High School", "Centennial High School", "Naaman Forest High School", "Highland Park High School", "Flower Mound High School", "Richardson High School", "Frisco High School", "Private Schools"];
+const COLORS     = ["#0A2540", "#143861", "#1B4F8A", "#22669C", "#2A7BAE", "#3A8DC5", "#4D9DCF", "#62ADD8", "#7CBFE0", "#92CCE7", "#A8D8ED", "#BCE0F1", "#CDE7F4", "#DAEEF7", "#E7F4FA", "#C8E6C9"];
+const LIGHT_BG_THRESHOLD = 8;
+const TOP_LABELS_PER_BAR = 6;
+let mode = "pct";
+let selectedOld = new Set();
+const tt = document.getElementById("tt");
+
+function showTT(e, html) {
+  tt.style.display = "block";
+  tt.style.left = (e.clientX + 14) + "px";
+  tt.style.top  = (e.clientY - 10) + "px";
+  tt.innerHTML  = html;
+}
+function hideTT() { tt.style.display = "none"; }
+
+// ── View switching ────────────────────────────────────────────────────────────
+function getYears() {
+  return [...NEW_YEARS, ...OLD_YEARS.filter(y => selectedOld.has(y))].reverse();
+}
+function getData(y) { return DATA_OLD[y] || DATA_NEW[y]; }
+function buildDS() {
+  const years = getYears();
+  return CATS.map((c, i) => ({
+    label: c,
+    data: years.map(y => { const d = getData(y); return d ? (mode==="pct" ? d.pcts[c] : d.counts[c]) : 0; }),
+    backgroundColor: COLORS[i],
+    borderRadius: i === CATS.length-1 ? {topRight:4,bottomRight:4} : 0,
+    borderSkipped: false, borderWidth: 0,
+  }));
+}
+
+const ctx = document.getElementById("chartHS").getContext("2d");
+const chart = new Chart(ctx, {
+  type: "bar",
+  data: { labels: getYears(), datasets: buildDS() },
+  options: {
+    indexAxis: "y",
+    responsive: true, maintainAspectRatio: false, animation: {duration:400},
+    plugins: {
+      legend: {display:false},
+      tooltip: {
+        callbacks: {
+          title: items => {
+            const y = items[0].label; const d = getData(y);
+            return `${y} cohort · n=${d.denom} (top 15 + private schools)`;
+          },
+          label: ctx => {
+            const d = getData(ctx.label); const c = ctx.dataset.label;
+            return ` ${c}: ${d.counts[c]} grads · ${d.pcts[c]}%`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: {stacked:true, max: mode==="pct"?100:undefined, grid:{color:"#DDE3EC"},
+           ticks:{font:{size:11}, color:"#5A7090", callback: v => mode==="pct" ? v+"%" : v}},
+      y: {stacked:true, grid:{display:false}, ticks:{font:{size:12,weight:"600"}, color:"#1A2B45"}, title:{display:true, text:"Cohort: Graduating Year", font:{size:11}, color:"#5A7090"}}
+    }
+  },
+  plugins: [{
+    id: "topNLabels",
+    afterDatasetsDraw(c) {
+      const years = c.data.labels;
+      years.forEach((year, rowIdx) => {
+        const rowValues = c.data.datasets.map((ds, di) => ({di, val: ds.data[rowIdx]}));
+        const topIdxSet = new Set(
+          rowValues.sort((a,b) => b.val - a.val).slice(0, TOP_LABELS_PER_BAR).map(x => x.di)
+        );
+        rowValues.forEach(({di, val}) => {
+          if (!topIdxSet.has(di) || val <= 0) return;
+          const meta = c.getDatasetMeta(di);
+          if (meta.hidden) return;
+          const bar = meta.data[rowIdx];
+          if (!bar) return;
+          const {x, y, base} = bar.getProps(["x","y","base"], true);
+          const segWidth = Math.abs(x - base);
+          const text = mode === "pct" ? val.toFixed(0) + "%" : String(val);
+          c.ctx.save();
+          c.ctx.font = "600 10px 'DM Sans',sans-serif";
+          const tw = c.ctx.measureText(text).width;
+          if (segWidth < tw + 6) { c.ctx.restore(); return; }
+          c.ctx.textAlign = "center"; c.ctx.textBaseline = "middle";
+          c.ctx.fillStyle = di >= LIGHT_BG_THRESHOLD ? "#1A2B45" : "#fff";
+          c.ctx.fillText(text, (x + base) / 2, y);
+          c.ctx.restore();
+        });
+      });
+    }
+  }]
+});
+
+function rebuild() {
+  chart.data.labels   = getYears();
+  chart.data.datasets = buildDS();
+  chart.options.scales.x.max = mode === "pct" ? 100 : undefined;
+  chart.options.scales.x.ticks.callback = v => mode === "pct" ? v+"%" : v;
+  chart.update();
+}
+function setMode(m) {
+  mode = m;
+  document.getElementById("pctBtn").classList.toggle("active", m==="pct");
+  document.getElementById("cntBtn").classList.toggle("active", m==="cnt");
+  rebuild();
+}
+document.getElementById("pctBtn").onclick = () => setMode("pct");
+document.getElementById("cntBtn").onclick = () => setMode("cnt");
+
+const oldItemsContainer = document.getElementById("oldItems");
+OLD_YEARS.forEach(y => {
+  const item = document.createElement("div");
+  item.className = "multi-item";
+  const total = (DATA_OLD[y] || {total:0}).total;
+  item.innerHTML = `<input type="checkbox" id="chk_${y}"><label for="chk_${y}" style="cursor:pointer;flex:1;">${y} (n=${total})</label>`;
+  oldItemsContainer.appendChild(item);
+  item.querySelector("input").onchange = e => {
+    if (e.target.checked) selectedOld.add(y); else selectedOld.delete(y);
+    rebuild();
+  };
+});
+document.getElementById("oldAll").onclick = () => {
+  OLD_YEARS.forEach(y => selectedOld.add(y));
+  document.querySelectorAll("#oldItems input").forEach(cb => cb.checked = true);
+  rebuild();
+};
+document.getElementById("oldNone").onclick = () => {
+  selectedOld.clear();
+  document.querySelectorAll("#oldItems input").forEach(cb => cb.checked = false);
+  rebuild();
+};
+document.getElementById("oldBtn").onclick = e => {
+  e.stopPropagation();
+  document.getElementById("oldDrop").classList.toggle("open");
+};
+document.addEventListener("click", () => document.getElementById("oldDrop").classList.remove("open"));
+document.getElementById("oldDrop").onclick = e => e.stopPropagation();
+
+// Legend
+const lg = document.getElementById("legend");
+const note = lg.querySelector(".legend-note");
+CATS.forEach((c, i) => {
+  const el = document.createElement("div");
+  el.className = "legend-item";
+  el.innerHTML = `<span class="legend-dot" style="background:${COLORS[i]};"></span>${c}`;
+  lg.insertBefore(el, note);
+});
+
+// ── Summary chart (custom HTML bars) ─────────────────────────────────────────
+</script>
+
+
+
+
+
+</body></html>

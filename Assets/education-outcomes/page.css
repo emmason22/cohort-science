@@ -1,0 +1,77 @@
+.education-outcomes .hero .container {
+  max-width: 72rem;
+}
+.education-outcomes .hero p {
+  max-width: 38rem;
+}
+.education-outcomes .outcome-examples {
+  display: grid;
+  gap: 1.5rem;
+}
+.education-outcomes .outcome-example {
+  min-width: 0;
+  padding: clamp(1rem, 2.5vw, 2rem);
+  background: white;
+  border: 1px solid rgba(20, 44, 68, .15);
+  border-radius: .875rem;
+}
+.education-outcomes .outcome-example h3 {
+  margin-top: .35rem;
+  margin-bottom: .8rem;
+}
+.education-outcomes .outcome-frame {
+  display: block;
+  width: 100%;
+  border: 0;
+}
+.education-outcomes .outcome-figure {
+  margin: 1rem 0 0;
+}
+.education-outcomes .figure-scroll {
+  overflow-x: auto;
+}
+.education-outcomes .figure-scroll:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+.education-outcomes .figure-scroll img {
+  display: block;
+  width: 100%;
+  min-width: 58rem;
+  max-width: none;
+  height: auto;
+}
+.education-outcomes figcaption {
+  margin-top: .75rem;
+  font-size: .875rem;
+}
+.education-outcomes .outcome-logo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8.75rem, 1fr));
+  gap: .75rem;
+  padding: 0;
+  list-style: none;
+}
+.education-outcomes .logo-tile {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  height: 6rem;
+  padding: .75rem;
+  background: white;
+  border: 1px solid rgba(20, 44, 68, .15);
+  border-radius: .625rem;
+}
+.education-outcomes .logo-tile-dark {
+  background: #20354c;
+}
+.education-outcomes .logo-tile img {
+  width: 100%;
+  height: 4.25rem;
+  object-fit: contain;
+}
+@media (max-width: 600px) {
+  .education-outcomes .outcome-logo-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

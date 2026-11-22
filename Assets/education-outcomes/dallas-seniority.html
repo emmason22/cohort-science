@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <style>
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { background:#F8F7F4; margin:0; padding:16px 20px; font-family:Arial,sans-serif; }
+
+    .wrap { background:#FFFFFF; border:0.5px solid #D3D1C7; padding:24px; margin-bottom:24px; }
+
+    /* ── Controls ── */
+    .controls { display:flex; gap:12px; align-items:center; margin-bottom:14px; flex-wrap:wrap; }
+    .cohort-label-static { font-size:12px; color:#5F5E5A; font-weight:600; }
+    .cohort-label-val    { font-size:12px; color:#1A3A5C; font-weight:600; }
+    #cohort-meta { font-size:11px; color:#888780; margin-left:2px; }
+
+    /* ── Dropdown ── */
+    .dd-wrap { position:relative; display:inline-block; }
+    .dd-btn {
+      padding:5px 14px; font-size:12px; cursor:pointer;
+      border:0.5px solid #2E5F8A; border-radius:20px;
+      background:#fff; color:#2E5F8A; font-family:Arial,sans-serif; white-space:nowrap;
+    }
+    .dd-btn:hover { background:#EDF2F7; }
+    .dd-menu {
+      display:none; position:absolute; top:calc(100% + 6px); left:0;
+      background:#fff; border:0.5px solid #D3D1C7; border-radius:6px;
+      padding:8px 0; min-width:130px; z-index:999;
+      box-shadow:0 4px 12px rgba(0,0,0,0.10);
+    }
+    .dd-menu.open { display:block; }
+    .dd-section-label {
+      font-size:9px; font-weight:600; color:#B4B2A9;
+      letter-spacing:0.06em; text-transform:uppercase; padding:4px 14px 2px;
+    }
+    .dd-divider { border-top:0.5px solid #E8E7E2; margin:4px 0; }
+    .dd-item {
+      display:flex; align-items:center; gap:8px;
+      padding:5px 14px; font-size:12px; color:#5F5E5A;
+      cursor:pointer; user-select:none;
+    }
+    .dd-item:hover { background:#F8F7F4; }
+    .dd-item input[type=checkbox] { cursor:pointer; accent-color:#2E5F8A; }
+
+    .source-note { font-size:10px; color:#888780; text-align:center; margin:6px 0 0; }
+
+    /* ── Interpretation cards ── */
+    .interp {
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:14px; margin-top:0; font-family:Arial,sans-serif;
+    }
+    .icard { background:#fff; border:0.5px solid #D3D1C7; padding:16px 18px; }
+    .icard.full { grid-column:1/-1; }
+    .ibadge {
+      font-size:10px; font-weight:600; padding:3px 10px;
+      display:inline-block; margin-bottom:10px; letter-spacing:0.03em;
+      border-radius:3px;
+    }
+    .ihead { font-size:13px; font-weight:600; color:#1A3A5C; margin:0 0 6px; }
+    .ibody { font-size:12px; color:#5F5E5A; line-height:1.7; margin:0; }
+    .istat {
+      font-size:11px; font-weight:600; margin-top:12px;
+      padding:5px 10px; display:inline-block;
+      background:#EDF2F7; color:#1A3A5C;
+    }
+
+  .dd-cluster-menu { min-width: 220px; }
+  .dd-cluster-menu .dd-item { padding: 6px 10px; font-size: 11px; }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><style>
+html{color-scheme:light}body{margin:0!important;padding:12px!important;background:#fff!important;color:#142c44}button,select,input{font:inherit}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #1755c5;outline-offset:2px}.chart-card,.panel{margin:0!important;max-width:none!important}.chart-card{padding:12px!important;box-shadow:none!important}.plotly-graph-div{max-width:100%}.table-responsive,.states-table-wrap{overflow:auto}
+@media(max-width:600px){body{padding:6px!important}.chart-card{padding:8px!important}.layout-row{display:block!important}.stat-panel{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px!important}.controls{flex-wrap:wrap}.timeline-ticks{font-size:8px!important}}
+</style><title>Dallas Seniority</title></head>
+<body>
+
+<div class="wrap">
+  <!-- Controls -->
+  <div class="controls">
+    <span class="cohort-label-static">Cohort view:</span>
+    <span class="cohort-label-val" id="cohort-label-val">2011&ndash;2020</span>
+    <span id="cohort-meta">(n=195 with dated jobs &nbsp;&middot;&nbsp; 5-yr window)</span>
+
+    <div class="dd-wrap" id="ddWrap">
+      <button class="dd-btn" onclick="toggleDropdown()">&#43; Add years &#9662;</button>
+      <div class="dd-menu" id="ddMenu">
+        <div class="dd-section-label">Earlier cohorts</div>
+        <label class="dd-item"><input type="checkbox" value="2005" onchange="onYearCheck(this)"> 2005</label><label class="dd-item"><input type="checkbox" value="2006" onchange="onYearCheck(this)"> 2006</label><label class="dd-item"><input type="checkbox" value="2007" onchange="onYearCheck(this)"> 2007</label><label class="dd-item"><input type="checkbox" value="2008" onchange="onYearCheck(this)"> 2008</label><label class="dd-item"><input type="checkbox" value="2009" onchange="onYearCheck(this)"> 2009</label><label class="dd-item"><input type="checkbox" value="2010" onchange="onYearCheck(this)"> 2010</label>
+        <div class="dd-divider"></div>
+        <div class="dd-section-label">Default (2011&ndash;2020)</div>
+        <label class="dd-item"><input type="checkbox" value="2011" checked onchange="onYearCheck(this)"> 2011</label><label class="dd-item"><input type="checkbox" value="2012" checked onchange="onYearCheck(this)"> 2012</label><label class="dd-item"><input type="checkbox" value="2013" checked onchange="onYearCheck(this)"> 2013</label><label class="dd-item"><input type="checkbox" value="2014" checked onchange="onYearCheck(this)"> 2014</label><label class="dd-item"><input type="checkbox" value="2015" checked onchange="onYearCheck(this)"> 2015</label><label class="dd-item"><input type="checkbox" value="2016" checked onchange="onYearCheck(this)"> 2016</label><label class="dd-item"><input type="checkbox" value="2017" checked onchange="onYearCheck(this)"> 2017</label><label class="dd-item"><input type="checkbox" value="2018" checked onchange="onYearCheck(this)"> 2018</label><label class="dd-item"><input type="checkbox" value="2019" checked onchange="onYearCheck(this)"> 2019</label><label class="dd-item"><input type="checkbox" value="2020" checked onchange="onYearCheck(this)"> 2020</label>
+      </div>
+    </div>
+    <div class="dd-wrap dd-cluster-wrap" id="ddClusterWrap">
+      <button class="dd-btn" onclick="toggleClusterDropdown()">Clusters shown &#9662;</button>
+      <div class="dd-menu dd-cluster-menu" id="ddClusterMenu">
+        <div class="dd-section-label">Toggle clusters</div>
+        <label class="dd-item"><input type="checkbox" value="C1" checked onchange="onClusterCheck(this)"> <span style="color:#B8860B;font-weight:600;">C1</span> &middot; Academic Ladder Climber</label>
+        <label class="dd-item"><input type="checkbox" value="C2" checked onchange="onClusterCheck(this)"> <span style="color:#4A9EDB;font-weight:600;">C2</span> &middot; Working Student</label>
+        <label class="dd-item"><input type="checkbox" value="C3" checked onchange="onClusterCheck(this)"> <span style="color:#0057D9;font-weight:600;">C3</span> &middot; Certification Builder</label>
+        <label class="dd-item"><input type="checkbox" value="C4" checked onchange="onClusterCheck(this)"> <span style="color:#6BA888;font-weight:600;">C4</span> &middot; Self-Skill Builder</label>
+        <label class="dd-item"><input type="checkbox" value="C5" checked onchange="onClusterCheck(this)"> <span style="color:#A0A8B8;font-weight:600;">C5</span> &middot; Core Graduate</label>
+      </div>
+    </div>
+
+
+
+
+  </div>
+
+  <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script src="https://cdn.plot.ly/plotly-2.18.0.min.js"></script>                <div id="5574705a-eb00-425c-988d-c7b9e9871b78" class="plotly-graph-div" style="height:540px; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("5574705a-eb00-425c-988d-c7b9e9871b78")) {                    Plotly.newPlot(                        "5574705a-eb00-425c-988d-c7b9e9871b78",                        [{"customdata":["<b>C1 \u00b7 Academic Ladder Climber</b> \u00b7 Earliest job in window (n=22 with seniority)<br>Entry: 31.8%","<b>C1 \u00b7 Academic Ladder Climber</b> \u00b7 Latest job in window (n=23 with seniority)<br>Entry: 26.1%","<b>C2 \u00b7 Working Student</b> \u00b7 Earliest job in window (n=93 with seniority)<br>Entry: 12.9%","<b>C2 \u00b7 Working Student</b> \u00b7 Latest job in window (n=96 with seniority)<br>Entry: 6.2%","<b>C3 \u00b7 Certification Builder</b> \u00b7 Earliest job in window (n=9 with seniority)<br>Entry: 22.2%","<b>C3 \u00b7 Certification Builder</b> \u00b7 Latest job in window (n=9 with seniority)<br>Entry: 22.2%","<b>C4 \u00b7 Self-Skill Builder</b> \u00b7 Earliest job in window (n=26 with seniority)<br>Entry: 15.4%","<b>C4 \u00b7 Self-Skill Builder</b> \u00b7 Latest job in window (n=26 with seniority)<br>Entry: 7.7%","<b>C5 \u00b7 Core Graduate</b> \u00b7 Earliest job in window (n=35 with seniority)<br>Entry: 14.3%","<b>C5 \u00b7 Core Graduate</b> \u00b7 Latest job in window (n=37 with seniority)<br>Entry: 16.2%"],"hovertemplate":"%{customdata}<extra></extra>","insidetextanchor":"middle","marker":{"color":"#D3D1C7","line":{"color":"rgba(255,255,255,0.4)","width":0.5}},"name":"Entry","text":["32%","26%","13%","6%","22%","22%","15%","8%","14%","16%"],"textfont":{"color":"white","size":9},"textposition":"inside","x":["C1 Earliest","C1 Latest","C2 Earliest","C2 Latest","C3 Earliest","C3 Latest","C4 Earliest","C4 Latest","C5 Earliest","C5 Latest"],"y":[31.8,26.1,12.9,6.2,22.2,22.2,15.4,7.7,14.3,16.2],"type":"bar"},{"customdata":["<b>C1 \u00b7 Academic Ladder Climber</b> \u00b7 Earliest job in window (n=22 with seniority)<br>Mid-level: 40.9%","<b>C1 \u00b7 Academic Ladder Climber</b> \u00b7 Latest job in window (n=23 with seniority)<br>Mid-level: 26.1%","<b>C2 \u00b7 Working Student</b> \u00b7 Earliest job in window (n=93 with seniority)<br>Mid-level: 28.0%","<b>C2 \u00b7 Working Student</b> \u00b7 Latest job in window (n=96 with seniority)<br>Mid-level: 30.2%","<b>C3 \u00b7 Certification Builder</b> \u00b7 Earliest job in window (n=9 with seniority)<br>Mid-level: 33.3%","<b>C3 \u00b7 Certification Builder</b> \u00b7 Latest job in window (n=9 with seniority)<br>Mid-level: 22.2%","<b>C4 \u00b7 Self-Skill Builder</b> \u00b7 Earliest job in window (n=26 with seniority)<br>Mid-level: 46.2%","<b>C4 \u00b7 Self-Skill Builder</b> \u00b7 Latest job in window (n=26 with seniority)<br>Mid-level: 38.5%","<b>C5 \u00b7 Core Graduate</b> \u00b7 Earliest job in window (n=35 with seniority)<br>Mid-level: 37.1%","<b>C5 \u00b7 Core Graduate</b> \u00b7 Latest job in window (n=37 with seniority)<br>Mid-level: 35.1%"],"hovertemplate":"%{customdata}<extra></extra>","insidetextanchor":"middle","marker":{"color":"#888780","line":{"color":"rgba(255,255,255,0.4)","width":0.5}},"name":"Mid-level","text":["41%","26%","28%","30%","33%","22%","46%","38%","37%","35%"],"textfont":{"color":"white","size":9},"textposition":"inside","x":["C1 Earliest","C1 Latest","C2 Earliest","C2 Latest","C3 Earliest","C3 Latest","C4 Earliest","C4 Latest","C5 Earliest","C5 Latest"],"y":[40.9,26.1,28.0,30.2,33.3,22.2,46.2,38.5,37.1,35.1],"type":"bar"},{"customdata":["<b>C1 \u00b7 Academic Ladder Climber</b> \u00b7 Earliest job in window (n=22 with seniority)<br>Senior: 0.0%","<b>C1 \u00b7 Academic Ladder Climber</b> \u00b7 Latest job in window (n=23 with seniority)<br>Senior: 4.3%","<b>C2 \u00b7 Working Student</b> \u00b7 Earliest job in window (n=93 with seniority)<br>Senior: 6.5%","<b>C2 \u00b7 Working Student</b> \u00b7 Latest job in window (n=96 with seniority)<br>Senior: 8.3%","<b>C3 \u00b7 Certification Builder</b> \u00b7 Earliest job in window (n=9 with seniority)<br>Senior: 0.0%","<b>C3 \u00b7 Certification Builder</b> \u00b7 Latest job in window (n=9 with seniority)<br>Senior: 11.1%","<b>C4 \u00b7 Self-Skill Builder</b> \u00b7 Earliest job in window (n=26 with seniority)<br>Senior: 7.7%","<b>C4 \u00b7 Self-Skill Builder</b> \u00b7 Latest job in window (n=26 with seniority)<br>Senior: 11.5%","<b>C5 \u00b7 Core Graduate</b> \u00b7 Earliest job in window (n=35 with seniority)<br>Senior: 2.9%","<b>C5 \u00b7 Core Graduate</b> \u00b7 Latest job in window (n=37 with seniority)<br>Senior: 0.0%"],"hovertemplate":"%{customdata}<extra></extra>","insidetextanchor":"middle","marker":{"color":"#B5A06A","line":{"color":"rgba(255,255,255,0.4)","width":0.5}},"name":"Senior","text":["","","6%","8%","","11%","8%","12%","",""],"textfont":{"color":"white","size":9},"textposition":"inside","x":["C1 Earliest","C1 Latest","C2 Earliest","C2 Latest","C3 Earliest","C3 Latest","C4 Earliest","C4 Latest","C5 Earliest","C5 Latest"],"y":[0.0,4.3,6.5,8.3,0.0,11.1,7.7,11.5,2.9,0.0],"type":"bar"},{"customdata":["<b>C1 \u00b7 Academic Ladder Climber</b> \u00b7 Earliest job in window (n=22 with seniority)<br>Manager: 13.6%","<b>C1 \u00b7 Academic Ladder Climber</b> \u00b7 Latest job in window (n=23 with seniority)<br>Manager: 30.4%","<b>C2 \u00b7 Working Student</b> \u00b7 Earliest job in window (n=93 with seniority)<br>Manager: 28.0%","<b>C2 \u00b7 Working Student</b> \u00b7 Latest job in window (n=96 with seniority)<br>Manager: 26.0%","<b>C3 \u00b7 Certification Builder</b> \u00b7 Earliest job in window (n=9 with seniority)<br>Manager: 44.4%","<b>C3 \u00b7 Certification Builder</b> \u00b7 Latest job in window (n=9 with seniority)<br>Manager: 44.4%","<b>C4 \u00b7 Self-Skill Builder</b> \u00b7 Earliest job in window (n=26 with seniority)<br>Manager: 19.2%","<b>C4 \u00b7 Self-Skill Builder</b> \u00b7 Latest job in window (n=26 with seniority)<br>Manager: 23.1%","<b>C5 \u00b7 Core Graduate</b> \u00b7 Earliest job in window (n=35 with seniority)<br>Manager: 37.1%","<b>C5 \u00b7 Core Graduate</b> \u00b7 Latest job in window (n=37 with seniority)<br>Manager: 32.4%"],"hovertemplate":"%{customdata}<extra></extra>","insidetextanchor":"middle","marker":{"color":"#5F8DB0","line":{"color":"rgba(255,255,255,0.4)","width":0.5}},"name":"Manager","text":["14%","30%","28%","26%","44%","44%","19%","23%","37%","32%"],"textfont":{"color":"white","size":9},"textposition":"inside","x":["C1 Earliest","C1 Latest","C2 Earliest","C2 Latest","C3 Earliest","C3 Latest","C4 Earliest","C4 Latest","C5 Earliest","C5 Latest"],"y":[13.6,30.4,28.0,26.0,44.4,44.4,19.2,23.1,37.1,32.4],"type":"bar"},{"customdata":["<b>C1 \u00b7 Academic Ladder Climber</b> \u00b7 Earliest job in window (n=22 with seniority)<br>Director: 0.0%","<b>C1 \u00b7 Academic Ladder Climber</b> \u00b7 Latest job in window (n=23 with seniority)<br>Director: 0.0%","<b>C2 \u00b7 Working Student</b> \u00b7 Earliest job in window (n=93 with seniority)<br>Director: 0.0%","<b>C2 \u00b7 Working Student</b> \u00b7 Latest job in window (n=96 with seniority)<br>Director: 0.0%","<b>C3 \u00b7 Certification Builder</b> \u00b7 Earliest job in window (n=9 with seniority)<br>Director: 0.0%","<b>C3 \u00b7 Certification Builder</b> \u00b7 Latest job in window (n=9 with seniority)<br>Director: 0.0%","<b>C4 \u00b7 Self-Skill Builder</b> \u00b7 Earliest job in window (n=26 with seniority)<br>Director: 0.0%","<b>C4 \u00b7 Self-Skill Builder</b> \u00b7 Latest job in window (n=26 with seniority)<br>Director: 0.0%","<b>C5 \u00b7 Core Graduate</b> \u00b7 Earliest job in window (n=35 with seniority)<br>Director: 0.0%","<b>C5 \u00b7 Core Graduate</b> \u00b7 Latest job in window (n=37 with seniority)<br>Director: 0.0%"],"hovertemplate":"%{customdata}<extra></extra>","insidetextanchor":"middle","marker":{"color":"#2E5F8A","line":{"color":"rgba(255,255,255,0.4)","width":0.5}},"name":"Director","text":["","","","","","","","","",""],"textfont":{"color":"white","size":9},"textposition":"inside","x":["C1 Earliest","C1 Latest","C2 Earliest","C2 Latest","C3 Earliest","C3 Latest","C4 Earliest","C4 Latest","C5 Earliest","C5 Latest"],"y":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"type":"bar"},{"customdata":["<b>C1 \u00b7 Academic Ladder Climber</b> \u00b7 Earliest job in window (n=22 with seniority)<br>Executive: 13.6%","<b>C1 \u00b7 Academic Ladder Climber</b> \u00b7 Latest job in window (n=23 with seniority)<br>Executive: 13.0%","<b>C2 \u00b7 Working Student</b> \u00b7 Earliest job in window (n=93 with seniority)<br>Executive: 24.7%","<b>C2 \u00b7 Working Student</b> \u00b7 Latest job in window (n=96 with seniority)<br>Executive: 29.2%","<b>C3 \u00b7 Certification Builder</b> \u00b7 Earliest job in window (n=9 with seniority)<br>Executive: 0.0%","<b>C3 \u00b7 Certification Builder</b> \u00b7 Latest job in window (n=9 with seniority)<br>Executive: 0.0%","<b>C4 \u00b7 Self-Skill Builder</b> \u00b7 Earliest job in window (n=26 with seniority)<br>Executive: 11.5%","<b>C4 \u00b7 Self-Skill Builder</b> \u00b7 Latest job in window (n=26 with seniority)<br>Executive: 19.2%","<b>C5 \u00b7 Core Graduate</b> \u00b7 Earliest job in window (n=35 with seniority)<br>Executive: 8.6%","<b>C5 \u00b7 Core Graduate</b> \u00b7 Latest job in window (n=37 with seniority)<br>Executive: 16.2%"],"hovertemplate":"%{customdata}<extra></extra>","insidetextanchor":"middle","marker":{"color":"#1A3A5C","line":{"color":"rgba(255,255,255,0.4)","width":0.5}},"name":"Executive","text":["14%","13%","25%","29%","","","12%","19%","9%","16%"],"textfont":{"color":"white","size":9},"textposition":"inside","x":["C1 Earliest","C1 Latest","C2 Earliest","C2 Latest","C3 Earliest","C3 Latest","C4 Earliest","C4 Latest","C5 Earliest","C5 Latest"],"y":[13.6,13.0,24.7,29.2,0.0,0.0,11.5,19.2,8.6,16.2],"type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"title":{"font":{"size":15,"color":"#2C2C2A"},"text":"Seniority shift \u2014 earliest vs latest job started within 5-year post-graduation window","x":0.5,"xanchor":"center"},"legend":{"font":{"size":11,"color":"#5F5E5A"},"orientation":"h","yanchor":"bottom","y":1.02,"xanchor":"center","x":0.5,"bgcolor":"#FFFFFF","bordercolor":"#D3D1C7","borderwidth":0.5,"traceorder":"normal"},"xaxis":{"tickfont":{"size":10,"color":"#888780"},"ticktext":["Earliest","Latest","Earliest","Latest","Earliest","Latest","Earliest","Latest","Earliest","Latest"],"tickvals":["C1 Earliest","C1 Latest","C2 Earliest","C2 Latest","C3 Earliest","C3 Latest","C4 Earliest","C4 Latest","C5 Earliest","C5 Latest"],"gridcolor":"rgba(0,0,0,0)","linecolor":"#D3D1C7","tickangle":0},"yaxis":{"tickfont":{"size":11,"color":"#888780"},"title":{"text":"% of cluster"},"ticksuffix":"%","range":[-20,112],"gridcolor":"rgba(211,209,199,0.3)","linecolor":"#D3D1C7","tickvals":[0,20,40,60,80,100],"ticktext":["0%","20%","40%","60%","80%","100%"]},"margin":{"t":90,"b":70,"l":60,"r":40},"uniformtext":{"minsize":8,"mode":"hide"},"barmode":"stack","bargap":0.15,"bargroupgap":0.05,"annotations":[{"align":"center","font":{"color":"#5F5E5A","size":10},"showarrow":false,"text":"<b>C1 \u00b7 Ladder Climber</b>","x":0.5,"xref":"x","y":107,"yref":"y"},{"align":"center","font":{"color":"#5F5E5A","size":10},"showarrow":false,"text":"<b>C2 \u00b7 Working Student</b>","x":2.5,"xref":"x","y":107,"yref":"y"},{"align":"center","font":{"color":"#5F5E5A","size":10},"showarrow":false,"text":"<b>C3 \u00b7 Cert Builder</b>","x":4.5,"xref":"x","y":107,"yref":"y"},{"align":"center","font":{"color":"#5F5E5A","size":10},"showarrow":false,"text":"<b>C4 \u00b7 Self-Skill</b>","x":6.5,"xref":"x","y":107,"yref":"y"},{"align":"center","font":{"color":"#5F5E5A","size":10},"showarrow":false,"text":"<b>C5 \u00b7 Core Grad</b>","x":8.5,"xref":"x","y":107,"yref":"y"},{"align":"center","font":{"color":"#5F5E5A","size":10},"showarrow":false,"text":"\u27f5 5 yrs \u27f6","x":0.5,"xref":"x","y":-14,"yref":"y"},{"align":"center","font":{"color":"#5F5E5A","size":10},"showarrow":false,"text":"\u27f5 5 yrs \u27f6","x":2.5,"xref":"x","y":-14,"yref":"y"},{"align":"center","font":{"color":"#5F5E5A","size":10},"showarrow":false,"text":"\u27f5 5 yrs \u27f6","x":4.5,"xref":"x","y":-14,"yref":"y"},{"align":"center","font":{"color":"#5F5E5A","size":10},"showarrow":false,"text":"\u27f5 5 yrs \u27f6","x":6.5,"xref":"x","y":-14,"yref":"y"},{"align":"center","font":{"color":"#5F5E5A","size":10},"showarrow":false,"text":"\u27f5 5 yrs \u27f6","x":8.5,"xref":"x","y":-14,"yref":"y"}],"shapes":[{"layer":"below","line":{"color":"#888780","width":1},"type":"line","x0":1.5,"x1":1.5,"xref":"x","y0":0,"y1":112,"yref":"y"},{"layer":"below","line":{"color":"#888780","width":1},"type":"line","x0":3.5,"x1":3.5,"xref":"x","y0":0,"y1":112,"yref":"y"},{"layer":"below","line":{"color":"#888780","width":1},"type":"line","x0":5.5,"x1":5.5,"xref":"x","y0":0,"y1":112,"yref":"y"},{"layer":"below","line":{"color":"#888780","width":1},"type":"line","x0":7.5,"x1":7.5,"xref":"x","y0":0,"y1":112,"yref":"y"},{"line":{"color":"#B4B2A9","width":0.8},"type":"line","x0":-0.35,"x1":1.35,"xref":"x","y0":-8,"y1":-8,"yref":"y"},{"line":{"color":"#B4B2A9","width":0.8},"type":"line","x0":-0.35,"x1":-0.35,"xref":"x","y0":-8,"y1":-4,"yref":"y"},{"line":{"color":"#B4B2A9","width":0.8},"type":"line","x0":1.35,"x1":1.35,"xref":"x","y0":-8,"y1":-4,"yref":"y"},{"line":{"color":"#B4B2A9","width":0.8},"type":"line","x0":1.65,"x1":3.35,"xref":"x","y0":-8,"y1":-8,"yref":"y"},{"line":{"color":"#B4B2A9","width":0.8},"type":"line","x0":1.65,"x1":1.65,"xref":"x","y0":-8,"y1":-4,"yref":"y"},{"line":{"color":"#B4B2A9","width":0.8},"type":"line","x0":3.35,"x1":3.35,"xref":"x","y0":-8,"y1":-4,"yref":"y"},{"line":{"color":"#B4B2A9","width":0.8},"type":"line","x0":3.65,"x1":5.35,"xref":"x","y0":-8,"y1":-8,"yref":"y"},{"line":{"color":"#B4B2A9","width":0.8},"type":"line","x0":3.65,"x1":3.65,"xref":"x","y0":-8,"y1":-4,"yref":"y"},{"line":{"color":"#B4B2A9","width":0.8},"type":"line","x0":5.35,"x1":5.35,"xref":"x","y0":-8,"y1":-4,"yref":"y"},{"line":{"color":"#B4B2A9","width":0.8},"type":"line","x0":5.65,"x1":7.35,"xref":"x","y0":-8,"y1":-8,"yref":"y"},{"line":{"color":"#B4B2A9","width":0.8},"type":"line","x0":5.65,"x1":5.65,"xref":"x","y0":-8,"y1":-4,"yref":"y"},{"line":{"color":"#B4B2A9","width":0.8},"type":"line","x0":7.35,"x1":7.35,"xref":"x","y0":-8,"y1":-4,"yref":"y"},{"line":{"color":"#B4B2A9","width":0.8},"type":"line","x0":7.65,"x1":9.35,"xref":"x","y0":-8,"y1":-8,"yref":"y"},{"line":{"color":"#B4B2A9","width":0.8},"type":"line","x0":7.65,"x1":7.65,"xref":"x","y0":-8,"y1":-4,"yref":"y"},{"line":{"color":"#B4B2A9","width":0.8},"type":"line","x0":9.35,"x1":9.35,"xref":"x","y0":-8,"y1":-4,"yref":"y"}],"plot_bgcolor":"#FFFFFF","paper_bgcolor":"#FFFFFF","height":540,"hovermode":"closest","autosize":true},                        {"responsive": true}                    )                };                            </script>        </div>
+  <p class="source-note">
+    Left bar = earliest job started in 5-yr window &nbsp;·&nbsp; Right bar = latest job started in 5-yr window &nbsp;·&nbsp; Only jobs starting within 5 years of graduation counted
+  </p>
+</div>
+
+<!-- Interpretation cards -->
+<script>
+const ALL_SEN    = {"2011-2020": {"1": {"n": 25, "n_first": 22, "n_current": 23, "first": {"Entry": 31.8, "Mid-level": 40.9, "Senior": 0.0, "Manager": 13.6, "Director": 0.0, "Executive": 13.6}, "current": {"Entry": 26.1, "Mid-level": 26.1, "Senior": 4.3, "Manager": 30.4, "Director": 0.0, "Executive": 13.0}}, "2": {"n": 96, "n_first": 93, "n_current": 96, "first": {"Entry": 12.9, "Mid-level": 28.0, "Senior": 6.5, "Manager": 28.0, "Director": 0.0, "Executive": 24.7}, "current": {"Entry": 6.2, "Mid-level": 30.2, "Senior": 8.3, "Manager": 26.0, "Director": 0.0, "Executive": 29.2}}, "3": {"n": 9, "n_first": 9, "n_current": 9, "first": {"Entry": 22.2, "Mid-level": 33.3, "Senior": 0.0, "Manager": 44.4, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 22.2, "Mid-level": 22.2, "Senior": 11.1, "Manager": 44.4, "Director": 0.0, "Executive": 0.0}}, "4": {"n": 28, "n_first": 26, "n_current": 26, "first": {"Entry": 15.4, "Mid-level": 46.2, "Senior": 7.7, "Manager": 19.2, "Director": 0.0, "Executive": 11.5}, "current": {"Entry": 7.7, "Mid-level": 38.5, "Senior": 11.5, "Manager": 23.1, "Director": 0.0, "Executive": 19.2}}, "5": {"n": 37, "n_first": 35, "n_current": 37, "first": {"Entry": 14.3, "Mid-level": 37.1, "Senior": 2.9, "Manager": 37.1, "Director": 0.0, "Executive": 8.6}, "current": {"Entry": 16.2, "Mid-level": 35.1, "Senior": 0.0, "Manager": 32.4, "Director": 0.0, "Executive": 16.2}}}, "2005": {"1": {"n": 0, "n_first": 0, "n_current": 0, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "2": {"n": 0, "n_first": 0, "n_current": 0, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "3": {"n": 0, "n_first": 0, "n_current": 0, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "4": {"n": 0, "n_first": 0, "n_current": 0, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "5": {"n": 1, "n_first": 1, "n_current": 1, "first": {"Entry": 0.0, "Mid-level": 100.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 100.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}}, "2006": {"1": {"n": 1, "n_first": 1, "n_current": 1, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 100.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 100.0, "Director": 0.0, "Executive": 0.0}}, "2": {"n": 8, "n_first": 8, "n_current": 8, "first": {"Entry": 12.5, "Mid-level": 25.0, "Senior": 12.5, "Manager": 12.5, "Director": 0.0, "Executive": 37.5}, "current": {"Entry": 0.0, "Mid-level": 37.5, "Senior": 12.5, "Manager": 25.0, "Director": 0.0, "Executive": 25.0}}, "3": {"n": 0, "n_first": 0, "n_current": 0, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "4": {"n": 0, "n_first": 0, "n_current": 0, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "5": {"n": 1, "n_first": 1, "n_current": 1, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 100.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 100.0}}}, "2007": {"1": {"n": 0, "n_first": 0, "n_current": 0, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "2": {"n": 5, "n_first": 5, "n_current": 5, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 20.0, "Manager": 40.0, "Director": 0.0, "Executive": 40.0}, "current": {"Entry": 0.0, "Mid-level": 20.0, "Senior": 20.0, "Manager": 20.0, "Director": 0.0, "Executive": 40.0}}, "3": {"n": 0, "n_first": 0, "n_current": 0, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "4": {"n": 0, "n_first": 0, "n_current": 0, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "5": {"n": 1, "n_first": 1, "n_current": 1, "first": {"Entry": 100.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 100.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}}, "2008": {"1": {"n": 0, "n_first": 0, "n_current": 0, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "2": {"n": 6, "n_first": 6, "n_current": 6, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 33.3, "Manager": 33.3, "Director": 0.0, "Executive": 33.3}, "current": {"Entry": 0.0, "Mid-level": 16.7, "Senior": 0.0, "Manager": 66.7, "Director": 0.0, "Executive": 16.7}}, "3": {"n": 0, "n_first": 0, "n_current": 0, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "4": {"n": 2, "n_first": 2, "n_current": 2, "first": {"Entry": 0.0, "Mid-level": 50.0, "Senior": 0.0, "Manager": 50.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 100.0, "Director": 0.0, "Executive": 0.0}}, "5": {"n": 3, "n_first": 3, "n_current": 3, "first": {"Entry": 0.0, "Mid-level": 66.7, "Senior": 0.0, "Manager": 33.3, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 33.3, "Mid-level": 33.3, "Senior": 0.0, "Manager": 33.3, "Director": 0.0, "Executive": 0.0}}}, "2009": {"1": {"n": 1, "n_first": 1, "n_current": 1, "first": {"Entry": 0.0, "Mid-level": 100.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 100.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "2": {"n": 4, "n_first": 4, "n_current": 4, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 75.0, "Director": 0.0, "Executive": 25.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 75.0, "Director": 0.0, "Executive": 25.0}}, "3": {"n": 0, "n_first": 0, "n_current": 0, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "4": {"n": 3, "n_first": 3, "n_current": 3, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 100.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 100.0, "Director": 0.0, "Executive": 0.0}}, "5": {"n": 1, "n_first": 1, "n_current": 1, "first": {"Entry": 0.0, "Mid-level": 100.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 100.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}}, "2010": {"1": {"n": 1, "n_first": 1, "n_current": 1, "first": {"Entry": 100.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 100.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "2": {"n": 8, "n_first": 8, "n_current": 8, "first": {"Entry": 50.0, "Mid-level": 12.5, "Senior": 0.0, "Manager": 37.5, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 25.0, "Mid-level": 50.0, "Senior": 0.0, "Manager": 25.0, "Director": 0.0, "Executive": 0.0}}, "3": {"n": 0, "n_first": 0, "n_current": 0, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "4": {"n": 2, "n_first": 2, "n_current": 2, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 100.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 100.0}}, "5": {"n": 1, "n_first": 1, "n_current": 1, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 100.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 100.0, "Director": 0.0, "Executive": 0.0}}}, "2011": {"1": {"n": 1, "n_first": 1, "n_current": 1, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 100.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 100.0, "Director": 0.0, "Executive": 0.0}}, "2": {"n": 4, "n_first": 4, "n_current": 4, "first": {"Entry": 25.0, "Mid-level": 25.0, "Senior": 0.0, "Manager": 25.0, "Director": 0.0, "Executive": 25.0}, "current": {"Entry": 25.0, "Mid-level": 0.0, "Senior": 25.0, "Manager": 25.0, "Director": 0.0, "Executive": 25.0}}, "3": {"n": 0, "n_first": 0, "n_current": 0, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "4": {"n": 2, "n_first": 2, "n_current": 2, "first": {"Entry": 0.0, "Mid-level": 100.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 50.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 50.0, "Director": 0.0, "Executive": 0.0}}, "5": {"n": 2, "n_first": 2, "n_current": 2, "first": {"Entry": 0.0, "Mid-level": 50.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 50.0}, "current": {"Entry": 50.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 50.0}}}, "2012": {"1": {"n": 2, "n_first": 1, "n_current": 1, "first": {"Entry": 0.0, "Mid-level": 100.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 100.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "2": {"n": 8, "n_first": 8, "n_current": 8, "first": {"Entry": 0.0, "Mid-level": 37.5, "Senior": 25.0, "Manager": 0.0, "Director": 0.0, "Executive": 37.5}, "current": {"Entry": 0.0, "Mid-level": 37.5, "Senior": 25.0, "Manager": 25.0, "Director": 0.0, "Executive": 12.5}}, "3": {"n": 0, "n_first": 0, "n_current": 0, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "4": {"n": 2, "n_first": 2, "n_current": 2, "first": {"Entry": 50.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 50.0}, "current": {"Entry": 0.0, "Mid-level": 50.0, "Senior": 0.0, "Manager": 50.0, "Director": 0.0, "Executive": 0.0}}, "5": {"n": 1, "n_first": 1, "n_current": 1, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 100.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 100.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}}, "2013": {"1": {"n": 0, "n_first": 0, "n_current": 0, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "2": {"n": 9, "n_first": 8, "n_current": 9, "first": {"Entry": 25.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 62.5, "Director": 0.0, "Executive": 12.5}, "current": {"Entry": 11.1, "Mid-level": 22.2, "Senior": 0.0, "Manager": 44.4, "Director": 0.0, "Executive": 22.2}}, "3": {"n": 0, "n_first": 0, "n_current": 0, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "4": {"n": 3, "n_first": 3, "n_current": 3, "first": {"Entry": 33.3, "Mid-level": 66.7, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 66.7, "Senior": 33.3, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "5": {"n": 1, "n_first": 1, "n_current": 1, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 100.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 100.0, "Director": 0.0, "Executive": 0.0}}}, "2014": {"1": {"n": 1, "n_first": 1, "n_current": 1, "first": {"Entry": 100.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 100.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "2": {"n": 13, "n_first": 13, "n_current": 13, "first": {"Entry": 7.7, "Mid-level": 38.5, "Senior": 7.7, "Manager": 30.8, "Director": 0.0, "Executive": 15.4}, "current": {"Entry": 7.7, "Mid-level": 30.8, "Senior": 0.0, "Manager": 15.4, "Director": 0.0, "Executive": 46.2}}, "3": {"n": 1, "n_first": 1, "n_current": 1, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 100.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 100.0, "Director": 0.0, "Executive": 0.0}}, "4": {"n": 0, "n_first": 0, "n_current": 0, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "5": {"n": 2, "n_first": 2, "n_current": 2, "first": {"Entry": 0.0, "Mid-level": 100.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 100.0}}}, "2015": {"1": {"n": 2, "n_first": 2, "n_current": 2, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 100.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 50.0, "Director": 0.0, "Executive": 50.0}}, "2": {"n": 10, "n_first": 10, "n_current": 10, "first": {"Entry": 10.0, "Mid-level": 20.0, "Senior": 0.0, "Manager": 40.0, "Director": 0.0, "Executive": 30.0}, "current": {"Entry": 10.0, "Mid-level": 20.0, "Senior": 0.0, "Manager": 40.0, "Director": 0.0, "Executive": 30.0}}, "3": {"n": 0, "n_first": 0, "n_current": 0, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "4": {"n": 4, "n_first": 4, "n_current": 3, "first": {"Entry": 25.0, "Mid-level": 25.0, "Senior": 25.0, "Manager": 25.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 33.3, "Mid-level": 66.7, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "5": {"n": 5, "n_first": 5, "n_current": 5, "first": {"Entry": 20.0, "Mid-level": 20.0, "Senior": 20.0, "Manager": 40.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 40.0, "Senior": 0.0, "Manager": 60.0, "Director": 0.0, "Executive": 0.0}}}, "2016": {"1": {"n": 2, "n_first": 2, "n_current": 2, "first": {"Entry": 0.0, "Mid-level": 100.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 100.0, "Director": 0.0, "Executive": 0.0}}, "2": {"n": 6, "n_first": 5, "n_current": 6, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 40.0, "Director": 0.0, "Executive": 60.0}, "current": {"Entry": 0.0, "Mid-level": 16.7, "Senior": 0.0, "Manager": 33.3, "Director": 0.0, "Executive": 50.0}}, "3": {"n": 1, "n_first": 1, "n_current": 1, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 100.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 100.0, "Director": 0.0, "Executive": 0.0}}, "4": {"n": 5, "n_first": 3, "n_current": 4, "first": {"Entry": 0.0, "Mid-level": 33.3, "Senior": 0.0, "Manager": 66.7, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 25.0, "Senior": 0.0, "Manager": 50.0, "Director": 0.0, "Executive": 25.0}}, "5": {"n": 6, "n_first": 6, "n_current": 6, "first": {"Entry": 0.0, "Mid-level": 16.7, "Senior": 0.0, "Manager": 50.0, "Director": 0.0, "Executive": 33.3}, "current": {"Entry": 0.0, "Mid-level": 16.7, "Senior": 0.0, "Manager": 50.0, "Director": 0.0, "Executive": 33.3}}}, "2017": {"1": {"n": 1, "n_first": 1, "n_current": 1, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 100.0}, "current": {"Entry": 0.0, "Mid-level": 100.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "2": {"n": 10, "n_first": 9, "n_current": 10, "first": {"Entry": 11.1, "Mid-level": 22.2, "Senior": 11.1, "Manager": 22.2, "Director": 0.0, "Executive": 33.3}, "current": {"Entry": 0.0, "Mid-level": 10.0, "Senior": 20.0, "Manager": 30.0, "Director": 0.0, "Executive": 40.0}}, "3": {"n": 0, "n_first": 0, "n_current": 0, "first": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "4": {"n": 2, "n_first": 2, "n_current": 2, "first": {"Entry": 0.0, "Mid-level": 50.0, "Senior": 50.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 50.0, "Senior": 50.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "5": {"n": 5, "n_first": 5, "n_current": 5, "first": {"Entry": 0.0, "Mid-level": 40.0, "Senior": 0.0, "Manager": 60.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 20.0, "Senior": 0.0, "Manager": 80.0, "Director": 0.0, "Executive": 0.0}}}, "2018": {"1": {"n": 2, "n_first": 2, "n_current": 2, "first": {"Entry": 100.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 50.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 50.0}}, "2": {"n": 15, "n_first": 15, "n_current": 15, "first": {"Entry": 13.3, "Mid-level": 33.3, "Senior": 13.3, "Manager": 20.0, "Director": 0.0, "Executive": 20.0}, "current": {"Entry": 6.7, "Mid-level": 46.7, "Senior": 6.7, "Manager": 20.0, "Director": 0.0, "Executive": 20.0}}, "3": {"n": 2, "n_first": 2, "n_current": 2, "first": {"Entry": 50.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 50.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 50.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 50.0, "Director": 0.0, "Executive": 0.0}}, "4": {"n": 1, "n_first": 1, "n_current": 1, "first": {"Entry": 0.0, "Mid-level": 100.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 100.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "5": {"n": 2, "n_first": 2, "n_current": 2, "first": {"Entry": 0.0, "Mid-level": 100.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 50.0, "Mid-level": 50.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}}, "2019": {"1": {"n": 3, "n_first": 3, "n_current": 3, "first": {"Entry": 100.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 66.7, "Mid-level": 33.3, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "2": {"n": 10, "n_first": 10, "n_current": 10, "first": {"Entry": 40.0, "Mid-level": 40.0, "Senior": 0.0, "Manager": 20.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 60.0, "Senior": 0.0, "Manager": 30.0, "Director": 0.0, "Executive": 10.0}}, "3": {"n": 3, "n_first": 3, "n_current": 3, "first": {"Entry": 33.3, "Mid-level": 33.3, "Senior": 0.0, "Manager": 33.3, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 33.3, "Mid-level": 33.3, "Senior": 0.0, "Manager": 33.3, "Director": 0.0, "Executive": 0.0}}, "4": {"n": 1, "n_first": 1, "n_current": 1, "first": {"Entry": 0.0, "Mid-level": 100.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 0.0, "Senior": 0.0, "Manager": 100.0, "Director": 0.0, "Executive": 0.0}}, "5": {"n": 4, "n_first": 2, "n_current": 4, "first": {"Entry": 50.0, "Mid-level": 50.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 100.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}}, "2020": {"1": {"n": 11, "n_first": 9, "n_current": 10, "first": {"Entry": 11.1, "Mid-level": 66.7, "Senior": 0.0, "Manager": 22.2, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 40.0, "Mid-level": 10.0, "Senior": 10.0, "Manager": 30.0, "Director": 0.0, "Executive": 10.0}}, "2": {"n": 11, "n_first": 11, "n_current": 11, "first": {"Entry": 0.0, "Mid-level": 36.4, "Senior": 0.0, "Manager": 27.3, "Director": 0.0, "Executive": 36.4}, "current": {"Entry": 9.1, "Mid-level": 27.3, "Senior": 18.2, "Manager": 9.1, "Director": 0.0, "Executive": 36.4}}, "3": {"n": 2, "n_first": 2, "n_current": 2, "first": {"Entry": 0.0, "Mid-level": 100.0, "Senior": 0.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 0.0, "Mid-level": 50.0, "Senior": 50.0, "Manager": 0.0, "Director": 0.0, "Executive": 0.0}}, "4": {"n": 8, "n_first": 8, "n_current": 8, "first": {"Entry": 12.5, "Mid-level": 37.5, "Senior": 0.0, "Manager": 25.0, "Director": 0.0, "Executive": 25.0}, "current": {"Entry": 0.0, "Mid-level": 25.0, "Senior": 12.5, "Manager": 12.5, "Director": 0.0, "Executive": 50.0}}, "5": {"n": 9, "n_first": 9, "n_current": 9, "first": {"Entry": 33.3, "Mid-level": 33.3, "Senior": 0.0, "Manager": 33.3, "Director": 0.0, "Executive": 0.0}, "current": {"Entry": 44.4, "Mid-level": 33.3, "Senior": 0.0, "Manager": 11.1, "Director": 0.0, "Executive": 11.1}}}};
+const C_INFO     = {"1": {"label": "C1 \u00b7 Academic Ladder Climber", "color": "#B8860B", "badge_color": "#8B6508", "badge_bg": "#FDF6E3", "border": "#B8860B"}, "2": {"label": "C2 \u00b7 Working Student", "color": "#4A9EDB", "badge_color": "#1E6EA0", "badge_bg": "#EBF5FC", "border": "#4A9EDB"}, "3": {"label": "C3 \u00b7 Certification Builder", "color": "#0057D9", "badge_color": "#0040A0", "badge_bg": "#E6EEFA", "border": "#0057D9"}, "4": {"label": "C4 \u00b7 Self-Skill Builder", "color": "#6BA888", "badge_color": "#3D7A5C", "badge_bg": "#EAF5EF", "border": "#6BA888"}, "5": {"label": "C5 \u00b7 Core Graduate", "color": "#A0A8B8", "badge_color": "#5A6070", "badge_bg": "#F0F1F4", "border": "#A0A8B8"}};
+const LEV_COLORS = {"Entry": "#D3D1C7", "Mid-level": "#888780", "Senior": "#B5A06A", "Manager": "#5F8DB0", "Director": "#2E5F8A", "Executive": "#1A3A5C"};
+const LEVELS     = ["Entry", "Mid-level", "Senior", "Manager", "Director", "Executive"];
+const BAR_LABELS = ["C1 Earliest", "C1 Latest", "C2 Earliest", "C2 Latest", "C3 Earliest", "C3 Latest", "C4 Earliest", "C4 Latest", "C5 Earliest", "C5 Latest"];
+
+const DEFAULT_YEARS = [2011,2012,2013,2014,2015,2016,2017,2018,2019,2020];
+let activeYears = new Set(DEFAULT_YEARS);
+
+function getPlotDiv() { return document.querySelector('.plotly-graph-div'); }
+
+document.addEventListener('click', e => {
+    if (!document.getElementById('ddWrap').contains(e.target))
+        document.getElementById('ddMenu').classList.remove('open');
+});
+function toggleDropdown() { document.getElementById('ddMenu').classList.toggle('open'); }
+function onYearCheck(cb) {
+    const yr = parseInt(cb.value);
+    if (cb.checked) activeYears.add(yr); else activeYears.delete(yr);
+    updateChart();
+}
+
+function buildTraces(d) {
+    const traces = []; let totalN = 0;
+    LEVELS.forEach(lv => {
+        const yVals = [], tips = [], textVals = [];
+        for (let c = 1; c <= 5; c++) {
+            const cs = String(c);
+            const fv = d[cs] ? (d[cs].first[lv]   || 0) : 0;
+            const rv = d[cs] ? (d[cs].current[lv] || 0) : 0;
+            const nf = d[cs] ? (d[cs].n_first      || 0) : 0;
+            const nl = d[cs] ? (d[cs].n_current    || 0) : 0;
+            yVals.push(fv, rv);
+            textVals.push(
+                fv >= 5 ? Math.round(fv) + '%' : '',
+                rv >= 5 ? Math.round(rv) + '%' : ''
+            );
+            tips.push(
+                '<b>' + C_INFO[cs].label + '</b> · Earliest job in window (n=' + nf + ' with seniority)<br>' + lv + ': ' + fv + '%',
+                '<b>' + C_INFO[cs].label + '</b> · Latest job in window (n=' + nl + ' with seniority)<br>' + lv + ': ' + rv + '%'
+            );
+        }
+        traces.push({
+            type:'bar', name:lv, x:BAR_LABELS, y:yVals,
+            marker:{ color:LEV_COLORS[lv], line:{ width:0.5, color:'rgba(255,255,255,0.4)' } },
+            customdata:tips, hovertemplate:'%{customdata}<extra></extra>',
+            text:textVals, textposition:'inside',
+            textfont:{ size:9, color:'white' },
+            insidetextanchor:'middle',
+        });
+    });
+    for (let c = 1; c <= 5; c++) { if (d[String(c)]) totalN += (d[String(c)].n || 0); }
+    return { traces, totalN };
+}
+
+function mergeYears(years) {
+    const merged = {};
+    for (let c = 1; c <= 5; c++) {
+        const cs = String(c);
+        let totN = 0, totNF = 0, totNL = 0;
+        const lvSumsF = {}, lvSumsC = {};
+        LEVELS.forEach(lv => { lvSumsF[lv] = 0; lvSumsC[lv] = 0; });
+        years.forEach(yr => {
+            const d = ALL_SEN[String(yr)]; if (!d || !d[cs]) return;
+            const n = d[cs].n || 0; totN += n;
+            const nf = d[cs].n_first || 0; totNF += nf;
+            const nl = d[cs].n_current || 0; totNL += nl;
+            LEVELS.forEach(lv => {
+                lvSumsF[lv] += (d[cs].first[lv]   || 0) * nf;
+                lvSumsC[lv] += (d[cs].current[lv] || 0) * nl;
+            });
+        });
+        const nf = totNF || 1, nl = totNL || 1;
+        const first = {}, current = {};
+        LEVELS.forEach(lv => {
+            first[lv]   = parseFloat((lvSumsF[lv] / nf).toFixed(1));
+            current[lv] = parseFloat((lvSumsC[lv] / nl).toFixed(1));
+        });
+        merged[cs] = { n:totN, n_first:totNF, n_current:totNL, first, current };
+    }
+    return merged;
+}
+
+function updateChart() {
+    const years = [...activeYears];
+    if (years.length === 0) {
+        document.getElementById('cohort-meta').textContent = '(no years selected)';
+        document.getElementById('cohort-label-val').textContent = '—';
+        return;
+    }
+
+    const isDefault = years.length === 10 && DEFAULT_YEARS.every(y => years.includes(y));
+    let totalN;
+    if (isDefault) {
+        const res = buildTraces(ALL_SEN['2011-2020']);
+        Plotly.react(getPlotDiv(), res.traces, getPlotDiv().layout);
+        totalN = res.totalN;
+    } else {
+        const merged = mergeYears(years);
+        const res = buildTraces(merged);
+        Plotly.react(getPlotDiv(), res.traces, getPlotDiv().layout);
+        totalN = res.totalN;
+    }
+
+    const sorted = years.sort((a,b) => a-b);
+    const labelVal = isDefault ? '2011–2020'
+        : sorted.length === 1 ? String(sorted[0])
+        : sorted[0] + '–' + sorted[sorted.length-1]
+          + (sorted.length < (sorted[sorted.length-1] - sorted[0] + 1) ? ` (${sorted.length} yrs)` : '');
+    document.getElementById('cohort-label-val').textContent = labelVal;
+    document.getElementById('cohort-meta').textContent =
+        `(n=${totalN} with dated jobs  ·  5-yr window)`;
+}
+
+window.addEventListener('load', () => { updateChart(); });
+</script>
+
+
+<script>
+(function() {
+  const clusterKeyFn = (x) => x.split(' ')[0];
+  let plotlyDiv = null;
+  let originalData = null;
+  let originalLayout = null;
+
+  function findPlotlyDiv() {
+    return document.querySelector('.plotly-graph-div');
+  }
+
+  function captureOriginal() {
+    if (!plotlyDiv || originalData) return;
+    originalData   = JSON.parse(JSON.stringify(plotlyDiv.data));
+    originalLayout = JSON.parse(JSON.stringify(plotlyDiv.layout));
+  }
+
+  function visibleClusters() {
+    const checked = [];
+    document.querySelectorAll('#ddClusterMenu input[type="checkbox"]').forEach(cb => {
+      if (cb.checked) checked.push(cb.value);
+    });
+    return new Set(checked);
+  }
+
+  // Returns true if an annotation/shape belongs to a hidden cluster.
+  // We look at the text (for annotations) and the x/x0 values (for shapes)
+  // to classify each by its cluster index.
+  function isIndexVisible(idx, xToClusterMap, visible) {
+    const key = xToClusterMap.get(idx);
+    if (!key) return true;  // no mapping = keep
+    return visible.has(key);
+  }
+
+  window.onClusterCheck = function(checkbox) {
+    if (!plotlyDiv || !originalData) return;
+    const visible = visibleClusters();
+
+    // ── Step 1: Build a map of original x-index → cluster key ──────────────
+    // Use the first trace's x array as the canonical index list.
+    const firstX = originalData[0] && originalData[0].x ? originalData[0].x : [];
+    const idxToCluster = new Map();   // original index → cluster key
+    firstX.forEach((xv, i) => {
+      idxToCluster.set(i, clusterKeyFn(xv));
+    });
+
+    // Decide which original indices survive, and assign them new positions.
+    const keepIndices = [];
+    const oldToNewIdx = new Map();
+    firstX.forEach((xv, i) => {
+      const key = clusterKeyFn(xv);
+      if (visible.has(key)) {
+        oldToNewIdx.set(i, keepIndices.length);
+        keepIndices.push(i);
+      }
+    });
+
+    // ── Step 2: Filter each trace's x/y/customdata/text arrays ─────────────
+    const filteredData = originalData.map(trace => {
+      const copy = JSON.parse(JSON.stringify(trace));
+      if (!copy.x || !copy.y) return copy;
+      const origLen = copy.x.length;
+      Object.keys(copy).forEach(k => {
+        const v = copy[k];
+        if (Array.isArray(v) && v.length === origLen) {
+          copy[k] = keepIndices.map(i => v[i]);
+        }
+      });
+      return copy;
+    });
+
+    // ── Step 3: Filter annotations ─────────────────────────────────────────
+    // Annotations reference cluster midpoints (e.g. C1 label at x=0.5,
+    // which is midpoint of indices 0 and 1). We classify by rounding.
+    // Use originalData[0].x to map back to a cluster key.
+    const filteredAnnotations = (originalLayout.annotations || []).map(a => {
+      const copy = JSON.parse(JSON.stringify(a));
+      if (copy.xref !== 'x' || typeof copy.x !== 'number') return copy;
+      // Find the nearest original index and check its cluster
+      const nearestIdx = Math.round(copy.x);
+      const key = idxToCluster.get(nearestIdx);
+      if (!key) return copy;
+      if (!visible.has(key)) {
+        copy._hidden = true;  // mark for filtering
+        return copy;
+      }
+      // Remap x position: shift to the new index position
+      // Cluster-label annotations sit at midpoint (e.g. x=0.5 = midpoint of 0,1)
+      // Compute offset from nearest index, then re-apply after remapping
+      const offset = copy.x - nearestIdx;
+      const newIdx = oldToNewIdx.get(nearestIdx);
+      if (newIdx === undefined) {
+        copy._hidden = true;
+        return copy;
+      }
+      copy.x = newIdx + offset;
+      return copy;
+    }).filter(a => !a._hidden);
+
+    // ── Step 4: Filter shapes (brackets & dividers) ────────────────────────
+    const filteredShapes = (originalLayout.shapes || []).map(s => {
+      const copy = JSON.parse(JSON.stringify(s));
+      if (copy.xref !== 'x') return copy;
+      // Shapes use x0, x1; classify by the MIDPOINT rounded to nearest index
+      const x0 = copy.x0, x1 = copy.x1;
+      if (typeof x0 !== 'number' || typeof x1 !== 'number') return copy;
+      const mid = (x0 + x1) / 2;
+      const nearestIdx = Math.round(mid);
+      const key = idxToCluster.get(nearestIdx);
+      if (!key) return copy;
+      if (!visible.has(key)) {
+        copy._hidden = true;
+        return copy;
+      }
+      // Remap both x0 and x1
+      const newMidIdx = oldToNewIdx.get(nearestIdx);
+      if (newMidIdx === undefined) {
+        copy._hidden = true;
+        return copy;
+      }
+      const halfWidth = (x1 - x0) / 2;
+      copy.x0 = newMidIdx - halfWidth + (mid - nearestIdx);
+      copy.x1 = newMidIdx + halfWidth + (mid - nearestIdx);
+      return copy;
+    }).filter(s => !s._hidden);
+
+    // ── Step 5: Rebuild xaxis tickvals/ticktext for visible values only ────
+    // Charts use category axes: tickvals are STRINGS matching x-values
+    // (e.g. "C1 Earliest"), not numeric indices. Some charts (Cohort) have
+    // no tickvals at all — Plotly auto-generates ticks from the x strings.
+    const newLayout = JSON.parse(JSON.stringify(originalLayout));
+    newLayout.annotations = filteredAnnotations;
+    newLayout.shapes = filteredShapes;
+    if (newLayout.xaxis) {
+      const origTickvals = newLayout.xaxis.tickvals;
+      const origTicktext = newLayout.xaxis.ticktext;
+      // Only rebuild if both are explicitly set (arrays of strings matching x).
+      // Otherwise leave them undefined so Plotly auto-generates from filtered x.
+      if (Array.isArray(origTickvals) && Array.isArray(origTicktext)) {
+        // Build a set of surviving x-strings from the filtered first trace.
+        const survivingX = new Set();
+        if (filteredData[0] && filteredData[0].x) {
+          filteredData[0].x.forEach(xv => survivingX.add(xv));
+        }
+        const newTickvals = [];
+        const newTicktext = [];
+        origTickvals.forEach((tv, i) => {
+          if (survivingX.has(tv)) {
+            newTickvals.push(tv);                       // keep string as-is
+            newTicktext.push(origTicktext[i] || '');
+          }
+        });
+        newLayout.xaxis.tickvals = newTickvals;
+        newLayout.xaxis.ticktext = newTicktext;
+      }
+      // Do NOT set xaxis.range on category axes — let Plotly auto-fit.
+      if (newLayout.xaxis.range) delete newLayout.xaxis.range;
+    }
+
+    Plotly.react(plotlyDiv, filteredData, newLayout);
+  };
+
+  window.toggleClusterDropdown = function() {
+    const menu = document.getElementById('ddClusterMenu');
+    if (!menu) return;
+    menu.classList.toggle('open');
+  };
+
+  document.addEventListener('click', function(e) {
+    const wrap = document.getElementById('ddClusterWrap');
+    if (!wrap) return;
+    if (!wrap.contains(e.target)) {
+      document.getElementById('ddClusterMenu').classList.remove('open');
+    }
+  });
+
+  function init() {
+    plotlyDiv = findPlotlyDiv();
+    if (plotlyDiv && plotlyDiv.data) {
+      captureOriginal();
+    } else {
+      setTimeout(init, 200);
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+</body>
+</html>
