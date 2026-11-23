@@ -505,7 +505,7 @@
 .education-outcomes .outcome-logo-grid {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 1rem 1.25rem;
+  gap: .8rem 1.15rem;
   padding: 0;
   list-style: none;
 }
@@ -514,16 +514,35 @@
   display: grid;
   place-items: center;
   min-width: 0;
-  height: 6rem;
-  padding: .6rem;
+  height: 5.35rem;
+  padding: .45rem .35rem;
   background: #fff;
 }
 
 .education-outcomes .logo-tile img {
-  width: 100%;
-  max-width: 10.5rem;
-  height: 4.4rem;
+  display: block;
+  width: auto;
+  max-width: min(100%, 9.25rem);
+  height: auto;
+  max-height: 3.55rem;
   object-fit: contain;
+  transform: scale(var(--logo-scale, 1));
+  transform-origin: center;
+}
+
+.education-outcomes .logo-tile--wide img {
+  max-width: min(100%, 10.75rem);
+  max-height: 2.85rem;
+}
+
+.education-outcomes .logo-tile--ultrawide img {
+  max-width: min(100%, 11.25rem);
+  max-height: 2.25rem;
+}
+
+.education-outcomes .logo-tile--compact img {
+  max-width: 5.2rem;
+  max-height: 4rem;
 }
 
 .education-outcomes [hidden] {

@@ -64,6 +64,38 @@ const logoGrid = document.querySelector('#institution-logos');
 const logoToggle = document.querySelector('#institution-logos-toggle');
 
 if (logoGrid && logoToggle && logoGrid.children.length > 36) {
+  const logoScaleOverrides = new Map([
+    ['075-166027_harvard-business-school.png', 1.35],
+    ['153-190150_columbia-business-school.png', 1.5],
+    ['056-130794_yale-school-of-management.png', 1.45],
+    ['178-234076_darden-school-of-business.png', 1.22],
+    ['154-190415_cornell-sc-johnson-college-of-business.png', 1.18],
+    ['072-152080_mendoza-college-of-business.png', 1.45],
+    ['161-199120_unc-kenan-flagler-business-school.png', 1.4],
+    ['167-221999_owen-graduate-school-of-management.png', 1.3],
+    ['071-151351_kelley-school-of-business.png', 1.3],
+    ['058-131496_mcdonough-school-of-business.png', 1.4],
+    ['171-228778_mccombs-school-of-business.png', 1.2],
+    ['064-139755_scheller-college-of-business.png', 1.25],
+    ['088-204796_max-m-fisher-college-of-business.png', 1.3],
+    ['135-160755_a-b-freeman-school-of-business.png', 1.35]
+  ]);
+  const classifyLogo = (image) => {
+    const tile = image.closest('.logo-tile');
+    if (!tile || !image.naturalWidth || !image.naturalHeight) return;
+    const filename = image.src.split('/').pop().split('?')[0];
+    const aspectRatio = image.naturalWidth / image.naturalHeight;
+    tile.classList.remove('logo-tile--compact', 'logo-tile--wide', 'logo-tile--ultrawide');
+    if (aspectRatio >= 5) tile.classList.add('logo-tile--ultrawide');
+    else if (aspectRatio >= 3) tile.classList.add('logo-tile--wide');
+    else if (aspectRatio <= 1.15) tile.classList.add('logo-tile--compact');
+    tile.style.setProperty('--logo-scale', logoScaleOverrides.get(filename) || 1);
+  };
+  for (const image of logoGrid.querySelectorAll('img')) {
+    if (image.complete) classifyLogo(image);
+    else image.addEventListener('load', () => classifyLogo(image), { once: true });
+  }
+
   const featuredLogoOrder = [
     '075-166027_harvard-business-school.png',
     '181-243744_stanford-graduate-school-of-business.png',
