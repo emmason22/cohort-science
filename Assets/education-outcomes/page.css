@@ -115,9 +115,20 @@
 
 .education-outcomes .hero-report-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(.85rem, 1.3vw, 1.2rem);
+  grid-template-columns: none;
+  grid-auto-columns: calc((100% - 2rem) / 3);
+  grid-auto-flow: column;
+  gap: 1rem;
   align-items: start;
+  overflow-x: auto;
+  padding: .5rem 0 1.15rem;
+  scroll-behavior: smooth;
+  scroll-snap-type: inline mandatory;
+  scrollbar-width: none;
+}
+
+.education-outcomes .hero-report-grid::-webkit-scrollbar {
+  display: none;
 }
 
 .education-outcomes .hero-report-grid:focus-visible {
@@ -127,6 +138,7 @@
 
 .education-outcomes .hero-report {
   margin: 0;
+  scroll-snap-align: start;
 }
 
 .education-outcomes .hero-report img {
@@ -139,6 +151,45 @@
   box-shadow:
     0 18px 34px rgba(16, 44, 73, .16),
     0 4px 10px rgba(16, 44, 73, .1);
+}
+
+.education-outcomes .hero-report-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: .45rem;
+  margin-top: .2rem;
+}
+
+.education-outcomes .hero-report-controls button {
+  min-height: 2.35rem;
+  padding: .45rem .7rem;
+  border: 1px solid rgba(31, 79, 126, .24);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .72);
+  color: var(--workspace-blue);
+  cursor: pointer;
+  font: inherit;
+  font-size: .76rem;
+  font-weight: 750;
+}
+
+.education-outcomes .hero-report-controls button:hover {
+  border-color: rgba(31, 79, 126, .5);
+  background: #fff;
+}
+
+.education-outcomes .hero-report-controls button:focus-visible {
+  outline: 3px solid var(--workspace-cyan);
+  outline-offset: 2px;
+}
+
+.education-outcomes .hero-report-position {
+  min-width: 4.4rem;
+  color: var(--workspace-muted);
+  font-size: .76rem;
+  font-weight: 750;
+  text-align: center;
 }
 
 .education-outcomes .outcomes-dashboard {
@@ -1069,20 +1120,26 @@
   }
 
   .education-outcomes .hero-report-grid {
-    grid-template-columns: none;
     grid-auto-columns: min(72vw, 17rem);
-    grid-auto-flow: column;
     gap: 1rem;
-    overflow-x: auto;
     padding: .35rem .15rem 1rem;
     scroll-padding-inline: .15rem;
-    scroll-snap-type: inline mandatory;
     scrollbar-color: #9db1c4 transparent;
     scrollbar-width: thin;
   }
 
-  .education-outcomes .hero-report {
-    scroll-snap-align: start;
+  .education-outcomes .hero-report-grid::-webkit-scrollbar {
+    display: block;
+    height: .28rem;
+  }
+
+  .education-outcomes .hero-report-grid::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: #9db1c4;
+  }
+
+  .education-outcomes .hero-report-controls {
+    justify-content: center;
   }
 
   .education-outcomes .outcomes-hero-actions {
