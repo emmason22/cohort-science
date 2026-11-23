@@ -29,16 +29,13 @@ for (const frame of document.querySelectorAll('.outcome-frame')) {
 
 const reportCarousel = document.querySelector('.hero-report-grid');
 const reportPrevious = document.querySelector('[data-report-previous]');
-const reportPause = document.querySelector('[data-report-pause]');
 const reportNext = document.querySelector('[data-report-next]');
-const reportPosition = document.querySelector('.hero-report-position');
 
-if (reportCarousel && reportPrevious && reportPause && reportNext && reportPosition) {
+if (reportCarousel && reportPrevious && reportNext) {
   const reportSlides = Array.from(reportCarousel.querySelectorAll('.hero-report'));
   const reportInteractionRegion = reportCarousel.closest('.hero-report-showcase') || reportCarousel;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   let activeReport = 0;
-  let rotationPaused = reducedMotion.matches;
   let pointerPaused = false;
   let focusPaused = false;
   let scrollTimer;
@@ -54,22 +51,10 @@ if (reportCarousel && reportPrevious && reportPause && reportNext && reportPosit
 
   const getLastReportIndex = () => Math.max(0, reportSlides.length - getVisibleReportCount());
 
-  const updateReportStatus = () => {
-    const visibleCount = getVisibleReportCount();
-    const lastVisible = Math.min(reportSlides.length, activeReport + visibleCount);
-    reportPosition.textContent = visibleCount > 1
-      ? `${activeReport + 1}–${lastVisible} / ${reportSlides.length}`
-      : `${activeReport + 1} / ${reportSlides.length}`;
-    reportPause.textContent = rotationPaused ? 'Play' : 'Pause';
-    reportPause.setAttribute('aria-pressed', String(rotationPaused));
-    reportPause.setAttribute('aria-label', rotationPaused ? 'Play report rotation' : 'Pause report rotation');
-  };
-
   const showReport = (index, behavior = 'smooth') => {
     const lastIndex = getLastReportIndex();
     activeReport = index < 0 ? lastIndex : index > lastIndex ? 0 : index;
     reportCarousel.scrollTo({ left: reportSlides[activeReport].offsetLeft, behavior });
-    updateReportStatus();
   };
 
   const syncReportPosition = () => {
@@ -82,33 +67,22 @@ if (reportCarousel && reportPrevious && reportPause && reportNext && reportPosit
           : closest
       ), 0);
       activeReport = Math.min(closestIndex, getLastReportIndex());
-      updateReportStatus();
     }, 120);
   };
 
   reportPrevious.addEventListener('click', () => showReport(activeReport - 1));
   reportNext.addEventListener('click', () => showReport(activeReport + 1));
-  reportPause.addEventListener('click', () => {
-    rotationPaused = !rotationPaused;
-    updateReportStatus();
-  });
   reportCarousel.addEventListener('scroll', syncReportPosition, { passive: true });
   reportInteractionRegion.addEventListener('pointerenter', () => { pointerPaused = true; });
   reportInteractionRegion.addEventListener('pointerleave', () => { pointerPaused = false; });
   reportInteractionRegion.addEventListener('focusin', () => { focusPaused = true; });
   reportInteractionRegion.addEventListener('focusout', () => { focusPaused = false; });
-  reducedMotion.addEventListener('change', (event) => {
-    rotationPaused = event.matches;
-    updateReportStatus();
-  });
   window.addEventListener('resize', () => showReport(Math.min(activeReport, getLastReportIndex()), 'auto'));
 
   window.setInterval(() => {
-    if (rotationPaused || pointerPaused || focusPaused || document.hidden) return;
+    if (reducedMotion.matches || pointerPaused || focusPaused || document.hidden) return;
     showReport(activeReport + 1);
   }, 3600);
-
-  updateReportStatus();
 }
 
 const clientIdentification = document.querySelector('#outcomes-client-identification');
