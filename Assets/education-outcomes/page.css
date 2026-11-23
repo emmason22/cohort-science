@@ -68,6 +68,18 @@
   text-transform: uppercase;
 }
 
+.education-outcomes .outcomes-client-identification {
+  width: max-content;
+  max-width: 100%;
+  margin: -.1rem 0 1rem;
+  padding: .38rem .65rem;
+  border-left: 3px solid var(--workspace-cyan);
+  background: rgba(255, 255, 255, .62);
+  color: var(--workspace-blue);
+  font-size: .84rem !important;
+  font-weight: 750;
+}
+
 .education-outcomes .outcomes-hero-proof {
   display: flex;
   flex-wrap: wrap;
@@ -876,7 +888,12 @@
 }
 
 .education-outcomes .outcomes-coverage {
+  scroll-margin-top: 6.25rem;
   background: linear-gradient(180deg, #fff, #f5f8fb);
+}
+
+.education-outcomes #coverage-title {
+  scroll-margin-top: 7rem;
 }
 
 .education-outcomes .outcomes-coverage > .container {
@@ -920,6 +937,10 @@
   object-fit: contain;
   transform: scale(var(--logo-scale, 1));
   transform-origin: center;
+}
+
+.education-outcomes .logo-tile img[src*="columbia-business-school"] {
+  clip-path: inset(2px);
 }
 
 .education-outcomes .logo-tile--wide img {
@@ -1185,7 +1206,7 @@
 
   .education-outcomes .hero-preview-body {
     grid-template-columns: 2.75rem minmax(0, 1fr);
-    min-height: 20rem;
+    min-height: 0;
   }
 
   .education-outcomes .hero-preview-nav {
@@ -1203,6 +1224,10 @@
 
   .education-outcomes .hero-preview-metrics div:last-child {
     grid-column: 1 / -1;
+  }
+
+  .education-outcomes .hero-preview-chart {
+    display: none;
   }
 
   .education-outcomes .outcomes-hero-actions {

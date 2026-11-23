@@ -21,6 +21,18 @@ for (const frame of document.querySelectorAll('.outcome-frame')) {
   }, { once: true });
 }
 
+const clientIdentification = document.querySelector('#outcomes-client-identification');
+if (clientIdentification) {
+  const pageParameters = new URLSearchParams(location.search);
+  const clientName = pageParameters.get('client')?.trim().slice(0, 80);
+  if (clientName) {
+    const auditPeriod = pageParameters.get('period')?.trim().slice(0, 40)
+      || new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(new Date());
+    clientIdentification.textContent = `Prepared for ${clientName} · ${auditPeriod}`;
+    clientIdentification.hidden = false;
+  }
+}
+
 const workspace = document.querySelector('.outcome-workspace');
 if (workspace) {
   const links = Array.from(workspace.querySelectorAll('.outcome-workspace-nav a'));
@@ -57,7 +69,8 @@ if (workspace) {
     };
     const syncHash = () => {
       const index = links.findIndex((link) => link.hash === location.hash);
-      selectPanel(Math.max(0, index));
+      if (index >= 0) selectPanel(index);
+      return index;
     };
 
     workspace.classList.add('outcome-workspace-ready');
@@ -93,8 +106,9 @@ if (workspace) {
       }
     });
     window.addEventListener('hashchange', syncHash);
-    syncHash();
-    if (location.hash) {
+    const initialIndex = syncHash();
+    if (initialIndex < 0) selectPanel(0);
+    if (initialIndex >= 0) {
       requestAnimationFrame(() => document.querySelector('.outcomes-dashboard')?.scrollIntoView({ block: 'start' }));
     }
   }
