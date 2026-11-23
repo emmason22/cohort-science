@@ -1045,20 +1045,12 @@
 
   .education-outcomes .workspace-chart-scroll,
   .education-outcomes .figure-scroll {
-    overflow-x: hidden;
-  }
-
-  .education-outcomes .workspace-chart-scroll .outcome-frame,
-  .education-outcomes .workspace-sankey .outcome-frame {
-    min-width: 0;
-    width: 100%;
-  }
-
-  .education-outcomes .workspace-sankey {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .education-outcomes .workspace-sankey::before {
+  .education-outcomes .workspace-chart-scroll::before,
+  .education-outcomes .figure-scroll::before {
     position: sticky;
     left: .5rem;
     z-index: 2;
@@ -1069,19 +1061,24 @@
     border-radius: 999px;
     background: var(--workspace-navy);
     color: #fff;
-    content: "Swipe to explore pathways";
+    content: "Swipe to explore chart";
     font-size: .72rem;
     font-weight: 700;
   }
 
+  .education-outcomes .workspace-chart-scroll .outcome-frame {
+    width: 1100px;
+    min-width: 1100px;
+  }
+
   .education-outcomes .workspace-sankey .outcome-frame {
-    width: 760px;
-    min-width: 760px;
+    width: 2400px;
+    min-width: 2400px;
   }
 
   .education-outcomes .figure-scroll img {
-    min-width: 0;
-    width: 100%;
+    width: 760px;
+    min-width: 760px;
   }
 
   .education-outcomes .mobile-briefing-cta {
