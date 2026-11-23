@@ -3,6 +3,14 @@ for (const frame of document.querySelectorAll('.outcome-frame')) {
     const body = frame.contentDocument?.body;
     if (!body) return;
 
+    const style = frame.contentDocument.createElement('style');
+    style.textContent = `
+      body, button, select, input { font-family: Inter, Arial, sans-serif !important; }
+      body { background: #fff !important; }
+      button, select, input { letter-spacing: normal; }
+    `;
+    frame.contentDocument.head?.append(style);
+
     const resize = () => {
       const height = Math.ceil(body.getBoundingClientRect().height);
       if (height > 0 && frame.height !== String(height)) frame.height = height;
@@ -20,6 +28,8 @@ if (workspace) {
   const insightTitle = document.querySelector('#insight-title');
   const insightCopy = document.querySelector('#insight-copy');
   const insightQuestion = document.querySelector('#insight-question');
+  const insightStat = document.querySelector('#insight-stat');
+  const insightBenchmark = document.querySelector('#insight-benchmark');
   const moduleSelect = document.querySelector('#outcome-module-select');
   const copyButton = document.querySelector('#copy-outcome-view');
   const copyStatus = document.querySelector('#outcome-copy-status');
@@ -35,6 +45,8 @@ if (workspace) {
       if (insightTitle) insightTitle.textContent = links[index].dataset.insightTitle || '';
       if (insightCopy) insightCopy.textContent = links[index].dataset.insightCopy || '';
       if (insightQuestion) insightQuestion.textContent = links[index].dataset.insightQuestion || '';
+      if (insightStat) insightStat.textContent = links[index].dataset.insightStat || '';
+      if (insightBenchmark) insightBenchmark.textContent = links[index].dataset.insightBenchmark || '';
       if (moduleSelect) moduleSelect.value = links[index].hash;
       const navigation = links[index].parentElement;
       if (navigation && navigation.scrollWidth > navigation.clientWidth) {
