@@ -892,8 +892,8 @@
 .education-outcomes .outcome-logo-grid {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: .8rem 1.15rem;
-  padding: 1.25rem;
+  gap: 1.1rem clamp(1.4rem, 2.2vw, 2.15rem);
+  padding: 1.5rem;
   border-radius: 1rem;
   background: rgba(255, 255, 255, .82);
   box-shadow: 0 20px 50px rgba(16, 44, 73, .07);
@@ -904,9 +904,11 @@
   display: grid;
   place-items: center;
   min-width: 0;
-  height: 5.35rem;
-  padding: .45rem .35rem;
+  height: 6rem;
+  overflow: hidden;
+  padding: .7rem .65rem;
   background: #fff;
+  contain: layout paint;
 }
 
 .education-outcomes .logo-tile img {
@@ -1235,6 +1237,13 @@
 
   .education-outcomes .outcome-logo-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .8rem 1rem;
+    padding: .75rem;
+  }
+
+  .education-outcomes .logo-tile {
+    height: 5.6rem;
+    padding: .7rem;
   }
 }
 

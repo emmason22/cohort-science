@@ -120,16 +120,32 @@ if (logoGrid && logoToggle && logoGrid.children.length > 36) {
     ['088-204796_max-m-fisher-college-of-business.png', 1.3],
     ['135-160755_a-b-freeman-school-of-business.png', 1.35]
   ]);
+  const fitLogoToTile = (image) => {
+    const tile = image.closest('.logo-tile');
+    if (!tile || tile.hidden) return;
+    const filename = image.src.split('/').pop().split('?')[0];
+    const preferredScale = logoScaleOverrides.get(filename) || 1;
+    tile.style.setProperty('--logo-scale', preferredScale);
+    requestAnimationFrame(() => {
+      const tileRect = tile.getBoundingClientRect();
+      const imageRect = image.getBoundingClientRect();
+      if (!tileRect.width || !tileRect.height || !imageRect.width || !imageRect.height) return;
+      const availableWidth = Math.max(1, tile.clientWidth - 20);
+      const availableHeight = Math.max(1, tile.clientHeight - 16);
+      const fitRatio = Math.min(1, availableWidth / imageRect.width, availableHeight / imageRect.height);
+      const safeScale = Math.max(.5, Math.floor(preferredScale * fitRatio * 100) / 100);
+      tile.style.setProperty('--logo-scale', safeScale);
+    });
+  };
   const classifyLogo = (image) => {
     const tile = image.closest('.logo-tile');
     if (!tile || !image.naturalWidth || !image.naturalHeight) return;
-    const filename = image.src.split('/').pop().split('?')[0];
     const aspectRatio = image.naturalWidth / image.naturalHeight;
     tile.classList.remove('logo-tile--compact', 'logo-tile--wide', 'logo-tile--ultrawide');
     if (aspectRatio >= 5) tile.classList.add('logo-tile--ultrawide');
     else if (aspectRatio >= 3) tile.classList.add('logo-tile--wide');
     else if (aspectRatio <= 1.15) tile.classList.add('logo-tile--compact');
-    tile.style.setProperty('--logo-scale', logoScaleOverrides.get(filename) || 1);
+    fitLogoToTile(image);
   };
   for (const image of logoGrid.querySelectorAll('img')) {
     if (image.complete) classifyLogo(image);
@@ -185,12 +201,25 @@ if (logoGrid && logoToggle && logoGrid.children.length > 36) {
   });
   for (const logo of logoItems) logoGrid.append(logo);
 
+  let logoResizeTimer;
+  window.addEventListener('resize', () => {
+    window.clearTimeout(logoResizeTimer);
+    logoResizeTimer = window.setTimeout(() => {
+      for (const image of logoGrid.querySelectorAll('img')) fitLogoToTile(image);
+    }, 120);
+  });
+
   const extraLogos = Array.from(logoGrid.children).slice(36);
 
   const setLogoGridExpanded = (expanded) => {
     for (const logo of extraLogos) logo.hidden = !expanded;
     logoToggle.setAttribute('aria-expanded', String(expanded));
     logoToggle.textContent = expanded ? 'View fewer' : 'View more';
+    if (expanded) {
+      requestAnimationFrame(() => {
+        for (const image of logoGrid.querySelectorAll('img')) fitLogoToTile(image);
+      });
+    }
   };
 
   setLogoGridExpanded(false);
