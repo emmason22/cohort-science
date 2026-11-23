@@ -11,10 +11,11 @@
 .education-outcomes .hero {
   position: relative;
   overflow: hidden;
-  padding: clamp(2.75rem, 5vw, 5rem) 0;
+  padding: clamp(3.5rem, 6vw, 6.5rem) 0;
   background:
-    radial-gradient(circle at 84% 28%, rgba(111, 196, 220, .22), transparent 22rem),
-    linear-gradient(135deg, #f9f7f1 0%, #eef5fa 100%);
+    radial-gradient(circle at 79% 32%, rgba(111, 196, 220, .24), transparent 24rem),
+    radial-gradient(circle at 98% 100%, rgba(31, 79, 126, .08), transparent 28rem),
+    linear-gradient(135deg, #fbfaf6 0%, #eef5fa 100%);
 }
 
 .education-outcomes .hero::after {
@@ -36,9 +37,9 @@
 
 .education-outcomes .outcomes-hero-grid {
   display: grid;
-  grid-template-columns: minmax(27rem, .78fr) minmax(38rem, 1.22fr);
+  grid-template-columns: minmax(26rem, .76fr) minmax(39rem, 1.24fr);
   align-items: center;
-  gap: clamp(2.5rem, 4.5vw, 5rem);
+  gap: clamp(2rem, 4vw, 4.5rem);
 }
 
 .education-outcomes .outcomes-hero-copy {
@@ -46,10 +47,13 @@
 }
 
 .education-outcomes .hero h1 {
-  max-width: 38rem;
-  margin-bottom: 1rem;
-  font-size: clamp(3rem, 4.8vw, 5rem);
-  line-height: 1;
+  max-width: 36rem;
+  margin-bottom: 1.15rem;
+  font-family: "Spectral", Georgia, serif;
+  font-size: clamp(3.25rem, 4.15vw, 4.6rem);
+  font-weight: 600;
+  letter-spacing: -.035em;
+  line-height: .98;
 }
 
 .education-outcomes .hero p:not(.outcomes-eyebrow) {
@@ -81,7 +85,7 @@
 }
 
 .education-outcomes .hero .outcomes-hero-note {
-  margin: 1.1rem 0 0;
+  margin: 1.25rem 0 0;
   color: #76899a;
   font-size: .8rem;
   font-weight: 550;
@@ -90,8 +94,14 @@
 .education-outcomes .outcomes-hero-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: .75rem;
-  margin-top: 1.35rem;
+  gap: .65rem;
+  margin-top: 1.55rem;
+}
+
+.education-outcomes .outcomes-hero-actions .button {
+  padding: .82rem 1rem;
+  font-size: .9rem;
+  white-space: nowrap;
 }
 
 .education-outcomes .outcomes-hero-actions .button-secondary {
@@ -107,75 +117,119 @@
 .education-outcomes .hero-report-showcase {
   position: relative;
   min-width: 0;
-  padding: clamp(1.25rem, 2.2vw, 2.25rem) 0;
+  min-height: clamp(31rem, 40vw, 37rem);
   isolation: isolate;
 }
 
 .education-outcomes .hero-report-showcase::before {
   position: absolute;
-  inset: 10% -2.5% 4% 2.5%;
+  inset: 8% -2% 5% 3%;
   z-index: -1;
   border: 1px solid rgba(31, 79, 126, .1);
-  border-radius: 1.4rem;
-  background: rgba(255, 255, 255, .42);
-  box-shadow: 0 40px 90px rgba(16, 44, 73, .1);
+  border-radius: 1.75rem;
+  background:
+    linear-gradient(rgba(31, 79, 126, .035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(31, 79, 126, .035) 1px, transparent 1px),
+    rgba(255, 255, 255, .5);
+  background-size: 32px 32px;
+  box-shadow:
+    0 46px 100px rgba(16, 44, 73, .12),
+    inset 0 1px 0 rgba(255, 255, 255, .8);
   content: "";
 }
 
+.education-outcomes .hero-report-showcase::after {
+  position: absolute;
+  right: -2%;
+  bottom: 0;
+  z-index: -2;
+  width: 12rem;
+  height: 12rem;
+  border-radius: 50%;
+  background: rgba(111, 196, 220, .2);
+  content: "";
+  filter: blur(2px);
+}
+
 .education-outcomes .hero-report-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(.65rem, 1.2vw, 1rem);
-  align-items: start;
+  position: absolute;
+  inset: 0;
   perspective: 80rem;
 }
 
 .education-outcomes .hero-report {
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  top: var(--report-top);
+  left: var(--report-left);
+  z-index: var(--report-layer, 1);
+  width: var(--report-width, 23%);
   margin: 0;
-  transform: translateY(var(--report-offset, 0)) rotate(var(--report-rotation, 0));
-  transform-origin: center;
+  transform: rotate(var(--report-rotation, 0));
+  transform-origin: 50% 80%;
 }
 
 .education-outcomes .hero-report:nth-child(1) {
-  --report-offset: 2.2rem;
-  --report-rotation: -1.8deg;
+  --report-top: 23%;
+  --report-left: 0;
+  --report-width: 23%;
+  --report-layer: 2;
+  --report-rotation: -5deg;
 }
 
 .education-outcomes .hero-report:nth-child(2) {
-  --report-offset: -.4rem;
-  --report-rotation: .9deg;
+  --report-top: 2%;
+  --report-left: 17%;
+  --report-width: 27%;
+  --report-layer: 5;
+  --report-rotation: -1.5deg;
 }
 
 .education-outcomes .hero-report:nth-child(3) {
-  --report-offset: 1.1rem;
-  --report-rotation: -1deg;
+  --report-top: 18%;
+  --report-left: 40%;
+  --report-width: 23%;
+  --report-layer: 3;
+  --report-rotation: 2.25deg;
 }
 
 .education-outcomes .hero-report:nth-child(4) {
-  --report-offset: 2.9rem;
-  --report-rotation: 1.6deg;
+  --report-top: 6%;
+  --report-left: 65%;
+  --report-width: 22%;
+  --report-layer: 2;
+  --report-rotation: 4.5deg;
 }
 
 .education-outcomes .hero-report:nth-child(5) {
-  --report-offset: -.25rem;
-  --report-rotation: 1.4deg;
+  --report-top: 54%;
+  --report-left: 5%;
+  --report-width: 22%;
+  --report-layer: 4;
+  --report-rotation: 3.5deg;
 }
 
 .education-outcomes .hero-report:nth-child(6) {
-  --report-offset: -2rem;
-  --report-rotation: -1.1deg;
+  --report-top: 44%;
+  --report-left: 24%;
+  --report-width: 25%;
+  --report-layer: 6;
+  --report-rotation: -3.5deg;
 }
 
 .education-outcomes .hero-report:nth-child(7) {
-  --report-offset: -.85rem;
-  --report-rotation: .8deg;
+  --report-top: 40%;
+  --report-left: 47%;
+  --report-width: 27%;
+  --report-layer: 7;
+  --report-rotation: .75deg;
 }
 
 .education-outcomes .hero-report:nth-child(8) {
-  --report-offset: -1.9rem;
-  --report-rotation: -1.5deg;
+  --report-top: 49%;
+  --report-left: 72%;
+  --report-width: 22%;
+  --report-layer: 5;
+  --report-rotation: 4deg;
 }
 
 .education-outcomes .hero-report img {
@@ -186,8 +240,8 @@
   border-radius: .3rem;
   background: #fff;
   box-shadow:
-    0 18px 35px rgba(16, 44, 73, .18),
-    0 4px 10px rgba(16, 44, 73, .1);
+    0 24px 48px rgba(16, 44, 73, .2),
+    0 6px 14px rgba(16, 44, 73, .12);
 }
 
 .education-outcomes .outcomes-dashboard {
@@ -1089,6 +1143,7 @@
 
   .education-outcomes .hero-report-showcase {
     margin-top: .5rem;
+    min-height: 0;
     padding: 1.5rem .4rem 1.25rem;
   }
 
@@ -1097,13 +1152,20 @@
   }
 
   .education-outcomes .hero-report-grid {
+    position: relative;
+    inset: auto;
+    display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: .8rem;
   }
 
   .education-outcomes .hero-report {
-    --report-offset: 0 !important;
-    --report-rotation: 0deg !important;
+    position: relative;
+    top: auto;
+    left: auto;
+    z-index: 1;
+    width: auto;
+    transform: none;
   }
 
   .education-outcomes .hero-report:nth-child(odd) {
