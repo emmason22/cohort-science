@@ -11,6 +11,12 @@ for (const frame of document.querySelectorAll('.outcome-frame')) {
     `;
     frame.contentDocument.head?.append(style);
 
+    if (window.matchMedia('(max-width: 780px)').matches && frame.title.includes('Seniority Shift')) {
+      const clusterInputs = Array.from(body.querySelectorAll('#ddClusterMenu input[type="checkbox"]'));
+      for (const input of clusterInputs.slice(1)) input.checked = false;
+      if (clusterInputs.length) frame.contentWindow?.onClusterCheck?.(clusterInputs[0]);
+    }
+
     const resize = () => {
       const height = Math.ceil(body.getBoundingClientRect().height);
       if (height > 0 && frame.height !== String(height)) frame.height = height;
@@ -223,10 +229,14 @@ if (logoGrid && logoToggle && logoGrid.children.length > 36) {
     }, 120);
   });
 
-  const extraLogos = Array.from(logoGrid.children).slice(36);
+  const mobileLogoQuery = window.matchMedia('(max-width: 600px)');
+  const getVisibleLogoLimit = () => mobileLogoQuery.matches ? 12 : 36;
 
   const setLogoGridExpanded = (expanded) => {
-    for (const logo of extraLogos) logo.hidden = !expanded;
+    const visibleLogoLimit = getVisibleLogoLimit();
+    for (const [index, logo] of Array.from(logoGrid.children).entries()) {
+      logo.hidden = !expanded && index >= visibleLogoLimit;
+    }
     logoToggle.setAttribute('aria-expanded', String(expanded));
     logoToggle.textContent = expanded ? 'View fewer' : 'View more';
     if (expanded) {
@@ -238,12 +248,16 @@ if (logoGrid && logoToggle && logoGrid.children.length > 36) {
 
   setLogoGridExpanded(false);
   logoToggle.hidden = false;
+  mobileLogoQuery.addEventListener('change', () => {
+    if (logoToggle.getAttribute('aria-expanded') !== 'true') setLogoGridExpanded(false);
+  });
   logoToggle.addEventListener('click', () => {
     const expanded = logoToggle.getAttribute('aria-expanded') !== 'true';
+    const firstExtraLogo = Array.from(logoGrid.children)[getVisibleLogoLimit()];
     setLogoGridExpanded(expanded);
-    if (expanded) {
-      extraLogos[0].tabIndex = -1;
-      extraLogos[0].focus();
+    if (expanded && firstExtraLogo) {
+      firstExtraLogo.tabIndex = -1;
+      firstExtraLogo.focus();
     }
   });
 }
