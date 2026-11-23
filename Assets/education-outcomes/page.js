@@ -20,6 +20,10 @@ if (workspace) {
   const insightTitle = document.querySelector('#insight-title');
   const insightCopy = document.querySelector('#insight-copy');
   const insightQuestion = document.querySelector('#insight-question');
+  const moduleSelect = document.querySelector('#outcome-module-select');
+  const copyButton = document.querySelector('#copy-outcome-view');
+  const copyStatus = document.querySelector('#outcome-copy-status');
+  let copyStatusTimer;
 
   if (links.length && panels.every(Boolean)) {
     const selectPanel = (index) => {
@@ -31,6 +35,7 @@ if (workspace) {
       if (insightTitle) insightTitle.textContent = links[index].dataset.insightTitle || '';
       if (insightCopy) insightCopy.textContent = links[index].dataset.insightCopy || '';
       if (insightQuestion) insightQuestion.textContent = links[index].dataset.insightQuestion || '';
+      if (moduleSelect) moduleSelect.value = links[index].hash;
       const navigation = links[index].parentElement;
       if (navigation && navigation.scrollWidth > navigation.clientWidth) {
         requestAnimationFrame(() => links[index].scrollIntoView({ block: 'nearest', inline: 'nearest' }));
@@ -52,6 +57,29 @@ if (workspace) {
         selectPanel(index);
       });
     }
+    moduleSelect?.addEventListener('change', () => {
+      const index = links.findIndex((link) => link.hash === moduleSelect.value);
+      if (index < 0) return;
+      if (location.hash !== links[index].hash) history.pushState(null, '', links[index].hash);
+      selectPanel(index);
+    });
+    copyButton?.addEventListener('click', async () => {
+      const activeLink = links.find((link) => link.getAttribute('aria-current') === 'true') || links[0];
+      const viewUrl = new URL(location.href);
+      viewUrl.hash = activeLink.hash;
+      let message = 'View link copied';
+      try {
+        await navigator.clipboard.writeText(viewUrl.href);
+      } catch {
+        message = 'Copy the URL from your browser';
+      }
+      if (copyStatus) {
+        window.clearTimeout(copyStatusTimer);
+        copyStatus.textContent = message;
+        copyStatus.classList.add('is-visible');
+        copyStatusTimer = window.setTimeout(() => copyStatus.classList.remove('is-visible'), 2400);
+      }
+    });
     window.addEventListener('hashchange', syncHash);
     syncHash();
     if (location.hash) {

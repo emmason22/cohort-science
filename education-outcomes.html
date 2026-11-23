@@ -11,10 +11,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="Assets/education-outcomes/page.css?v=sales-workspace-2">
+  <link rel="stylesheet" href="Assets/education-outcomes/page.css?v=sales-workspace-3">
   <script defer src="includes.js"></script>
   <script defer src="script.js"></script>
-  <script defer src="Assets/education-outcomes/page.js?v=sales-workspace-2"></script>
+  <script defer src="Assets/education-outcomes/page.js?v=sales-workspace-3"></script>
 </head>
 <body class="education-outcomes">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -30,9 +30,13 @@
           <span>Peer benchmarking</span>
           <span>Career-pathway intelligence</span>
         </div>
+        <div class="outcomes-hero-actions">
+          <a class="button" href="#dashboard-preview">Explore the platform</a>
+          <a class="button button-secondary" href="mailto:info@cohortscience.com?subject=Education%20Outcomes%20Platform%20Demonstration">Request a tailored demo</a>
+        </div>
       </div>
     </section>
-    <section class="section-pad outcomes-dashboard" aria-labelledby="example-title">
+    <section class="section-pad outcomes-dashboard" id="dashboard-preview" aria-labelledby="example-title">
       <div class="container">
         <div class="outcome-dashboard-shell">
           <div class="outcome-dashboard-toolbar">
@@ -45,23 +49,43 @@
               <span>Cohorts through 2025</span>
             </div>
           </div>
-          <div class="outcome-context-bar" aria-label="Workspace context">
-            <span>Program outcomes</span>
-            <span>Career mobility</span>
-            <span>Peer comparison</span>
-            <a href="mailto:info@cohortscience.com?subject=Education%20Outcomes%20Platform%20Demonstration">Request a tailored demonstration</a>
+          <div class="outcome-context-bar" aria-label="Workspace controls">
+            <div class="outcome-module-control">
+              <label for="outcome-module-select">Analysis view</label>
+              <select id="outcome-module-select">
+                <option value="#overview">Executive Overview</option>
+                <option value="#example-1">Career Progression</option>
+                <option value="#example-2">Graduate Profiles</option>
+                <option value="#example-3">Talent Origins</option>
+                <option value="#example-4">Salary Outcomes</option>
+                <option value="#example-5">Geographic Mobility</option>
+                <option value="#example-6">Industry Pathways</option>
+                <option value="#example-7">Time to Employment</option>
+                <option value="#example-8">Employer Outcomes</option>
+              </select>
+            </div>
+            <div class="outcome-context-tags" aria-label="Analysis capabilities">
+              <span>Program outcomes</span>
+              <span>Career mobility</span>
+              <span>Peer comparison</span>
+            </div>
+            <div class="outcome-context-actions">
+              <button id="copy-outcome-view" type="button">Copy view link</button>
+              <a href="mailto:info@cohortscience.com?subject=Education%20Outcomes%20Platform%20Demonstration">Request a tailored demonstration</a>
+            </div>
+            <p class="outcome-copy-status" id="outcome-copy-status" role="status" aria-live="polite"></p>
           </div>
           <div class="outcome-workspace">
             <nav class="outcome-workspace-nav" aria-label="Choose an outcomes module">
               <p class="workspace-nav-label">Analysis modules</p>
-              <a href="#overview" data-insight-title="A decision-ready view of graduate outcomes" data-insight-copy="Bring career progression, salary, geography, industries and employers into one coherent evidence base." data-insight-question="Start with the signals leaders need to see first.">Executive Overview</a>
-              <a href="#example-1" data-insight-title="See how careers advance" data-insight-copy="Compare earliest and latest job seniority within the post-graduation window to reveal upward mobility." data-insight-question="Where are graduates progressing—and where do they stall?">Career Progression</a>
-              <a href="#example-2" data-insight-title="Understand graduate profiles" data-insight-copy="Compare career archetypes across skills, jobs held, seniority, executive attainment and salary." data-insight-question="Which graduate profiles produce distinct career patterns?">Graduate Profiles</a>
-              <a href="#example-3" data-insight-title="Trace the talent pipeline" data-insight-copy="Identify the high schools and feeder pathways contributing students to a program." data-insight-question="Where is the strongest prospective-student pipeline?">Talent Origins</a>
-              <a href="#example-4" data-insight-title="Measure earnings momentum" data-insight-copy="Follow salary progression by graduating cohort and normalize trajectories with the indexed view." data-insight-question="How quickly does graduate earning power grow?">Salary Outcomes</a>
-              <a href="#example-5" data-insight-title="Reveal graduate migration" data-insight-copy="Map where graduates move and use the supporting table to inspect destination-level detail." data-insight-question="Where does the institution retain talent—and where does it export it?">Geographic Mobility</a>
+              <a href="#overview" data-insight-title="7,754 MBA profiles in one peer benchmark" data-insight-copy="The preview combines three peer MBA cohorts with program-level views from Dallas College and UTD Finance." data-insight-question="What evidence should institutional leaders see first?">Executive Overview</a>
+              <a href="#example-1" data-insight-title="Manager share more than doubles for Ladder Climbers" data-insight-copy="Manager-level roles rise from 14% in the earliest recorded job to 30% in the latest job within the five-year window." data-insight-question="Where are graduates progressing—and where do they stall?">Career Progression</a>
+              <a href="#example-2" data-insight-title="Working Students lead on salary and executive attainment" data-insight-copy="This cluster reaches a $117.5k maximum salary and 46.9% executive attainment in the selected cohort view." data-insight-question="Which graduate profiles produce distinct career patterns?">Graduate Profiles</a>
+              <a href="#example-3" data-insight-title="Two schools account for 44.4% of identified feeders in 2023" data-insight-copy="Plano West and Coppell each contribute 22.2% of identified feeder records in the 2023 cohort." data-insight-question="Where is the strongest prospective-student pipeline?">Talent Origins</a>
+              <a href="#example-4" data-insight-title="Overall mean salary reaches $95k by Year 6" data-insight-copy="The aggregate trajectory rises from $76k at graduation to $95k at Year 6; sample sizes are shown in the chart." data-insight-question="How quickly does graduate earning power grow?">Salary Outcomes</a>
+              <a href="#example-5" data-insight-title="63.4% of recorded positions remain in Texas" data-insight-copy="Across 1,247 mapped positions, 791 are in Texas and the remainder span 35 additional states or districts." data-insight-question="Where does the institution retain talent—and where does it export it?">Geographic Mobility</a>
               <a href="#example-6" data-insight-title="Follow career pathways" data-insight-copy="Track movement from first-job industries into subsequent sectors through year six." data-insight-question="Which industries launch careers, and where do graduates move next?">Industry Pathways</a>
-              <a href="#example-7" data-insight-title="Benchmark time to employment" data-insight-copy="Compare how quickly graduates enter their first recorded role across peer MBA programs." data-insight-question="How does the transition to work compare with peers?">Time to Employment</a>
+              <a href="#example-7" data-insight-title="45% of Baylor MBA graduates start in the graduating year" data-insight-copy="The peer comparison is 46% for TCU and 50% for SMU across the selected all-cohort view." data-insight-question="How does the transition to work compare with peers?">Time to Employment</a>
               <a href="#example-8" data-insight-title="Identify employer demand" data-insight-copy="Compare leading employers and the role mix of hires across peer institutions." data-insight-question="Which employers absorb the most graduates—and into what roles?">Employer Outcomes</a>
             </nav>
             <div class="outcome-workspace-content">
@@ -74,10 +98,10 @@
   </header>
   <p class="overview-intro">A connected view of how graduates move from education into work—and how their careers develop over time.</p>
   <div class="overview-metrics" aria-label="Demonstration coverage">
-    <div><strong>8</strong><span>decision-ready modules</span></div>
-    <div><strong>177</strong><span>institutions represented</span></div>
-    <div><strong>10</strong><span>post-graduation years</span></div>
-    <div><strong>3</strong><span>peer programs benchmarked</span></div>
+    <div><small>Peer benchmark</small><strong>7,754</strong><span>MBA profiles analyzed</span></div>
+    <div><small>Cohort analysis</small><strong>195</strong><span>graduates with dated jobs</span></div>
+    <div><small>Career horizon</small><strong>10</strong><span>post-graduation years</span></div>
+    <div><small>Coverage</small><strong>177</strong><span>institutions represented</span></div>
   </div>
   <div class="overview-grid">
     <section>
@@ -397,6 +421,19 @@
         </ul>
         <div class="outcome-logo-actions">
           <button class="button" id="institution-logos-toggle" type="button" aria-controls="institution-logos" aria-expanded="false" hidden>View more</button>
+        </div>
+      </div>
+    </section>
+    <section class="section-pad outcomes-conversion" aria-labelledby="conversion-title">
+      <div class="container">
+        <div>
+          <p class="outcomes-eyebrow">Your institution, your peers, your decisions</p>
+          <h2 id="conversion-title">See what your graduate outcomes reveal.</h2>
+          <p>A tailored walkthrough can focus on the programs, cohorts, employers and peer institutions most relevant to your strategy.</p>
+        </div>
+        <div class="outcomes-conversion-actions">
+          <a class="button" href="mailto:info@cohortscience.com?subject=Education%20Outcomes%20Platform%20Demonstration">Request a tailored demo</a>
+          <a href="#dashboard-preview">Return to the platform preview</a>
         </div>
       </div>
     </section>
