@@ -189,6 +189,75 @@
   outline-offset: 2px;
 }
 
+.education-outcomes .outcomes-why {
+  position: relative;
+  padding: clamp(2.6rem, 4.5vw, 4.25rem) 0;
+  overflow: hidden;
+  border-top: 1px solid rgba(31, 79, 126, .1);
+  border-bottom: 1px solid rgba(31, 79, 126, .12);
+  background: #fff;
+}
+
+.education-outcomes .outcomes-why::after {
+  position: absolute;
+  right: -4rem;
+  bottom: -7rem;
+  width: 18rem;
+  height: 18rem;
+  border-radius: 50%;
+  background: rgba(111, 196, 220, .1);
+  content: "";
+}
+
+.education-outcomes .outcomes-why .container {
+  position: relative;
+  z-index: 1;
+  max-width: 84rem;
+}
+
+.education-outcomes .outcomes-why h2 {
+  margin: 0 0 1.65rem;
+  color: var(--workspace-ink);
+  font-family: "Spectral", Georgia, serif;
+  font-size: clamp(2.25rem, 4vw, 3.35rem);
+  letter-spacing: -.025em;
+}
+
+.education-outcomes .outcomes-why-list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: .75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.education-outcomes .outcomes-why-list li {
+  position: relative;
+  min-height: 6.5rem;
+  padding: 1.05rem 1rem 1rem 2.2rem;
+  border: 1px solid var(--workspace-line);
+  border-radius: .75rem;
+  background: linear-gradient(145deg, #fff, #f4f8fb);
+  box-shadow: 0 10px 24px rgba(16, 44, 73, .055);
+  color: var(--workspace-ink);
+  font-size: .95rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.education-outcomes .outcomes-why-list li::before {
+  position: absolute;
+  top: 1.2rem;
+  left: 1rem;
+  width: .58rem;
+  height: .58rem;
+  border-radius: 50%;
+  background: var(--workspace-cyan);
+  box-shadow: 0 0 0 4px rgba(111, 196, 220, .16);
+  content: "";
+}
+
 .education-outcomes .outcomes-dashboard {
   scroll-margin-top: 6.25rem;
   padding-top: clamp(2.25rem, 4vw, 3.75rem);
@@ -761,12 +830,152 @@
   font-weight: 750;
 }
 
-.education-outcomes .outcome-methodology p {
-  max-width: 70rem;
-  margin: .75rem 0 0;
+.education-outcomes .methodology-content {
+  padding: 1.6rem 0 .5rem;
+}
+
+.education-outcomes .methodology-heading {
+  margin-bottom: 1.55rem;
+}
+
+.education-outcomes .methodology-heading .outcomes-eyebrow {
+  margin-bottom: .3rem;
+}
+
+.education-outcomes .methodology-heading h3 {
+  margin: 0;
+  color: var(--workspace-ink);
+  font-family: "Spectral", Georgia, serif;
+  font-size: clamp(1.65rem, 3vw, 2.45rem);
+  line-height: 1.08;
+}
+
+.education-outcomes .methodology-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(38rem, .95fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: center;
+}
+
+.education-outcomes .methodology-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.education-outcomes .methodology-steps li {
+  min-width: 0;
+  padding: 1.05rem;
+  border-left: 2px solid rgba(111, 196, 220, .7);
+  background: linear-gradient(145deg, rgba(255, 255, 255, .9), rgba(242, 246, 250, .78));
+}
+
+.education-outcomes .methodology-steps li > span {
+  display: block;
+  margin-bottom: .75rem;
+  color: #078ca6;
+  font-family: "Spectral", Georgia, serif;
+  font-size: 2.1rem;
+  line-height: 1;
+}
+
+.education-outcomes .methodology-steps h4 {
+  margin: 0 0 .65rem;
+  color: var(--workspace-ink);
+  font-size: .92rem;
+  line-height: 1.3;
+}
+
+.education-outcomes .methodology-steps p,
+.education-outcomes .methodology-disclosure {
   color: var(--workspace-muted);
-  font-size: .88rem;
+  font-size: .8rem;
   line-height: 1.55;
+}
+
+.education-outcomes .methodology-steps p {
+  margin: 0;
+}
+
+.education-outcomes .methodology-flow-scroll {
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-color: #9db1c4 #edf2f7;
+}
+
+.education-outcomes .methodology-flow-scroll:focus-visible {
+  outline: 3px solid var(--workspace-cyan);
+  outline-offset: 3px;
+}
+
+.education-outcomes .methodology-flow {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: auto;
+  font-family: "Inter", Arial, sans-serif;
+}
+
+.education-outcomes .flow-connectors path {
+  fill: none;
+  stroke: #4f82be;
+  stroke-width: 2.25;
+}
+
+.education-outcomes .flow-sources text {
+  fill: #3d4e60;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.education-outcomes .flow-sources circle {
+  fill: #1f5ea5;
+}
+
+.education-outcomes .flow-engine rect {
+  fill: #e8f0f7;
+  stroke: #c6a249;
+  stroke-width: 2;
+}
+
+.education-outcomes .flow-engine-title {
+  fill: var(--workspace-navy);
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.education-outcomes .flow-engine-accent {
+  fill: #b88a22;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.education-outcomes .flow-engine-note {
+  fill: #667789;
+  font-size: 9px;
+}
+
+.education-outcomes .flow-outputs rect {
+  fill: #fff;
+  stroke: #a9bed6;
+  stroke-width: 1.5;
+}
+
+.education-outcomes .flow-outputs text {
+  fill: var(--workspace-navy);
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.education-outcomes .methodology-disclosure {
+  max-width: 78rem;
+  margin: 1.2rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--workspace-line);
 }
 
 .education-outcomes .outcomes-coverage {
@@ -911,6 +1120,14 @@
   .education-outcomes .hero-report-showcase {
     width: min(100%, 54rem);
   }
+
+  .education-outcomes .outcomes-why-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .education-outcomes .methodology-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 @media (max-width: 1320px) {
@@ -964,6 +1181,10 @@
 }
 
 @media (max-width: 900px) {
+  .education-outcomes .outcomes-why-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .education-outcomes .outcome-logo-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
@@ -974,6 +1195,15 @@
 }
 
 @media (max-width: 780px) {
+  .education-outcomes .outcomes-why-list,
+  .education-outcomes .methodology-steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .education-outcomes .outcomes-why-list li {
+    min-height: 0;
+  }
+
   .education-outcomes .outcome-dashboard-toolbar {
     align-items: flex-start;
     flex-direction: column;
@@ -1079,6 +1309,27 @@
   .education-outcomes .figure-scroll img {
     width: 760px;
     min-width: 760px;
+  }
+
+  .education-outcomes .methodology-flow-scroll::before {
+    position: sticky;
+    left: .5rem;
+    z-index: 2;
+    display: block;
+    width: max-content;
+    margin-bottom: .35rem;
+    padding: .28rem .5rem;
+    border-radius: 999px;
+    background: var(--workspace-navy);
+    color: #fff;
+    content: "Swipe to explore process";
+    font-size: .72rem;
+    font-weight: 700;
+  }
+
+  .education-outcomes .methodology-flow {
+    width: 46rem;
+    min-width: 46rem;
   }
 
   .education-outcomes .mobile-briefing-cta {
