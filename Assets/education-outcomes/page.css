@@ -11,11 +11,28 @@
 .education-outcomes .hero {
   position: relative;
   overflow: hidden;
-  padding: clamp(3.5rem, 6vw, 6.5rem) 0;
+  padding: clamp(2.5rem, 4.5vw, 4.75rem) 0;
   background:
     radial-gradient(circle at 79% 32%, rgba(111, 196, 220, .24), transparent 24rem),
     radial-gradient(circle at 98% 100%, rgba(31, 79, 126, .08), transparent 28rem),
     linear-gradient(135deg, #fbfaf6 0%, #eef5fa 100%);
+  background-position: 0 0, 0 0, center;
+  animation: outcome-hero-glow 16s ease-in-out infinite alternate;
+}
+
+.education-outcomes .hero::before {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(31, 79, 126, .28) 1.25px, transparent 1.6px),
+    radial-gradient(circle, rgba(111, 196, 220, .28) 1px, transparent 1.45px);
+  background-position: 0 0, 14px 14px;
+  background-size: 28px 28px;
+  content: "";
+  mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, .18) 34%, #000 72%, rgba(0, 0, 0, .28) 100%);
+  opacity: .45;
+  pointer-events: none;
+  animation: outcome-constellation-drift 20s ease-in-out infinite alternate;
 }
 
 .education-outcomes .hero::after {
@@ -39,7 +56,7 @@
   display: grid;
   grid-template-columns: minmax(26rem, .76fr) minmax(39rem, 1.24fr);
   align-items: center;
-  gap: clamp(2rem, 4vw, 4.5rem);
+  gap: clamp(1.5rem, 3vw, 3.25rem);
 }
 
 .education-outcomes .outcomes-hero-copy {
@@ -137,8 +154,48 @@
 }
 
 .education-outcomes .hero-report {
+  position: relative;
   margin: 0;
   scroll-snap-align: start;
+}
+
+.education-outcomes .hero-report--stanford::before {
+  position: absolute;
+  z-index: 1;
+  top: 21.5%;
+  left: 5.7%;
+  width: 58.5%;
+  height: 23.5%;
+  background: #0c3f4e;
+  content: "";
+  pointer-events: none;
+}
+
+.education-outcomes .hero-report--stanford::after {
+  position: absolute;
+  z-index: 2;
+  top: 24.2%;
+  left: 8%;
+  width: 53%;
+  color: #fff;
+  content: "Where do Stanford\A graduates build their\A careers?";
+  font-family: "Spectral", Georgia, serif;
+  font-size: clamp(.78rem, 1.15vw, 1.05rem);
+  font-weight: 500;
+  letter-spacing: -.015em;
+  line-height: 1.16;
+  white-space: pre-wrap;
+  pointer-events: none;
+}
+
+@keyframes outcome-hero-glow {
+  from { background-position: 0 0, 0 0, center; }
+  to { background-position: 2.5rem -1.5rem, -2rem 1rem, center; }
+}
+
+@keyframes outcome-constellation-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(12px, -8px, 0); }
 }
 
 .education-outcomes .hero-report img {
@@ -1351,7 +1408,7 @@
 
 @media (max-width: 600px) {
   .education-outcomes .hero {
-    padding: 2.5rem 0;
+    padding: 1.75rem 0 2rem;
   }
 
   .education-outcomes .hero h1 {
@@ -1434,6 +1491,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .education-outcomes .hero,
+  .education-outcomes .hero::before {
+    animation: none;
+  }
+
   .education-outcomes .outcome-example:not([hidden]) {
     animation: none;
   }
