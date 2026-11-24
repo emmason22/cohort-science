@@ -1,3 +1,12 @@
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+const openAtHero = () => {
+  if (!location.hash) window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+};
+
+openAtHero();
+window.addEventListener('pageshow', openAtHero);
+
 for (const frame of document.querySelectorAll('.outcome-frame')) {
   frame.addEventListener('load', () => {
     const body = frame.contentDocument?.body;

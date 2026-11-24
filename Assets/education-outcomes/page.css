@@ -11,12 +11,14 @@
 .education-outcomes .hero {
   position: relative;
   overflow: hidden;
-  padding: clamp(2.5rem, 4.5vw, 4.75rem) 0;
+  padding: clamp(2rem, 3.25vw, 3.5rem) 0;
   background:
-    radial-gradient(circle at 79% 32%, rgba(111, 196, 220, .24), transparent 24rem),
-    radial-gradient(circle at 98% 100%, rgba(31, 79, 126, .08), transparent 28rem),
-    linear-gradient(135deg, #fbfaf6 0%, #eef5fa 100%);
-  background-position: 0 0, 0 0, center;
+    radial-gradient(circle at 82% 35%, rgba(111, 196, 220, .38), transparent 22rem),
+    radial-gradient(circle at 98% 100%, rgba(31, 79, 126, .18), transparent 27rem),
+    linear-gradient(115deg, transparent 0 62%, rgba(255, 255, 255, .34) 62.2%, transparent 62.5%),
+    linear-gradient(145deg, transparent 0 71%, rgba(31, 79, 126, .11) 71.2%, transparent 71.5%),
+    linear-gradient(135deg, #fbfaf6 0%, #e6f1f7 100%);
+  background-position: 0 0, 0 0, 0 0, 0 0, center;
   animation: outcome-hero-glow 16s ease-in-out infinite alternate;
 }
 
@@ -24,15 +26,28 @@
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(circle, rgba(31, 79, 126, .28) 1.25px, transparent 1.6px),
-    radial-gradient(circle, rgba(111, 196, 220, .28) 1px, transparent 1.45px);
-  background-position: 0 0, 14px 14px;
-  background-size: 28px 28px;
+    radial-gradient(circle, rgba(31, 79, 126, .4) 1.35px, transparent 1.75px),
+    radial-gradient(circle, rgba(111, 196, 220, .46) 1.1px, transparent 1.55px),
+    linear-gradient(62deg, transparent 49.7%, rgba(31, 79, 126, .1) 49.85%, rgba(31, 79, 126, .1) 50.15%, transparent 50.3%);
+  background-position: 0 0, 15px 15px, 0 0;
+  background-size: 30px 30px, 30px 30px, 7.5rem 7.5rem;
   content: "";
-  mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, .18) 34%, #000 72%, rgba(0, 0, 0, .28) 100%);
-  opacity: .45;
+  mask-image: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, .1) 31%, #000 68%, rgba(0, 0, 0, .5) 100%);
+  opacity: .68;
   pointer-events: none;
   animation: outcome-constellation-drift 20s ease-in-out infinite alternate;
+}
+
+.education-outcomes .hero-report-showcase::before {
+  position: absolute;
+  inset: -.75rem -1rem .25rem;
+  border: 1px solid rgba(31, 79, 126, .1);
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, .22);
+  box-shadow: 0 24px 60px rgba(16, 44, 73, .09);
+  backdrop-filter: blur(2px);
+  content: "";
+  pointer-events: none;
 }
 
 .education-outcomes .hero::after {
@@ -56,7 +71,7 @@
   display: grid;
   grid-template-columns: minmax(26rem, .76fr) minmax(39rem, 1.24fr);
   align-items: center;
-  gap: clamp(1.5rem, 3vw, 3.25rem);
+  gap: clamp(1.25rem, 2.25vw, 2.5rem);
 }
 
 .education-outcomes .outcomes-hero-copy {
@@ -189,8 +204,8 @@
 }
 
 @keyframes outcome-hero-glow {
-  from { background-position: 0 0, 0 0, center; }
-  to { background-position: 2.5rem -1.5rem, -2rem 1rem, center; }
+  from { background-position: 0 0, 0 0, 0 0, 0 0, center; }
+  to { background-position: 2.5rem -1.5rem, -2rem 1rem, 1rem -.5rem, -1rem .75rem, center; }
 }
 
 @keyframes outcome-constellation-drift {
@@ -205,7 +220,8 @@
   border: 1px solid rgba(16, 44, 73, .11);
   border-radius: .3rem;
   background: #fff;
-  box-shadow: none;
+  box-shadow: 0 14px 30px rgba(16, 44, 73, .13);
+  transform: translateZ(0);
 }
 
 .education-outcomes .hero-report-arrow {
