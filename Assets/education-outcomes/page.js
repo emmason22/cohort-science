@@ -49,6 +49,10 @@ if (reportCarousel && reportPrevious && reportNext) {
   let focusPaused = false;
   let scrollTimer;
 
+  const setActiveReport = () => {
+    reportSlides.forEach((slide, index) => slide.classList.toggle('is-active', index === activeReport));
+  };
+
   const getVisibleReportCount = () => {
     const firstSlide = reportSlides[0];
     if (!firstSlide) return 1;
@@ -63,6 +67,7 @@ if (reportCarousel && reportPrevious && reportNext) {
   const showReport = (index, behavior = 'smooth') => {
     const lastIndex = getLastReportIndex();
     activeReport = index < 0 ? lastIndex : index > lastIndex ? 0 : index;
+    setActiveReport();
     reportCarousel.scrollTo({ left: reportSlides[activeReport].offsetLeft, behavior });
   };
 
@@ -76,8 +81,11 @@ if (reportCarousel && reportPrevious && reportNext) {
           : closest
       ), 0);
       activeReport = Math.min(closestIndex, getLastReportIndex());
+      setActiveReport();
     }, 120);
   };
+
+  setActiveReport();
 
   reportPrevious.addEventListener('click', () => showReport(activeReport - 1));
   reportNext.addEventListener('click', () => showReport(activeReport + 1));
@@ -92,6 +100,27 @@ if (reportCarousel && reportPrevious && reportNext) {
     if (reducedMotion.matches || pointerPaused || focusPaused || document.hidden) return;
     showReport(activeReport + 1);
   }, 3600);
+}
+
+const revealTargets = Array.from(document.querySelectorAll('.outcomes-why-list li, .outcome-dashboard-shell'));
+const reduceRevealMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (!reduceRevealMotion && 'IntersectionObserver' in window) {
+  revealTargets.forEach((target, index) => {
+    target.classList.add('is-reveal-pending');
+    target.style.setProperty('--reveal-delay', `${Math.min(index, 4) * 70}ms`);
+  });
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      entry.target.classList.remove('is-reveal-pending');
+      entry.target.classList.add('is-revealed');
+      revealObserver.unobserve(entry.target);
+    }
+  }, { threshold: .12 });
+
+  revealTargets.forEach((target) => revealObserver.observe(target));
 }
 
 const clientIdentification = document.querySelector('#outcomes-client-identification');

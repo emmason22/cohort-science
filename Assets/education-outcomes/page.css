@@ -13,8 +13,8 @@
   overflow: hidden;
   padding: clamp(2rem, 3.25vw, 3.5rem) 0;
   background:
-    radial-gradient(circle at 82% 35%, rgba(111, 196, 220, .38), transparent 22rem),
-    radial-gradient(circle at 98% 100%, rgba(31, 79, 126, .18), transparent 27rem),
+    radial-gradient(circle at 82% 35%, rgba(111, 196, 220, .48), transparent 22rem),
+    radial-gradient(circle at 98% 100%, rgba(16, 44, 73, .24), transparent 27rem),
     linear-gradient(115deg, transparent 0 62%, rgba(255, 255, 255, .34) 62.2%, transparent 62.5%),
     linear-gradient(145deg, transparent 0 71%, rgba(31, 79, 126, .11) 71.2%, transparent 71.5%),
     linear-gradient(135deg, #fbfaf6 0%, #e6f1f7 100%);
@@ -43,8 +43,8 @@
   inset: -.75rem -1rem .25rem;
   border: 1px solid rgba(31, 79, 126, .1);
   border-radius: 1.25rem;
-  background: rgba(255, 255, 255, .22);
-  box-shadow: 0 24px 60px rgba(16, 44, 73, .09);
+  background: linear-gradient(135deg, rgba(255, 255, 255, .4), rgba(111, 196, 220, .12));
+  box-shadow: 0 24px 60px rgba(16, 44, 73, .14), inset 0 0 55px rgba(255, 255, 255, .24);
   backdrop-filter: blur(2px);
   content: "";
   pointer-events: none;
@@ -86,6 +86,11 @@
   font-weight: 600;
   letter-spacing: -.035em;
   line-height: .98;
+}
+
+.education-outcomes .hero h1 span {
+  color: var(--workspace-blue);
+  text-shadow: 0 5px 22px rgba(111, 196, 220, .24);
 }
 
 .education-outcomes .hero p:not(.outcomes-eyebrow) {
@@ -171,7 +176,19 @@
 .education-outcomes .hero-report {
   position: relative;
   margin: 0;
+  opacity: .76;
   scroll-snap-align: start;
+  transform: scale(.985);
+  transform-origin: center bottom;
+  transition: opacity .4s ease, transform .4s ease, filter .4s ease;
+  filter: saturate(.86);
+}
+
+.education-outcomes .hero-report.is-active {
+  z-index: 2;
+  opacity: 1;
+  transform: translateY(-.35rem) scale(1);
+  filter: saturate(1.04);
 }
 
 .education-outcomes .hero-report--stanford::before {
@@ -192,7 +209,7 @@
   top: 24.2%;
   left: 8%;
   width: 53%;
-  color: #fff;
+  color: #d9e4e8;
   content: "Where do Stanford\A graduates build their\A careers?";
   font-family: "Spectral", Georgia, serif;
   font-size: clamp(.78rem, 1.15vw, 1.05rem);
@@ -222,6 +239,12 @@
   background: #fff;
   box-shadow: 0 14px 30px rgba(16, 44, 73, .13);
   transform: translateZ(0);
+  transition: border-color .4s ease, box-shadow .4s ease;
+}
+
+.education-outcomes .hero-report.is-active img {
+  border-color: rgba(111, 196, 220, .72);
+  box-shadow: 0 18px 38px rgba(16, 44, 73, .22), 0 0 0 2px rgba(111, 196, 220, .2);
 }
 
 .education-outcomes .hero-report-arrow {
@@ -264,7 +287,7 @@
 
 .education-outcomes .outcomes-why {
   position: relative;
-  padding: clamp(2.6rem, 4.5vw, 4.25rem) 0;
+  padding: clamp(2.2rem, 3.5vw, 3.25rem) 0;
   overflow: hidden;
   border-top: 1px solid rgba(31, 79, 126, .1);
   border-bottom: 1px solid rgba(31, 79, 126, .12);
@@ -289,7 +312,7 @@
 }
 
 .education-outcomes .outcomes-why h2 {
-  margin: 0 0 1.65rem;
+  margin: 0 0 1.25rem;
   color: var(--workspace-ink);
   font-family: "Spectral", Georgia, serif;
   font-size: clamp(2.25rem, 4vw, 3.35rem);
@@ -307,7 +330,7 @@
 
 .education-outcomes .outcomes-why-list li {
   position: relative;
-  min-height: 6.5rem;
+  min-height: 5.75rem;
   padding: 1.05rem 1rem 1rem 2.2rem;
   border: 1px solid var(--workspace-line);
   border-radius: .75rem;
@@ -317,6 +340,25 @@
   font-size: .95rem;
   font-weight: 700;
   line-height: 1.35;
+}
+
+.education-outcomes .is-reveal-pending {
+  opacity: 0;
+  transform: translateY(1rem);
+}
+
+.education-outcomes .is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity .55s ease var(--reveal-delay, 0ms), transform .55s ease var(--reveal-delay, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .education-outcomes .hero-report,
+  .education-outcomes .hero-report img,
+  .education-outcomes .is-revealed {
+    transition: none;
+  }
 }
 
 .education-outcomes .outcomes-why-list li::before {
