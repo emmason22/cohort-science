@@ -151,40 +151,88 @@ if (workspace) {
   const copyStatus = document.querySelector('#outcome-copy-status');
   let copyStatusTimer;
   let revealAnimations = [];
-  const question = workspace.querySelector('.outcome-question-banner');
+  let typingFrame;
+  const content = workspace.querySelector('.outcome-workspace-content');
+  const questionText = insightQuestion.querySelector('span');
   const answer = workspace.querySelector('.outcome-insights');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   if (links.length && panels.every(Boolean)) {
+    const cancelReveal = () => {
+      cancelAnimationFrame(typingFrame);
+      revealAnimations.forEach((animation) => animation.cancel());
+      revealAnimations = [];
+    };
+
     const selectPanel = (index, reveal = false) => {
+      cancelReveal();
+      const panel = panels[index];
+      const plot = panel.querySelector('.workspace-chart-scroll, .figure-scroll');
+      const prompt = links[index].dataset.insightQuestion || '';
+      const animate = reveal && !reducedMotion.matches && Boolean(panel.animate);
+      content.hidden = false;
+      if (copyButton) copyButton.hidden = false;
       for (const [i, panel] of panels.entries()) {
-        panel.hidden = i !== index;
+        panel.hidden = animate || i !== index;
         if (i === index) links[i].setAttribute('aria-current', 'true');
         else links[i].removeAttribute('aria-current');
       }
       if (insightTitle) insightTitle.textContent = links[index].dataset.insightTitle || '';
       if (insightCopy) insightCopy.textContent = links[index].dataset.insightCopy || '';
-      if (insightQuestion) insightQuestion.textContent = links[index].dataset.insightQuestion || '';
+      insightQuestion.setAttribute('aria-label', prompt);
       if (insightStat) insightStat.textContent = links[index].dataset.insightStat || '';
       if (insightBenchmark) insightBenchmark.textContent = links[index].dataset.insightBenchmark || '';
       categoryName.textContent = links[index].textContent;
-      revealAnimations.forEach((animation) => animation.cancel());
-      revealAnimations = [];
-      if (reveal && question?.animate && answer?.animate && !reducedMotion.matches) {
-        revealAnimations = [question, answer].map((card, position) => card.animate(
-          [
-            { opacity: 0, transform: `translateX(${position === 0 ? -10 : 10}px)` },
-            { opacity: 1, transform: 'translateX(0)' }
-          ],
-          { delay: position * 250, duration: 240, easing: 'ease-out', fill: 'backwards' }
-        ));
+      const showAnswer = () => {
+        questionText.textContent = prompt;
+        answer.hidden = false;
+        panel.hidden = false;
+        if (animate && !reducedMotion.matches) {
+          const rise = [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'translateY(0)' }];
+          revealAnimations = [answer.animate(rise, { duration: 260, easing: 'ease-out' })];
+          if (plot?.animate) {
+            revealAnimations.push(plot.animate(
+              [
+                { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
+                { clipPath: 'inset(0 72% 0 0)', opacity: 1, offset: 0.25 },
+                { clipPath: 'inset(0 0 0 0)', opacity: 1 }
+              ],
+              { delay: 220, duration: 650, easing: 'ease-out', fill: 'backwards' }
+            ));
+          }
+        }
+        const chartWindow = panel.querySelector('iframe')?.contentWindow;
+        if (chartWindow) requestAnimationFrame(() => chartWindow.dispatchEvent(new Event('resize')));
+      };
+      if (!animate) {
+        showAnswer();
+        return;
       }
-      const chartWindow = panels[index].querySelector('iframe')?.contentWindow;
-      if (chartWindow) requestAnimationFrame(() => chartWindow.dispatchEvent(new Event('resize')));
+      answer.hidden = true;
+      questionText.textContent = '';
+      const duration = Math.min(prompt.length * 17, 1150);
+      const start = performance.now();
+      const typeQuestion = (now) => {
+        const progress = duration ? Math.min(1, (now - start) / duration) : 1;
+        if (progress >= 1 || reducedMotion.matches) {
+          showAnswer();
+          return;
+        }
+        questionText.textContent = prompt.slice(0, Math.max(1, Math.floor(progress * prompt.length)));
+        typingFrame = requestAnimationFrame(typeQuestion);
+      };
+      typingFrame = requestAnimationFrame(typeQuestion);
     };
     const syncHash = () => {
       const index = links.findIndex((link) => link.hash === location.hash);
       if (index >= 0) selectPanel(index);
+      else {
+        cancelReveal();
+        content.hidden = true;
+        if (copyButton) copyButton.hidden = true;
+        categoryName.textContent = 'Choose a category';
+        links.forEach((link) => link.removeAttribute('aria-current'));
+      }
       return index;
     };
 
@@ -218,7 +266,6 @@ if (workspace) {
     });
     window.addEventListener('hashchange', syncHash);
     const initialIndex = syncHash();
-    if (initialIndex < 0) selectPanel(0);
     if (initialIndex >= 0) {
       requestAnimationFrame(() => document.querySelector('.outcomes-dashboard')?.scrollIntoView({ block: 'start' }));
     }

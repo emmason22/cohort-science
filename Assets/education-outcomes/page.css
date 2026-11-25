@@ -552,10 +552,6 @@
   transform: translateY(0);
 }
 
-.education-outcomes .outcome-workspace {
-  min-height: 45rem;
-}
-
 .education-outcomes .outcome-workspace-nav {
   align-self: stretch;
   padding: 1.25rem .85rem;
@@ -660,6 +656,7 @@
 
 .education-outcomes .outcome-workspace-ready .outcome-example {
   margin-top: 0;
+  animation: none;
 }
 
 .education-outcomes .outcome-card-header {
@@ -1612,6 +1609,12 @@
   display: block;
   min-width: 0;
   position: static;
+}
+
+.education-outcomes .outcome-workspace-content[hidden],
+.education-outcomes .outcome-qa .outcome-insights[hidden],
+.education-outcomes #copy-outcome-view[hidden] {
+  display: none;
 }
 
 @media (max-width: 600px) {

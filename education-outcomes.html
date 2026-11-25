@@ -26,10 +26,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="Assets/education-outcomes/page.css?v=chart-questions-2">
+  <link rel="stylesheet" href="Assets/education-outcomes/page.css?v=chart-questions-3">
   <script defer src="includes.js"></script>
   <script defer src="script.js"></script>
-  <script defer src="Assets/education-outcomes/page.js?v=chart-questions-2"></script>
+  <script defer src="Assets/education-outcomes/page.js?v=chart-questions-4"></script>
 </head>
 <body class="education-outcomes">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -122,14 +122,14 @@
               <span>Peer comparison</span>
             </div>
             <div class="outcome-context-actions">
-              <button id="copy-outcome-view" type="button">Copy view link</button>
+              <button id="copy-outcome-view" type="button" hidden>Copy view link</button>
               <a href="mailto:info@cohortscience.com?subject=Education%20Outcomes%20Audit">Request a tailored audit</a>
             </div>
             <p class="outcome-copy-status" id="outcome-copy-status" role="status" aria-live="polite"></p>
           </div>
           <div class="outcome-workspace">
             <details class="outcome-category-picker">
-              <summary>Chart category <strong id="outcome-category-name">Career Progression</strong></summary>
+              <summary>Chart category <strong id="outcome-category-name">Choose a category</strong></summary>
               <nav class="outcome-workspace-nav" aria-label="Choose a chart category">
               <a href="#example-1" data-insight-stat="2.1×" data-insight-benchmark="Manager share rises from 14% to 30%" data-insight-title="Career advancement becomes visible" data-insight-copy="Ladder Climbers more than double their manager-level representation within the five-year window." data-insight-question="Where are graduates progressing and where do they stall?">Career Progression</a>
               <a href="#example-2" data-insight-stat="$117.5k" data-insight-benchmark="Maximum salary in the selected cluster" data-insight-title="Distinct graduate profiles reveal distinct outcomes" data-insight-copy="Working Students lead the selected view on both maximum salary and executive attainment." data-insight-question="Which graduate profiles produce distinct career patterns?">Graduate Profiles</a>
@@ -141,11 +141,11 @@
               <a href="#example-8" data-insight-stat="296" data-insight-benchmark="University C hires across the six displayed employers" data-insight-title="Employer demand is visible at role level" data-insight-copy="Compare leading employers and the role mix of hires across the selected peer institutions." data-insight-question="Which employers absorb the most graduates and into what roles?">Employer Outcomes</a>
               </nav>
             </details>
-            <div class="outcome-workspace-content">
+            <div class="outcome-workspace-content" hidden>
               <div class="outcome-qa" aria-live="polite" aria-atomic="true">
               <header class="outcome-question-banner">
                 <p class="insight-kicker">Question</p>
-                <h3 id="insight-question">Where are graduates progressing and where do they stall?</h3>
+                <h3 id="insight-question"><span aria-hidden="true"></span></h3>
               </header>
                 <aside class="outcome-insights" aria-labelledby="insight-title">
                   <p class="insight-kicker">Answer</p>
