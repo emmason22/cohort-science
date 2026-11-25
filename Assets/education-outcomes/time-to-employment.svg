@@ -833,7 +833,7 @@ L 338.5345 210.332232
     <text style="font-size: 6.4px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: middle; fill: #555555" x="315.008698" y="31.760727" transform="rotate(-0 315.008698 31.760727)">11</text>
    </g>
    <g id="ex3_text_61">
-    <text style="font-weight: 700; font-size: 8.5px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start; fill: #152e3d" x="32.1025" y="13.388232" transform="rotate(-0 32.1025 13.388232)">Baylor, by graduating cohort</text>
+    <text style="font-weight: 700; font-size: 8.5px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: start; fill: #152e3d" x="32.1025" y="13.388232" transform="rotate(-0 32.1025 13.388232)">University C, by graduating cohort</text>
    </g>
   </g>
   <g id="ex3_axes_2">
@@ -1024,18 +1024,18 @@ z
    <g id="ex3_matplotlib.axis_4">
     <g id="ex3_ytick_7">
      <g id="ex3_text_65">
-      <text style="font-size: 7px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: end; fill: #555555" x="386.2545" y="50.127144" transform="rotate(-0 386.2545 50.127144)">Baylor</text>
+      <text style="font-size: 7px; font-family: Arial, 'Liberation Sans', sans-serif; text-anchor: end; fill: #555555" x="386.2545" y="50.127144" transform="rotate(-0 386.2545 50.127144)">University C</text>
      </g>
     </g>
     <g id="ex3_ytick_8">
      <g id="ex3_text_66">
-      <text style="font-size: 7px; font-family: Arial, 'Liberation Sans', sans-serif; fill: #555555" transform="translate(338.405125 113.861331)">Texas Christian</text>
+      <text style="font-size: 7px; font-family: Arial, 'Liberation Sans', sans-serif; fill: #555555" transform="translate(338.405125 113.861331)">University D</text>
       <text style="font-size: 7px; font-family: Arial, 'Liberation Sans', sans-serif; fill: #555555" transform="translate(355.527781 121.479983)">University</text>
      </g>
     </g>
     <g id="ex3_ytick_9">
      <g id="ex3_text_67">
-      <text style="font-size: 7px; font-family: Arial, 'Liberation Sans', sans-serif; fill: #555555" transform="translate(325.55575 181.142515)">Southern Methodist</text>
+      <text style="font-size: 7px; font-family: Arial, 'Liberation Sans', sans-serif; fill: #555555" transform="translate(325.55575 181.142515)">University E</text>
       <text style="font-size: 7px; font-family: Arial, 'Liberation Sans', sans-serif; fill: #555555" transform="translate(355.527781 188.761167)">University</text>
      </g>
     </g>

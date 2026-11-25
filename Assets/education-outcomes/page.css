@@ -1563,3 +1563,28 @@
     transition: none;
   }
 }
+
+
+.education-outcomes .outcome-question-banner {
+  margin-bottom: 1rem;
+  padding: 1rem 1.25rem;
+  border-left: 3px solid var(--workspace-cyan);
+  background: #edf5f8;
+}
+
+.education-outcomes .outcome-question-banner h3 {
+  margin: 0;
+  color: #102c49;
+}
+
+@media (min-width: 1321px) {
+  .education-outcomes .outcome-panel-stack {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .education-outcomes .outcome-insights {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}

@@ -148,6 +148,10 @@ if (workspace) {
   const copyButton = document.querySelector('#copy-outcome-view');
   const copyStatus = document.querySelector('#outcome-copy-status');
   let copyStatusTimer;
+  let activeIndex;
+  let answerAnimation;
+  const answer = workspace.querySelector('.outcome-insights');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   if (links.length && panels.every(Boolean)) {
     const selectPanel = (index) => {
@@ -161,6 +165,16 @@ if (workspace) {
       if (insightQuestion) insightQuestion.textContent = links[index].dataset.insightQuestion || '';
       if (insightStat) insightStat.textContent = links[index].dataset.insightStat || '';
       if (insightBenchmark) insightBenchmark.textContent = links[index].dataset.insightBenchmark || '';
+      if (activeIndex !== index) {
+        answerAnimation?.cancel();
+        if (answer?.animate && !reducedMotion.matches) {
+          answerAnimation = answer.animate(
+            [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }],
+            { delay: 130, duration: 260, easing: 'ease-out', fill: 'backwards' }
+          );
+        }
+        activeIndex = index;
+      }
       if (moduleSelect) moduleSelect.value = links[index].hash;
       const navigation = links[index].parentElement;
       if (navigation && navigation.scrollWidth > navigation.clientWidth) {
