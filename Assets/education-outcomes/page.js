@@ -102,25 +102,22 @@ if (reportCarousel && reportPrevious && reportNext) {
   }, 3600);
 }
 
-const revealTargets = Array.from(document.querySelectorAll('.outcomes-why-list li, .outcome-dashboard-shell'));
-const reduceRevealMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const whyList = document.querySelector('.outcomes-why-list');
+const reduceRevealMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-if (!reduceRevealMotion && 'IntersectionObserver' in window) {
-  revealTargets.forEach((target, index) => {
-    target.classList.add('is-reveal-pending');
-    target.style.setProperty('--reveal-delay', `${Math.min(index, 4) * 70}ms`);
-  });
-
-  const revealObserver = new IntersectionObserver((entries) => {
-    for (const entry of entries) {
-      if (!entry.isIntersecting) continue;
-      entry.target.classList.remove('is-reveal-pending');
-      entry.target.classList.add('is-revealed');
-      revealObserver.unobserve(entry.target);
-    }
-  }, { threshold: .12 });
-
-  revealTargets.forEach((target) => revealObserver.observe(target));
+if (whyList && 'IntersectionObserver' in window) {
+  const revealObserver = new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting) return;
+    revealObserver.disconnect();
+    if (reduceRevealMotion.matches) return;
+    Array.from(whyList.children).forEach((card, index) => {
+      card.animate?.(
+        [{ opacity: .72, transform: 'translateY(5px)' }, { opacity: 1, transform: 'translateY(0)' }],
+        { delay: index * 55, duration: 320, easing: 'ease-out' }
+      );
+    });
+  }, { threshold: .1 });
+  revealObserver.observe(whyList);
 }
 
 const clientIdentification = document.querySelector('#outcomes-client-identification');
@@ -135,81 +132,51 @@ if (clientIdentification) {
   }
 }
 
-const workspace = document.querySelector('.outcome-workspace');
-if (workspace) {
-  const links = Array.from(workspace.querySelectorAll('.outcome-workspace-nav a'));
-  const panels = links.map((link) => document.getElementById('chart-' + link.hash.slice(1))?.closest('article'));
-  const topic = workspace.querySelector('#insight-topic');
-  const title = workspace.querySelector('#insight-title');
-  const copy = workspace.querySelector('#insight-copy');
-  const stat = workspace.querySelector('#insight-stat');
-  const benchmark = workspace.querySelector('#insight-benchmark');
-  const summary = workspace.querySelector('.outcome-answer-summary');
-  let findingAnimation;
-  let chartAnimation;
-  const chartDetails = workspace.querySelector('.outcome-chart-details');
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const topics = Array.from(document.querySelectorAll('.outcome-topic'));
+if (topics.length) {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const animations = new Map();
 
-  if (links.length && panels.every(Boolean)) {
-    const selectPanel = (index, reveal = false) => {
-      findingAnimation?.cancel();
-      chartAnimation?.cancel();
-      chartDetails.open = false;
-      for (const [i, panel] of panels.entries()) {
-        panel.hidden = i !== index;
-        if (i === index) links[i].setAttribute('aria-current', 'true');
-        else links[i].removeAttribute('aria-current');
+  for (const topic of topics) {
+    topic.addEventListener('toggle', () => {
+      animations.get(topic)?.forEach((animation) => animation.cancel());
+      animations.delete(topic);
+      if (!topic.open) {
+        if (location.hash === '#' + topic.id && !topics.some((item) => item.open)) {
+          history.replaceState(null, '', '#dashboard-preview');
+        }
+        return;
       }
-      const finding = links[index].dataset;
-      topic.textContent = panels[index].querySelector('h3').textContent;
-      title.textContent = finding.insightTitle;
-      copy.textContent = finding.insightCopy;
-      stat.textContent = finding.insightStat;
-      benchmark.textContent = finding.insightBenchmark;
-      if (reveal && summary.animate && !reducedMotion.matches) {
-        findingAnimation = summary.animate(
-          [{ opacity: 0, transform: 'translateY(5px)' }, { opacity: 1, transform: 'translateY(0)' }],
-          { duration: 220, easing: 'ease-out' }
-        );
-      }
-    };
 
-    chartDetails.addEventListener('toggle', () => {
-      chartAnimation?.cancel();
-      if (!chartDetails.open) return;
-      const panel = panels.find((panel) => !panel.hidden);
-      const plot = panel?.querySelector('.workspace-chart-scroll, .figure-scroll');
-      if (plot?.animate && !reducedMotion.matches) {
-        chartAnimation = plot.animate(
-          [{ clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0)' }],
-          { duration: 650, easing: 'ease-out' }
-        );
+      history.replaceState(null, '', '#' + topic.id);
+      const chart = topic.querySelector('.workspace-chart-scroll, .figure-scroll');
+      const cards = topic.querySelector('.outcome-topic-grid');
+      if (!reduceMotion.matches && cards.animate) {
+        animations.set(topic, [
+          cards.animate(
+            [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }],
+            { duration: 240, easing: 'ease-out' }
+          ),
+          chart.animate(
+            [{ clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0)' }],
+            { delay: 180, duration: 620, easing: 'ease-out', fill: 'backwards' }
+          )
+        ]);
       }
-      const chartWindow = panel?.querySelector('iframe')?.contentWindow;
+
+      const chartWindow = topic.querySelector('iframe')?.contentWindow;
       if (chartWindow) requestAnimationFrame(() => chartWindow.dispatchEvent(new Event('resize')));
     });
-
-    const syncHash = () => {
-      const index = links.findIndex((link) => link.hash === location.hash);
-      selectPanel(Math.max(0, index));
-      return index;
-    };
-
-    workspace.classList.add('outcome-workspace-ready');
-    for (const [index, link] of links.entries()) {
-      link.addEventListener('click', (event) => {
-        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-        event.preventDefault();
-        if (location.hash !== link.hash) history.pushState(null, '', link.hash);
-        selectPanel(index, true);
-      });
-    }
-    window.addEventListener('hashchange', syncHash);
-    const initialIndex = syncHash();
-    if (initialIndex >= 0) {
-      requestAnimationFrame(() => document.getElementById('dashboard-preview')?.scrollIntoView({ block: 'start' }));
-    }
   }
+
+  const openLinkedTopic = () => {
+    const topic = topics.find((item) => '#' + item.id === location.hash);
+    if (!topic) return;
+    topic.open = true;
+    requestAnimationFrame(() => topic.scrollIntoView({ block: 'start' }));
+  };
+  window.addEventListener('hashchange', openLinkedTopic);
+  openLinkedTopic();
 }
 
 const logoGrid = document.querySelector('#institution-logos');
