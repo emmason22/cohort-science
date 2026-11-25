@@ -1795,18 +1795,14 @@
 
 .education-outcomes .outcomes-footnote {
   max-width: 65ch;
-  margin: .65rem 0 0;
+  margin: 0;
   color: #526879;
   font-size: .75rem;
   line-height: 1.45;
 }
 
-.education-outcomes .hero .outcomes-cover-examples .outcomes-footnote {
-  max-width: 65ch;
-  margin: .35rem auto 0;
-  color: #526879;
-  font-size: .75rem;
-  line-height: 1.45;
+.education-outcomes .outcomes-notes {
+  padding-block: .85rem 1rem;
 }
 
 .education-outcomes #coverage-title sup {
