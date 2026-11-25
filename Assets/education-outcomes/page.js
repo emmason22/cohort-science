@@ -138,32 +138,34 @@ if (clientIdentification) {
 const workspace = document.querySelector('.outcome-workspace');
 if (workspace) {
   const links = Array.from(workspace.querySelectorAll('.outcome-workspace-nav a'));
-  const panels = links.map((link) => document.getElementById(link.hash.slice(1))?.closest('article'));
+  const panels = links.map((link) => document.getElementById('chart-' + link.hash.slice(1))?.closest('article'));
   const insightQuestion = document.querySelector('#insight-question');
   const insightBenchmark = document.querySelector('#insight-benchmark');
-  let revealAnimations = [];
+  let findingAnimation;
+  let chartAnimation;
   let typingFrame;
   const content = workspace.querySelector('.outcome-workspace-content');
   const questionText = insightQuestion.querySelector('span');
   const answer = workspace.querySelector('.outcome-response');
+  const chartDetails = workspace.querySelector('.outcome-chart-details');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   if (links.length && panels.every(Boolean)) {
     const cancelReveal = () => {
       cancelAnimationFrame(typingFrame);
-      revealAnimations.forEach((animation) => animation.cancel());
-      revealAnimations = [];
+      findingAnimation?.cancel();
+      chartAnimation?.cancel();
+      chartDetails.open = false;
     };
 
     const selectPanel = (index, reveal = false) => {
       cancelReveal();
       const panel = panels[index];
-      const plot = panel.querySelector('.workspace-chart-scroll, .figure-scroll');
       const prompt = links[index].dataset.insightQuestion || '';
       const animate = reveal && !reducedMotion.matches && Boolean(panel.animate);
       content.hidden = false;
       for (const [i, panel] of panels.entries()) {
-        panel.hidden = animate || i !== index;
+        panel.hidden = i !== index;
         if (i === index) links[i].setAttribute('aria-current', 'true');
         else links[i].removeAttribute('aria-current');
       }
@@ -172,23 +174,10 @@ if (workspace) {
       const showAnswer = () => {
         questionText.textContent = prompt;
         answer.hidden = false;
-        panel.hidden = false;
         if (animate && !reducedMotion.matches) {
           const rise = [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'translateY(0)' }];
-          revealAnimations = [insightBenchmark.animate(rise, { duration: 260, easing: 'ease-out' })];
-          if (plot?.animate) {
-            revealAnimations.push(plot.animate(
-              [
-                { clipPath: 'inset(0 100% 0 0)', opacity: 0 },
-                { clipPath: 'inset(0 72% 0 0)', opacity: 1, offset: 0.25 },
-                { clipPath: 'inset(0 0 0 0)', opacity: 1 }
-              ],
-              { delay: 220, duration: 650, easing: 'ease-out', fill: 'backwards' }
-            ));
-          }
+          findingAnimation = insightBenchmark.animate(rise, { duration: 260, easing: 'ease-out' });
         }
-        const chartWindow = panel.querySelector('iframe')?.contentWindow;
-        if (chartWindow) requestAnimationFrame(() => chartWindow.dispatchEvent(new Event('resize')));
       };
       if (!animate) {
         showAnswer();
@@ -209,6 +198,22 @@ if (workspace) {
       };
       typingFrame = requestAnimationFrame(typeQuestion);
     };
+
+    chartDetails.addEventListener('toggle', () => {
+      chartAnimation?.cancel();
+      if (!chartDetails.open) return;
+      const panel = panels.find((panel) => !panel.hidden);
+      const plot = panel?.querySelector('.workspace-chart-scroll, .figure-scroll');
+      if (plot?.animate && !reducedMotion.matches) {
+        chartAnimation = plot.animate(
+          [{ clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0)' }],
+          { duration: 650, easing: 'ease-out' }
+        );
+      }
+      const chartWindow = panel?.querySelector('iframe')?.contentWindow;
+      if (chartWindow) requestAnimationFrame(() => chartWindow.dispatchEvent(new Event('resize')));
+    });
+
     const syncHash = () => {
       const index = links.findIndex((link) => link.hash === location.hash);
       if (index >= 0) selectPanel(index);
