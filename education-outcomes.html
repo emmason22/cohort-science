@@ -26,10 +26,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="Assets/education-outcomes/page.css?v=chart-questions-3">
+  <link rel="stylesheet" href="Assets/education-outcomes/page.css?v=question-demo-1">
   <script defer src="includes.js"></script>
   <script defer src="script.js"></script>
-  <script defer src="Assets/education-outcomes/page.js?v=chart-questions-4"></script>
+  <script defer src="Assets/education-outcomes/page.js?v=question-demo-1"></script>
 </head>
 <body class="education-outcomes">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -102,60 +102,29 @@
         </ul>
       </div>
     </section>
-    <section class="section-pad outcomes-dashboard" id="dashboard-preview" aria-labelledby="example-title">
+    <section class="section-pad outcome-demo" id="dashboard-preview" aria-labelledby="example-title">
       <div class="container">
-        <div class="outcome-dashboard-shell">
-          <div class="outcome-dashboard-toolbar">
-            <div>
-              <p>Education Outcomes</p>
-              <h2 id="example-title">Decision Intelligence Workspace</h2>
-            </div>
-            <div class="dashboard-status" aria-label="Demonstration status">
-              <span>Illustrative client view</span>
-              <span>Cohorts through 2025</span>
-            </div>
-          </div>
-          <div class="outcome-context-bar" aria-label="Workspace controls">
-            <div class="outcome-context-tags" aria-label="Analysis capabilities">
-              <span>Program outcomes</span>
-              <span>Career mobility</span>
-              <span>Peer comparison</span>
-            </div>
-            <div class="outcome-context-actions">
-              <button id="copy-outcome-view" type="button" hidden>Copy view link</button>
-              <a href="mailto:info@cohortscience.com?subject=Education%20Outcomes%20Audit">Request a tailored audit</a>
-            </div>
-            <p class="outcome-copy-status" id="outcome-copy-status" role="status" aria-live="polite"></p>
-          </div>
-          <div class="outcome-workspace">
-            <details class="outcome-category-picker">
-              <summary>Chart category <strong id="outcome-category-name">Choose a category</strong></summary>
-              <nav class="outcome-workspace-nav" aria-label="Choose a chart category">
-              <a href="#example-1" data-insight-stat="2.1×" data-insight-benchmark="Manager share rises from 14% to 30%" data-insight-title="Career advancement becomes visible" data-insight-copy="Ladder Climbers more than double their manager-level representation within the five-year window." data-insight-question="Where are graduates progressing and where do they stall?">Career Progression</a>
-              <a href="#example-2" data-insight-stat="$117.5k" data-insight-benchmark="Maximum salary in the selected cluster" data-insight-title="Distinct graduate profiles reveal distinct outcomes" data-insight-copy="Working Students lead the selected view on both maximum salary and executive attainment." data-insight-question="Which graduate profiles produce distinct career patterns?">Graduate Profiles</a>
-              <a href="#example-3" data-insight-stat="44.4%" data-insight-benchmark="From the two leading identified feeders in 2023" data-insight-title="Concentration reveals recruiting opportunity" data-insight-copy="High School 1 and High School 2 each contribute 22.2% of identified feeder records in the 2023 cohort." data-insight-question="Where is the strongest prospective-student pipeline?">Talent Origins</a>
-              <a href="#example-4" data-insight-stat="+25%" data-insight-benchmark="Mean salary rises from $76k to $95k by Year 6" data-insight-title="Earnings momentum is measurable" data-insight-copy="The aggregate trajectory shows how graduate earning power develops over time, with sample sizes disclosed in the chart." data-insight-question="How quickly does graduate earning power grow?">Salary Outcomes</a>
-              <a href="#example-5" data-insight-stat="63.4%" data-insight-benchmark="Of 1,247 mapped positions are in Texas" data-insight-title="Talent retention has a clear geographic signature" data-insight-copy="The remaining recorded positions span 35 additional states or districts." data-insight-question="Where does the institution retain talent—and where does it export it?">Geographic Mobility</a>
-              <a href="#example-6" data-insight-stat="Year 6" data-insight-benchmark="Career pathways traced from the first job" data-insight-title="Industry movement becomes a pathway, not a snapshot" data-insight-copy="Follow how graduates move from first-job industries into subsequent sectors over time." data-insight-question="Which industries launch careers, and where do graduates move next?">Industry Pathways</a>
-              <a href="#example-7" data-insight-stat="45%" data-insight-benchmark="Start in the graduating year; peers are 46–50%" data-insight-title="The transition to employment can be benchmarked" data-insight-copy="Compare the timing of first recorded roles across the selected peer graduate programs." data-insight-question="How does the transition to work compare with peers?">Time to Employment</a>
-              <a href="#example-8" data-insight-stat="296" data-insight-benchmark="University C hires across the six displayed employers" data-insight-title="Employer demand is visible at role level" data-insight-copy="Compare leading employers and the role mix of hires across the selected peer institutions." data-insight-question="Which employers absorb the most graduates and into what roles?">Employer Outcomes</a>
+        <p class="outcomes-eyebrow">Education Outcomes</p>
+        <h2 id="example-title">What happens after graduation?</h2>
+        <div class="outcome-workspace">
+            <nav class="outcome-workspace-nav outcome-question-list" aria-label="Choose a question">
+              <a href="#example-1" data-insight-stat="2.1×" data-insight-benchmark="Manager share rises from 14% to 30%" data-insight-title="Career advancement becomes visible" data-insight-copy="Ladder Climbers more than double their manager-level representation within the five-year window." data-insight-question="Where are graduates progressing and where do they stall?">Where are graduates progressing and where do they stall?</a>
+              <a href="#example-2" data-insight-stat="$117.5k" data-insight-benchmark="Maximum salary in the selected cluster" data-insight-title="Distinct graduate profiles reveal distinct outcomes" data-insight-copy="Working Students lead the selected view on both maximum salary and executive attainment." data-insight-question="Which graduate profiles produce distinct career patterns?">Which graduate profiles produce distinct career patterns?</a>
+              <a href="#example-3" data-insight-stat="44.4%" data-insight-benchmark="From the two leading identified feeders in 2023" data-insight-title="Concentration reveals recruiting opportunity" data-insight-copy="High School 1 and High School 2 each contribute 22.2% of identified feeder records in the 2023 cohort." data-insight-question="Where is the strongest prospective-student pipeline?">Where is the strongest prospective-student pipeline?</a>
+              <a href="#example-4" data-insight-stat="+25%" data-insight-benchmark="Mean salary rises from $76k to $95k by Year 6" data-insight-title="Earnings momentum is measurable" data-insight-copy="The aggregate trajectory shows how graduate earning power develops over time, with sample sizes disclosed in the chart." data-insight-question="How quickly does graduate earning power grow?">How quickly does graduate earning power grow?</a>
+              <a href="#example-5" data-insight-stat="63.4%" data-insight-benchmark="Of 1,247 mapped positions are in Texas" data-insight-title="Talent retention has a clear geographic signature" data-insight-copy="The remaining recorded positions span 35 additional states or districts." data-insight-question="Where does the institution retain talent—and where does it export it?">Where does the institution retain talent—and where does it export it?</a>
+              <a href="#example-6" data-insight-stat="Year 6" data-insight-benchmark="Career pathways traced from the first job" data-insight-title="Industry movement becomes a pathway, not a snapshot" data-insight-copy="Follow how graduates move from first-job industries into subsequent sectors over time." data-insight-question="Which industries launch careers, and where do graduates move next?">Which industries launch careers, and where do graduates move next?</a>
+              <a href="#example-7" data-insight-stat="45%" data-insight-benchmark="Start in the graduating year; peers are 46–50%" data-insight-title="The transition to employment can be benchmarked" data-insight-copy="Compare the timing of first recorded roles across the selected peer graduate programs." data-insight-question="How does the transition to work compare with peers?">How does the transition to work compare with peers?</a>
+              <a href="#example-8" data-insight-stat="296" data-insight-benchmark="University C hires across the six displayed employers" data-insight-title="Employer demand is visible at role level" data-insight-copy="Compare leading employers and the role mix of hires across the selected peer institutions." data-insight-question="Which employers absorb the most graduates and into what roles?">Which employers absorb the most graduates and into what roles?</a>
               </nav>
-            </details>
             <div class="outcome-workspace-content" hidden>
-              <div class="outcome-qa" aria-live="polite" aria-atomic="true">
+              <div class="outcome-qa">
               <header class="outcome-question-banner">
                 <p class="insight-kicker">Question</p>
                 <h3 id="insight-question"><span aria-hidden="true"></span></h3>
               </header>
-                <aside class="outcome-insights" aria-labelledby="insight-title">
-                  <p class="insight-kicker">Answer</p>
-                  <strong class="insight-stat" id="insight-stat">2.1×</strong>
-                  <p class="insight-benchmark" id="insight-benchmark">Manager share rises from 14% to 30%</p>
-                  <h3 id="insight-title">Career advancement becomes visible</h3>
-                  <p id="insight-copy">Ladder Climbers more than double their manager-level representation within the five-year window.</p>
-                  <a class="button" href="mailto:info@cohortscience.com?subject=Education%20Outcomes%20Audit">Request a tailored audit</a>
-                </aside>
-              </div>
+              <div class="outcome-response" hidden>
+                <p class="outcome-finding" id="insight-benchmark" aria-live="polite"></p>
                 <div class="outcome-panel-stack">
 <article class="outcome-example" aria-labelledby="example-1">
   <header class="outcome-card-header">
@@ -246,6 +215,8 @@
   </figure>
 </article>
                 </div>
+              </div>
+              </div>
             </div>
           </div>
           <details class="outcome-methodology">
@@ -315,7 +286,6 @@
               <p class="methodology-disclosure">These demonstration views use aggregate analysis of professional-profile data. Coverage, cohort years and sample sizes vary by view and are disclosed within each visualization. Institution logos identify schools represented in the data and do not imply partnership or endorsement.</p>
             </div>
           </details>
-        </div>
       </div>
     </section>
     <section class="section-pad outcomes-coverage" aria-labelledby="coverage-title">

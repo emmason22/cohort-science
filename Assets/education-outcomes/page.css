@@ -1622,3 +1622,61 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+
+.education-outcomes .outcome-demo {
+  background: #fff;
+}
+
+.education-outcomes .outcome-demo .outcome-question-list {
+  display: block;
+  max-width: 48rem;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.education-outcomes .outcome-demo .outcome-question-list a {
+  margin: 0;
+  border-radius: 0;
+  border-bottom: 1px solid #dce6ec;
+  font-size: 1rem;
+}
+
+.education-outcomes .outcome-demo .outcome-question-list a[aria-current="true"] {
+  color: #102c49;
+  background: #edf5f8;
+  box-shadow: none;
+}
+
+.education-outcomes .outcome-demo .outcome-workspace-content {
+  padding: 1.75rem 0 0;
+  background: none;
+}
+
+.education-outcomes .outcome-demo .outcome-qa {
+  grid-template-columns: minmax(12rem, .85fr) minmax(0, 2fr);
+  align-items: start;
+  gap: clamp(1rem, 3vw, 2.5rem);
+}
+
+.education-outcomes .outcome-demo .outcome-question-banner {
+  background: none;
+}
+
+.education-outcomes .outcome-response {
+  min-width: 0;
+}
+
+.education-outcomes .outcome-finding {
+  color: #102c49;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+}
+
+@media (max-width: 760px) {
+  .education-outcomes .outcome-demo .outcome-qa {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

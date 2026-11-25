@@ -139,22 +139,13 @@ const workspace = document.querySelector('.outcome-workspace');
 if (workspace) {
   const links = Array.from(workspace.querySelectorAll('.outcome-workspace-nav a'));
   const panels = links.map((link) => document.getElementById(link.hash.slice(1))?.closest('article'));
-  const insightTitle = document.querySelector('#insight-title');
-  const insightCopy = document.querySelector('#insight-copy');
   const insightQuestion = document.querySelector('#insight-question');
-  const insightStat = document.querySelector('#insight-stat');
   const insightBenchmark = document.querySelector('#insight-benchmark');
-  const picker = workspace.querySelector('.outcome-category-picker');
-  const pickerSummary = picker.querySelector('summary');
-  const categoryName = picker.querySelector('#outcome-category-name');
-  const copyButton = document.querySelector('#copy-outcome-view');
-  const copyStatus = document.querySelector('#outcome-copy-status');
-  let copyStatusTimer;
   let revealAnimations = [];
   let typingFrame;
   const content = workspace.querySelector('.outcome-workspace-content');
   const questionText = insightQuestion.querySelector('span');
-  const answer = workspace.querySelector('.outcome-insights');
+  const answer = workspace.querySelector('.outcome-response');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   if (links.length && panels.every(Boolean)) {
@@ -171,25 +162,20 @@ if (workspace) {
       const prompt = links[index].dataset.insightQuestion || '';
       const animate = reveal && !reducedMotion.matches && Boolean(panel.animate);
       content.hidden = false;
-      if (copyButton) copyButton.hidden = false;
       for (const [i, panel] of panels.entries()) {
         panel.hidden = animate || i !== index;
         if (i === index) links[i].setAttribute('aria-current', 'true');
         else links[i].removeAttribute('aria-current');
       }
-      if (insightTitle) insightTitle.textContent = links[index].dataset.insightTitle || '';
-      if (insightCopy) insightCopy.textContent = links[index].dataset.insightCopy || '';
       insightQuestion.setAttribute('aria-label', prompt);
-      if (insightStat) insightStat.textContent = links[index].dataset.insightStat || '';
       if (insightBenchmark) insightBenchmark.textContent = links[index].dataset.insightBenchmark || '';
-      categoryName.textContent = links[index].textContent;
       const showAnswer = () => {
         questionText.textContent = prompt;
         answer.hidden = false;
         panel.hidden = false;
         if (animate && !reducedMotion.matches) {
           const rise = [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'translateY(0)' }];
-          revealAnimations = [answer.animate(rise, { duration: 260, easing: 'ease-out' })];
+          revealAnimations = [insightBenchmark.animate(rise, { duration: 260, easing: 'ease-out' })];
           if (plot?.animate) {
             revealAnimations.push(plot.animate(
               [
@@ -229,8 +215,6 @@ if (workspace) {
       else {
         cancelReveal();
         content.hidden = true;
-        if (copyButton) copyButton.hidden = true;
-        categoryName.textContent = 'Choose a category';
         links.forEach((link) => link.removeAttribute('aria-current'));
       }
       return index;
@@ -242,32 +226,13 @@ if (workspace) {
         if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
         event.preventDefault();
         if (location.hash !== link.hash) history.pushState(null, '', link.hash);
-        picker.open = false;
-        pickerSummary.focus();
         selectPanel(index, true);
       });
     }
-    copyButton?.addEventListener('click', async () => {
-      const activeLink = links.find((link) => link.getAttribute('aria-current') === 'true') || links[0];
-      const viewUrl = new URL(location.href);
-      viewUrl.hash = activeLink.hash;
-      let message = 'View link copied';
-      try {
-        await navigator.clipboard.writeText(viewUrl.href);
-      } catch {
-        message = 'Copy the URL from your browser';
-      }
-      if (copyStatus) {
-        window.clearTimeout(copyStatusTimer);
-        copyStatus.textContent = message;
-        copyStatus.classList.add('is-visible');
-        copyStatusTimer = window.setTimeout(() => copyStatus.classList.remove('is-visible'), 2400);
-      }
-    });
     window.addEventListener('hashchange', syncHash);
     const initialIndex = syncHash();
     if (initialIndex >= 0) {
-      requestAnimationFrame(() => document.querySelector('.outcomes-dashboard')?.scrollIntoView({ block: 'start' }));
+      requestAnimationFrame(() => document.getElementById('dashboard-preview')?.scrollIntoView({ block: 'start' }));
     }
   }
 }
