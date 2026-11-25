@@ -29,10 +29,6 @@ header p { font-size:12px; color:#8892a4; margin-top:3px; }
 .filter-group label { font-size:11px; font-weight:600; color:#8892a4; text-transform:uppercase; letter-spacing:0.05em; }
 .filter-group select { font-size:12px; padding:7px 12px; border:1.5px solid #e5e9f0; border-radius:6px; background:white; color:#1a1f36; cursor:pointer; min-width:200px; outline:none; font-family:'DM Sans',sans-serif; }
 .filter-group select:focus { border-color:#2B5278; }
-.stats-strip { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px; }
-.mini-pill { background:#f4f6fb; border:1px solid #e5e9f0; border-radius:8px; padding:8px 16px; display:flex; flex-direction:column; align-items:center; min-width:110px; }
-.mini-pill .mp-num { font-family:'DM Sans',sans-serif; font-size:18px; font-weight:700; color:#0A2540; }
-.mini-pill .mp-lbl { font-size:10px; color:#8892a4; text-transform:uppercase; letter-spacing:0.05em; margin-top:2px; text-align:center; }
 .states-table-wrap { margin-top:8px; max-height:260px; overflow-y:auto; border:1px solid #e5e9f0; border-radius:8px; }
 .states-table { width:100%; border-collapse:collapse; font-size:12px; }
 .states-table thead th { background:#0A2540; color:white; padding:8px 12px; text-align:left; position:sticky; top:0; font-size:11px; text-transform:uppercase; letter-spacing:0.05em; }
@@ -77,10 +73,8 @@ html{color-scheme:light}body{margin:0!important;padding:12px!important;backgroun
   <div class="insight-banner">
     <strong>How to read this section:</strong> The <strong>left map</strong> shows where graduates with the selected role ended up — darker states have more positions.
     The <strong>right table</strong> breaks down every state present in the selection with exact job counts and share of total.
-    The <strong>stat strip</strong> summarises the picture: total positions, how many stayed in Texas, how many left, and the overall Outside Texas %.
   </div>
   <div class="chart-card">
-    <div class="stats-strip" id="role-map-stats"></div>
     <div class="filter-bar">
       <div class="filter-group">
         <label>Role Group</label>
@@ -226,15 +220,6 @@ function updateRoleMap() {
   const txCount   = rows.filter(r => r['STATE'] === 'Texas').reduce((sum, row) => sum + row.count, 0);
   const outCount  = total - txCount;
   const migRate   = total > 0 ? ((outCount / total) * 100).toFixed(1) : '0.0';
-  const statesSet = new Set(rows.map(r => r['STATE']).filter(Boolean));
-
-  document.getElementById('role-map-stats').innerHTML = [
-    { num: total.toLocaleString(),    lbl: 'Total Positions' },
-    { num: statesSet.size,            lbl: 'States Present'  },
-    { num: txCount.toLocaleString(),  lbl: 'In Texas'        },
-    { num: outCount.toLocaleString(), lbl: 'Outside Texas'   },
-    { num: migRate + '%',             lbl: 'Outside Texas %' },
-  ].map(p => `<div class="mini-pill"><div class="mp-num">${p.num}</div><div class="mp-lbl">${p.lbl}</div></div>`).join('');
 
   document.getElementById('migration-note').innerHTML =
     `<strong>Outside Texas %:</strong>

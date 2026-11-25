@@ -107,20 +107,36 @@ const reduceRevealMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
 
 if ('IntersectionObserver' in window) {
   const revealTargets = document.querySelectorAll(
-    '.outcomes-why .container, .outcome-demo .container > h2, .outcome-demo-intro, .outcome-topic > summary, ' +
+    '.outcomes-why, .outcome-demo .container > h2, .outcome-demo-intro, .outcome-topic > summary, ' +
     '.outcome-methodology, .outcomes-coverage h2, .coverage-intro, .outcome-logo-grid, .outcomes-conversion .container'
   );
   const revealObserver = new IntersectionObserver((entries) => {
     entries.filter((entry) => entry.isIntersecting).forEach(({target}, index) => {
       revealObserver.unobserve(target);
       if (reduceRevealMotion.matches) return;
-      target.animate?.(
+      if (target.matches('.outcomes-why')) target.classList.add('why-background-in');
+      const content = target.matches('.outcomes-why') ? target.querySelector('.container') : target;
+      content?.animate?.(
         [{ opacity: .1, transform: 'translateY(10px)' }, { opacity: 1, transform: 'translateY(0)' }],
         { delay: Math.min(index, 4) * 45, duration: 340, easing: 'ease-out', fill: 'backwards' }
       );
     });
   }, { rootMargin: '0px 0px 24px 0px' });
   revealTargets.forEach((target) => revealObserver.observe(target));
+}
+
+function revealWhenVisible(element, reveal) {
+  if (!('IntersectionObserver' in window)) {
+    reveal();
+    return () => {};
+  }
+  const observer = new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting) return;
+    observer.disconnect();
+    if (!reduceRevealMotion.matches) reveal();
+  }, { threshold: .15 });
+  observer.observe(element);
+  return () => observer.disconnect();
 }
 
 const clientIdentification = document.querySelector('#outcomes-client-identification');
@@ -141,9 +157,24 @@ if (topics.length) {
   const animations = new Map();
 
   for (const topic of topics) {
+    const question = topic.querySelector('.outcome-question-card');
+    const full = question.querySelector('.question-full');
+    const typed = question.querySelector('.question-typed');
+    const letters = Array.from(full.textContent);
+    let cancelVisibility = () => {};
+    let typingFrame;
+
+    const restoreQuestion = () => {
+      cancelVisibility();
+      cancelAnimationFrame(typingFrame);
+      full.classList.remove('is-typing');
+      typed.textContent = '';
+    };
+
     topic.addEventListener('toggle', () => {
       animations.get(topic)?.cancel();
       animations.delete(topic);
+      restoreQuestion();
       if (!topic.open) {
         if (location.hash === '#' + topic.id && !topics.some((item) => item.open)) {
           history.replaceState(null, '', '#dashboard-preview');
@@ -160,6 +191,22 @@ if (topics.length) {
             { duration: 240, easing: 'ease-out' }
           )
         );
+        cancelVisibility = revealWhenVisible(question, () => {
+          if (!topic.open) return;
+          full.classList.add('is-typing');
+          const start = performance.now();
+          const duration = Math.min(1250, Math.max(450, letters.length * 18));
+          const type = (now) => {
+            if (now >= start + duration || reduceMotion.matches || !topic.open) {
+              restoreQuestion();
+              return;
+            }
+            const length = Math.max(1, Math.floor((now - start) / duration * letters.length));
+            typed.textContent = letters.slice(0, length).join('');
+            typingFrame = requestAnimationFrame(type);
+          };
+          typingFrame = requestAnimationFrame(type);
+        });
       }
 
       const chartWindow = topic.querySelector('iframe')?.contentWindow;
@@ -175,6 +222,43 @@ if (topics.length) {
   };
   window.addEventListener('hashchange', openLinkedTopic);
   openLinkedTopic();
+}
+
+const methodology = document.querySelector('.outcome-methodology');
+const flow = methodology?.querySelector('.methodology-flow');
+if (flow) {
+  let cancelVisibility = () => {};
+  let flowAnimations = [];
+  methodology.addEventListener('toggle', () => {
+    cancelVisibility();
+    flowAnimations.forEach((animation) => animation.cancel());
+    flowAnimations = [];
+    if (!methodology.open || reduceRevealMotion.matches || !flow.animate) return;
+
+    cancelVisibility = revealWhenVisible(flow, () => {
+      if (!methodology.open) return;
+      const show = (selector, delay) => flow.querySelector(selector).animate(
+        [{ opacity: 0 }, { opacity: 1 }],
+        { delay, duration: 180, easing: 'ease-out', fill: 'backwards' }
+      );
+      flowAnimations = [
+        show('.flow-sources', 0),
+        show('.flow-engine', 385),
+        show('.flow-outputs', 740),
+        ...Array.from(flow.querySelectorAll('.flow-connectors path'), (path, index) => {
+          const length = path.getTotalLength();
+          const delay = index < 6 ? 90 + index * 25 : 490 + (index - 6) * 30;
+          return path.animate(
+            [
+              { strokeDasharray: String(length), strokeDashoffset: length },
+              { strokeDasharray: String(length), strokeDashoffset: 0 }
+            ],
+            { delay, duration: 290, easing: 'ease-out', fill: 'backwards' }
+          );
+        })
+      ];
+    });
+  });
 }
 
 const logoGrid = document.querySelector('#institution-logos');

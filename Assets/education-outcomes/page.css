@@ -286,10 +286,31 @@
 }
 
 .education-outcomes .outcomes-why {
+  position: relative;
+  isolation: isolate;
   padding: clamp(1.4rem, 2.5vw, 2rem) 0;
   border-top: 1px solid rgba(31, 79, 126, .1);
   border-bottom: 1px solid rgba(31, 79, 126, .12);
-  background: #f4f8fb;
+  background: #1f4f7e;
+}
+
+.education-outcomes .outcomes-why::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: var(--workspace-navy);
+  content: "";
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .education-outcomes .outcomes-why.why-background-in::before {
+    animation: why-background-in 620ms ease-out both;
+  }
+}
+
+@keyframes why-background-in {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0); }
 }
 
 .education-outcomes .outcomes-why .container {
@@ -298,10 +319,14 @@
 
 .education-outcomes .outcomes-why h2 {
   margin: 0 0 .8rem;
-  color: var(--workspace-ink);
+  color: #fff;
   font-family: "Spectral", Georgia, serif;
   font-size: clamp(2.25rem, 4vw, 3.35rem);
   letter-spacing: -.025em;
+}
+
+.education-outcomes .outcomes-why .outcomes-eyebrow {
+  color: #bfe7f1;
 }
 
 .education-outcomes .outcomes-why-list {
@@ -1601,7 +1626,7 @@
 
 .education-outcomes .outcome-topic > summary {
   display: grid;
-  grid-template-columns: 2ch minmax(0, 1fr) 1rem;
+  grid-template-columns: minmax(0, 1fr) 1rem;
   align-items: center;
   gap: clamp(.75rem, 2vw, 1.5rem);
   padding: clamp(.85rem, 2vw, 1.6rem) .25rem;
@@ -1631,11 +1656,6 @@
 
 .education-outcomes .outcome-topic > summary:hover {
   background: #f5f9fc;
-}
-
-.education-outcomes .outcome-topic-number {
-  color: #087891;
-  font-variant-numeric: tabular-nums;
 }
 
 .education-outcomes .outcome-topic-name {
@@ -1680,11 +1700,21 @@
 }
 
 .education-outcomes .outcome-question-card {
+  display: grid;
   color: #102c49;
   padding: clamp(.85rem, 1.7vw, 1.35rem);
   font-family: "Inter", "Segoe UI", sans-serif;
   font-size: clamp(1rem, 1.55vw, 1.3rem);
   line-height: 1.45;
+}
+
+.education-outcomes .question-full,
+.education-outcomes .question-typed {
+  grid-area: 1 / 1;
+}
+
+.education-outcomes .question-full.is-typing {
+  opacity: 0;
 }
 
 .education-outcomes .outcome-topic .outcome-response > h3 {
