@@ -144,17 +144,19 @@ if (workspace) {
   const insightQuestion = document.querySelector('#insight-question');
   const insightStat = document.querySelector('#insight-stat');
   const insightBenchmark = document.querySelector('#insight-benchmark');
-  const moduleSelect = document.querySelector('#outcome-module-select');
+  const picker = workspace.querySelector('.outcome-category-picker');
+  const pickerSummary = picker.querySelector('summary');
+  const categoryName = picker.querySelector('#outcome-category-name');
   const copyButton = document.querySelector('#copy-outcome-view');
   const copyStatus = document.querySelector('#outcome-copy-status');
   let copyStatusTimer;
-  let activeIndex;
-  let answerAnimation;
+  let revealAnimations = [];
+  const question = workspace.querySelector('.outcome-question-banner');
   const answer = workspace.querySelector('.outcome-insights');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   if (links.length && panels.every(Boolean)) {
-    const selectPanel = (index) => {
+    const selectPanel = (index, reveal = false) => {
       for (const [i, panel] of panels.entries()) {
         panel.hidden = i !== index;
         if (i === index) links[i].setAttribute('aria-current', 'true');
@@ -165,20 +167,17 @@ if (workspace) {
       if (insightQuestion) insightQuestion.textContent = links[index].dataset.insightQuestion || '';
       if (insightStat) insightStat.textContent = links[index].dataset.insightStat || '';
       if (insightBenchmark) insightBenchmark.textContent = links[index].dataset.insightBenchmark || '';
-      if (activeIndex !== index) {
-        answerAnimation?.cancel();
-        if (answer?.animate && !reducedMotion.matches) {
-          answerAnimation = answer.animate(
-            [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }],
-            { delay: 130, duration: 260, easing: 'ease-out', fill: 'backwards' }
-          );
-        }
-        activeIndex = index;
-      }
-      if (moduleSelect) moduleSelect.value = links[index].hash;
-      const navigation = links[index].parentElement;
-      if (navigation && navigation.scrollWidth > navigation.clientWidth) {
-        requestAnimationFrame(() => links[index].scrollIntoView({ block: 'nearest', inline: 'nearest' }));
+      categoryName.textContent = links[index].textContent;
+      revealAnimations.forEach((animation) => animation.cancel());
+      revealAnimations = [];
+      if (reveal && question?.animate && answer?.animate && !reducedMotion.matches) {
+        revealAnimations = [question, answer].map((card, position) => card.animate(
+          [
+            { opacity: 0, transform: `translateX(${position === 0 ? -10 : 10}px)` },
+            { opacity: 1, transform: 'translateX(0)' }
+          ],
+          { delay: position * 250, duration: 240, easing: 'ease-out', fill: 'backwards' }
+        ));
       }
       const chartWindow = panels[index].querySelector('iframe')?.contentWindow;
       if (chartWindow) requestAnimationFrame(() => chartWindow.dispatchEvent(new Event('resize')));
@@ -195,15 +194,11 @@ if (workspace) {
         if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
         event.preventDefault();
         if (location.hash !== link.hash) history.pushState(null, '', link.hash);
-        selectPanel(index);
+        picker.open = false;
+        pickerSummary.focus();
+        selectPanel(index, true);
       });
     }
-    moduleSelect?.addEventListener('change', () => {
-      const index = links.findIndex((link) => link.hash === moduleSelect.value);
-      if (index < 0) return;
-      if (location.hash !== links[index].hash) history.pushState(null, '', links[index].hash);
-      selectPanel(index);
-    });
     copyButton?.addEventListener('click', async () => {
       const activeLink = links.find((link) => link.getAttribute('aria-current') === 'true') || links[0];
       const viewUrl = new URL(location.href);

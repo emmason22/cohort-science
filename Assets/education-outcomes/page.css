@@ -553,8 +553,6 @@
 }
 
 .education-outcomes .outcome-workspace {
-  display: grid;
-  grid-template-columns: 15.25rem minmax(0, 1fr);
   min-height: 45rem;
 }
 
@@ -1577,14 +1575,47 @@
   color: #102c49;
 }
 
-@media (min-width: 1321px) {
-  .education-outcomes .outcome-panel-stack {
-    grid-column: 1;
-    grid-row: 1;
-  }
+.education-outcomes .outcome-category-picker {
+  padding: .85rem 1.25rem;
+  border-bottom: 1px solid var(--workspace-line);
+}
 
-  .education-outcomes .outcome-insights {
-    grid-column: 2;
-    grid-row: 1;
+.education-outcomes .outcome-category-picker summary {
+  cursor: pointer;
+  color: #102c49;
+  padding: .5rem 0;
+}
+
+.education-outcomes .outcome-category-picker summary strong {
+  margin-inline-start: .5rem;
+}
+
+.education-outcomes .outcome-category-picker[open] .outcome-workspace-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  gap: .3rem;
+  border-right: 0;
+}
+
+.education-outcomes .outcome-qa {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.education-outcomes .outcome-qa .outcome-question-banner {
+  margin: 0;
+}
+
+.education-outcomes .outcome-qa .outcome-insights {
+  display: block;
+  min-width: 0;
+  position: static;
+}
+
+@media (max-width: 600px) {
+  .education-outcomes .outcome-qa {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
