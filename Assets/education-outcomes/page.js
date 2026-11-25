@@ -139,64 +139,39 @@ const workspace = document.querySelector('.outcome-workspace');
 if (workspace) {
   const links = Array.from(workspace.querySelectorAll('.outcome-workspace-nav a'));
   const panels = links.map((link) => document.getElementById('chart-' + link.hash.slice(1))?.closest('article'));
-  const insightQuestion = document.querySelector('#insight-question');
-  const insightBenchmark = document.querySelector('#insight-benchmark');
+  const topic = workspace.querySelector('#insight-topic');
+  const title = workspace.querySelector('#insight-title');
+  const copy = workspace.querySelector('#insight-copy');
+  const stat = workspace.querySelector('#insight-stat');
+  const benchmark = workspace.querySelector('#insight-benchmark');
+  const summary = workspace.querySelector('.outcome-answer-summary');
   let findingAnimation;
   let chartAnimation;
-  let typingFrame;
-  const content = workspace.querySelector('.outcome-workspace-content');
-  const questionText = insightQuestion.querySelector('span');
-  const answer = workspace.querySelector('.outcome-response');
   const chartDetails = workspace.querySelector('.outcome-chart-details');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   if (links.length && panels.every(Boolean)) {
-    const cancelReveal = () => {
-      cancelAnimationFrame(typingFrame);
+    const selectPanel = (index, reveal = false) => {
       findingAnimation?.cancel();
       chartAnimation?.cancel();
       chartDetails.open = false;
-    };
-
-    const selectPanel = (index, reveal = false) => {
-      cancelReveal();
-      const panel = panels[index];
-      const prompt = links[index].dataset.insightQuestion || '';
-      const animate = reveal && !reducedMotion.matches && Boolean(panel.animate);
-      content.hidden = false;
       for (const [i, panel] of panels.entries()) {
         panel.hidden = i !== index;
         if (i === index) links[i].setAttribute('aria-current', 'true');
         else links[i].removeAttribute('aria-current');
       }
-      insightQuestion.setAttribute('aria-label', prompt);
-      if (insightBenchmark) insightBenchmark.textContent = links[index].dataset.insightBenchmark || '';
-      const showAnswer = () => {
-        questionText.textContent = prompt;
-        answer.hidden = false;
-        if (animate && !reducedMotion.matches) {
-          const rise = [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'translateY(0)' }];
-          findingAnimation = insightBenchmark.animate(rise, { duration: 260, easing: 'ease-out' });
-        }
-      };
-      if (!animate) {
-        showAnswer();
-        return;
+      const finding = links[index].dataset;
+      topic.textContent = panels[index].querySelector('h3').textContent;
+      title.textContent = finding.insightTitle;
+      copy.textContent = finding.insightCopy;
+      stat.textContent = finding.insightStat;
+      benchmark.textContent = finding.insightBenchmark;
+      if (reveal && summary.animate && !reducedMotion.matches) {
+        findingAnimation = summary.animate(
+          [{ opacity: 0, transform: 'translateY(5px)' }, { opacity: 1, transform: 'translateY(0)' }],
+          { duration: 220, easing: 'ease-out' }
+        );
       }
-      answer.hidden = true;
-      questionText.textContent = '';
-      const duration = Math.min(prompt.length * 17, 1150);
-      const start = performance.now();
-      const typeQuestion = (now) => {
-        const progress = duration ? Math.min(1, (now - start) / duration) : 1;
-        if (progress >= 1 || reducedMotion.matches) {
-          showAnswer();
-          return;
-        }
-        questionText.textContent = prompt.slice(0, Math.max(1, Math.floor(progress * prompt.length)));
-        typingFrame = requestAnimationFrame(typeQuestion);
-      };
-      typingFrame = requestAnimationFrame(typeQuestion);
     };
 
     chartDetails.addEventListener('toggle', () => {
@@ -216,12 +191,7 @@ if (workspace) {
 
     const syncHash = () => {
       const index = links.findIndex((link) => link.hash === location.hash);
-      if (index >= 0) selectPanel(index);
-      else {
-        cancelReveal();
-        content.hidden = true;
-        links.forEach((link) => link.removeAttribute('aria-current'));
-      }
+      selectPanel(Math.max(0, index));
       return index;
     };
 
