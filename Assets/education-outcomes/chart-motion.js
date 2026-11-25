@@ -24,6 +24,11 @@
     let drawing = 0;
     const isLine = chart.config.type === 'line';
 
+    const highlight = () => {
+      highlightUntil = performance.now() + 710;
+      if (!drawing) drawing = requestAnimationFrame(draw);
+    };
+
     const plugin = {
       id: 'cohortMotion',
       beforeUpdate(current) {
@@ -43,8 +48,7 @@
           highlightUntil = 0;
           return;
         }
-        highlightUntil = performance.now() + 710;
-        if (!drawing) drawing = requestAnimationFrame(draw);
+        highlight();
       },
       beforeDatasetsDraw(current) {
         if (!isLine || progress >= 1) return;
@@ -62,13 +66,13 @@
         ctx.save();
         ctx.strokeStyle = '#007d92';
         ctx.globalAlpha = Math.min(.75, remaining / 520);
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 2.5;
         for (const [datasetIndex, pointIndex] of changed) {
           const mark = current.getDatasetMeta(datasetIndex).data[pointIndex];
           if (!mark || !Number.isFinite(mark.x) || !Number.isFinite(mark.y)) continue;
           if (isLine) {
             ctx.beginPath();
-            ctx.arc(mark.x, mark.y, 6, 0, Math.PI * 2);
+            ctx.arc(mark.x, mark.y, 8, 0, Math.PI * 2);
             ctx.stroke();
           } else if (Math.abs(mark.x - mark.base) >= 3) {
             ctx.strokeRect(Math.min(mark.x, mark.base), mark.y - mark.height / 2,
@@ -87,12 +91,27 @@
 
     Chart.register(plugin);
     chart.update('none');
+    const highlightFinding = () => {
+      if (reducedMotion.matches) return;
+      const label = isLine ? 'Year 6' : '2023';
+      const pointIndex = chart.data.labels.findIndex((value) => String(value) === label);
+      if (pointIndex < 0) return;
+      changed = chart.data.datasets.flatMap((dataset, index) => {
+        const featured = isLine ? dataset._cohortLabel === 'Overall Avg'
+          : ['High School 1', 'High School 2'].includes(dataset.label);
+        return featured && chart.isDatasetVisible(index) && Number.isFinite(dataset.data[pointIndex])
+          ? [[index, pointIndex]] : [];
+      });
+      if (changed.length) highlight();
+    };
+
     whenVisible(frame, () => {
       visible = true;
       if (reducedMotion.matches) return;
       if (!isLine) {
         chart.reset();
         chart.update();
+        window.setTimeout(highlightFinding, 440);
         return;
       }
       const start = performance.now();
@@ -101,6 +120,7 @@
         progress = reducedMotion.matches ? 1 : Math.min((now - start) / duration, 1);
         chart.draw();
         if (progress < 1) requestAnimationFrame(drawLine);
+        else highlightFinding();
       };
       requestAnimationFrame(drawLine);
     });

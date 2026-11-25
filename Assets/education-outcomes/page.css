@@ -238,13 +238,15 @@
   border-radius: .3rem;
   background: #fff;
   box-shadow: 0 14px 30px rgba(16, 44, 73, .13);
-  transform: translateZ(0);
-  transition: border-color .4s ease, box-shadow .4s ease;
+  transform: rotate(1.25deg) scale(.985);
+  transform-origin: center bottom;
+  transition: border-color .4s ease, box-shadow .4s ease, transform .42s ease;
 }
 
 .education-outcomes .hero-report.is-active img {
   border-color: rgba(111, 196, 220, .72);
-  box-shadow: 0 18px 38px rgba(16, 44, 73, .22), 0 0 0 2px rgba(111, 196, 220, .2);
+  box-shadow: 0 20px 38px rgba(16, 44, 73, .26), 0 4px 10px rgba(16, 44, 73, .12), 0 0 0 2px rgba(111, 196, 220, .2);
+  transform: none;
 }
 
 .education-outcomes .hero-report-arrow {
@@ -288,6 +290,7 @@
 .education-outcomes .outcomes-why {
   position: relative;
   isolation: isolate;
+  overflow: clip;
   padding: clamp(1.4rem, 2.5vw, 2rem) 0;
   border-top: 1px solid rgba(31, 79, 126, .1);
   border-bottom: 1px solid rgba(31, 79, 126, .12);
@@ -306,11 +309,28 @@
   .education-outcomes .outcomes-why.why-background-in::before {
     animation: why-background-in 620ms ease-out both;
   }
+
+  .education-outcomes .outcomes-why.why-background-in::after {
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-end: .55rem;
+    width: 42%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #70dbe7, transparent);
+    pointer-events: none;
+    content: "";
+    animation: why-teal-sweep 900ms ease-out both;
+  }
 }
 
 @keyframes why-background-in {
   from { clip-path: inset(0 100% 0 0); }
   to { clip-path: inset(0); }
+}
+
+@keyframes why-teal-sweep {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(250%); }
 }
 
 .education-outcomes .outcomes-why .container {
@@ -1609,6 +1629,17 @@
   scroll-margin-top: 8rem;
 }
 
+.education-outcomes .outcome-topic[open] {
+  background: #eff6fa;
+  box-shadow: inset 3px 0 #087891;
+}
+
+.education-outcomes .outcome-topic[open] > summary,
+.education-outcomes .outcome-topic-description,
+.education-outcomes .outcome-topic-grid {
+  padding-inline: clamp(.8rem, 2vw, 1.5rem);
+}
+
 @supports selector(details::details-content) and (interpolate-size: allow-keywords) {
   @media (prefers-reduced-motion: no-preference) {
     .education-outcomes .outcome-topic::details-content {
@@ -1706,6 +1737,11 @@
   font-family: "Inter", "Segoe UI", sans-serif;
   font-size: clamp(1rem, 1.55vw, 1.3rem);
   line-height: 1.45;
+}
+
+.education-outcomes .outcome-topic-grid .outcome-response {
+  border-color: #a7c5d4;
+  box-shadow: 0 12px 26px rgba(16, 44, 73, .08);
 }
 
 .education-outcomes .question-full,

@@ -49,6 +49,7 @@ if (reportCarousel && reportPrevious && reportNext) {
   let pointerPaused = false;
   let focusPaused = false;
   let scrollTimer;
+  let coverEntrance = [];
 
   const setActiveReport = () => {
     reportSlides.forEach((slide, index) => slide.classList.toggle('is-active', index === activeReport));
@@ -66,10 +67,15 @@ if (reportCarousel && reportPrevious && reportNext) {
   const getLastReportIndex = () => Math.max(0, reportSlides.length - getVisibleReportCount());
 
   const showReport = (index, behavior = 'smooth') => {
+    coverEntrance.forEach((animation) => animation.cancel());
+    coverEntrance = [];
     const lastIndex = getLastReportIndex();
     activeReport = index < 0 ? lastIndex : index > lastIndex ? 0 : index;
     setActiveReport();
-    reportCarousel.scrollTo({ left: reportSlides[activeReport].offsetLeft, behavior });
+    reportCarousel.scrollTo({
+      left: reportSlides[activeReport].offsetLeft,
+      behavior: reducedMotion.matches ? 'instant' : behavior
+    });
   };
 
   const syncReportPosition = () => {
@@ -87,6 +93,19 @@ if (reportCarousel && reportPrevious && reportNext) {
   };
 
   setActiveReport();
+  if (!reducedMotion.matches) {
+    coverEntrance = reportSlides.slice(0, Math.max(2, getVisibleReportCount())).flatMap((slide, index) => {
+      const cover = slide.querySelector('img');
+      if (!cover?.animate) return [];
+      return [cover.animate(
+        [
+          { opacity: 0, transform: `translate(${index ? 12 : -8}px, 16px) rotate(${index ? 3 : -2}deg) scale(.94)` },
+          { opacity: 1, transform: index ? 'rotate(1.25deg) scale(.985)' : 'none' }
+        ],
+        { duration: 680, delay: index * 100, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'backwards' }
+      )];
+    });
+  }
 
   reportPrevious.addEventListener('click', () => showReport(activeReport - 1));
   reportNext.addEventListener('click', () => showReport(activeReport + 1));
@@ -114,7 +133,13 @@ if ('IntersectionObserver' in window) {
     entries.filter((entry) => entry.isIntersecting).forEach(({target}, index) => {
       revealObserver.unobserve(target);
       if (reduceRevealMotion.matches) return;
-      if (target.matches('.outcomes-why')) target.classList.add('why-background-in');
+      if (target.matches('.outcomes-why')) {
+        target.classList.add('why-background-in');
+        target.querySelectorAll('.outcomes-why-list li').forEach((card, cardIndex) => card.animate?.(
+          [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }],
+          { duration: 340, delay: 145 + cardIndex * 105, easing: 'ease-out', fill: 'backwards' }
+        ));
+      }
       const content = target.matches('.outcomes-why') ? target.querySelector('.container') : target;
       content?.animate?.(
         [{ opacity: .1, transform: 'translateY(10px)' }, { opacity: 1, transform: 'translateY(0)' }],
@@ -154,8 +179,6 @@ if (clientIdentification) {
 const topics = Array.from(document.querySelectorAll('.outcome-topic'));
 if (topics.length) {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const animations = new Map();
-
   for (const topic of topics) {
     const question = topic.querySelector('.outcome-question-card');
     const full = question.querySelector('.question-full');
@@ -163,6 +186,7 @@ if (topics.length) {
     const letters = Array.from(full.textContent);
     let cancelVisibility = () => {};
     let typingFrame;
+    let topicAnimations = [];
 
     const restoreQuestion = () => {
       cancelVisibility();
@@ -172,8 +196,8 @@ if (topics.length) {
     };
 
     topic.addEventListener('toggle', () => {
-      animations.get(topic)?.cancel();
-      animations.delete(topic);
+      topicAnimations.forEach((animation) => animation.cancel());
+      topicAnimations = [];
       restoreQuestion();
       if (!topic.open) {
         if (location.hash === '#' + topic.id && !topics.some((item) => item.open)) {
@@ -185,15 +209,18 @@ if (topics.length) {
       history.replaceState(null, '', '#' + topic.id);
       const cards = topic.querySelector('.outcome-topic-grid');
       if (!reduceMotion.matches && cards.animate) {
-        animations.set(topic,
-          cards.animate(
+        topicAnimations.push(cards.animate(
             [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }],
             { duration: 240, easing: 'ease-out' }
-          )
-        );
+          ));
         cancelVisibility = revealWhenVisible(question, () => {
           if (!topic.open) return;
           full.classList.add('is-typing');
+          topic.querySelectorAll('.outcome-response > h3, .outcome-finding, .outcome-answer-stat')
+            .forEach((finding, index) => topicAnimations.push(finding.animate(
+              [{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'translateY(0)' }],
+              { duration: 280, delay: 125 + index * 85, easing: 'ease-out', fill: 'backwards' }
+            )));
           const start = performance.now();
           const duration = Math.min(1250, Math.max(450, letters.length * 18));
           const type = (now) => {
