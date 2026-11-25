@@ -124,30 +124,67 @@ if (reportCarousel && reportPrevious && reportNext) {
 
 const reduceRevealMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-if ('IntersectionObserver' in window) {
-  const revealTargets = document.querySelectorAll(
-    '.outcomes-why, .outcome-demo .container > h2, .outcome-demo-intro, .outcome-topic > summary, ' +
-    '.outcome-methodology, .outcomes-coverage h2, .coverage-intro, .outcome-logo-grid, .outcomes-conversion .container'
-  );
-  const revealObserver = new IntersectionObserver((entries) => {
+if (!reduceRevealMotion.matches && 'IntersectionObserver' in window && 'animate' in Element.prototype) {
+  const revealTargets = document.querySelectorAll([
+    '.outcomes-why .container',
+    '.outcome-demo .outcomes-eyebrow',
+    '.outcome-demo .container > h2',
+    '.outcome-demo-intro',
+    '.outcome-topic > summary',
+    '.outcome-methodology',
+    '.outcomes-coverage .outcomes-eyebrow',
+    '.outcomes-coverage h2',
+    '.coverage-intro',
+    '.outcome-logo-grid',
+    '.outcome-logo-actions',
+    '.outcomes-conversion .container > div'
+  ].join(', '));
+  const pending = new Set();
+  const show = (target, animate, delay = 0) => {
+    observer.unobserve(target);
+    pending.delete(target);
+    const why = target.closest('.outcomes-why');
+    const wasPending = target.classList.contains('is-scroll-reveal-pending');
+    target.classList.remove('is-scroll-reveal-pending');
+    if (!animate || (!wasPending && !why)) return;
+
+    if (why) {
+      why.classList.add('why-background-in');
+      why.querySelectorAll('.outcomes-why-list li').forEach((card, index) => card.animate(
+        [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }],
+        { duration: 340, delay: 145 + index * 105, easing: 'ease-out', fill: 'backwards' }
+      ));
+    }
+    target.animate(
+      [{ opacity: 0, transform: 'translateY(18px)' }, { opacity: 1, transform: 'translateY(0)' }],
+      { delay, duration: 460, easing: 'cubic-bezier(.22,.68,.25,1)', fill: 'backwards' }
+    );
+  };
+  const observer = new IntersectionObserver((entries) => {
     entries.filter((entry) => entry.isIntersecting).forEach(({target}, index) => {
-      revealObserver.unobserve(target);
-      if (reduceRevealMotion.matches) return;
-      if (target.matches('.outcomes-why')) {
-        target.classList.add('why-background-in');
-        target.querySelectorAll('.outcomes-why-list li').forEach((card, cardIndex) => card.animate?.(
-          [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }],
-          { duration: 340, delay: 145 + cardIndex * 105, easing: 'ease-out', fill: 'backwards' }
-        ));
-      }
-      const content = target.matches('.outcomes-why') ? target.querySelector('.container') : target;
-      content?.animate?.(
-        [{ opacity: .1, transform: 'translateY(10px)' }, { opacity: 1, transform: 'translateY(0)' }],
-        { delay: Math.min(index, 4) * 45, duration: 340, easing: 'ease-out', fill: 'backwards' }
-      );
+      show(target, !reduceRevealMotion.matches, Math.min(index, 3) * 65);
     });
-  }, { rootMargin: '0px 0px 24px 0px' });
-  revealTargets.forEach((target) => revealObserver.observe(target));
+  }, { rootMargin: '0px 0px -24px 0px' });
+
+  for (const target of revealTargets) {
+    if (target.getBoundingClientRect().top >= window.innerHeight) {
+      target.classList.add('is-scroll-reveal-pending');
+      pending.add(target);
+      observer.observe(target);
+    } else if (target.closest('.outcomes-why')) {
+      observer.observe(target);
+    }
+  }
+
+  document.addEventListener('focusin', (event) => {
+    const target = event.target.closest('.is-scroll-reveal-pending');
+    if (target) show(target, false);
+  });
+  reduceRevealMotion.addEventListener('change', () => {
+    if (!reduceRevealMotion.matches) return;
+    pending.forEach((target) => show(target, false));
+    observer.disconnect();
+  });
 }
 
 function revealWhenVisible(element, reveal) {
