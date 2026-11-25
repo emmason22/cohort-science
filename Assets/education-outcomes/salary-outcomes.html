@@ -32,7 +32,7 @@
 </style><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><style>
 html{color-scheme:light}body{margin:0!important;padding:12px!important;background:#fff!important;color:#142c44}button,select,input{font:inherit}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #1755c5;outline-offset:2px}.chart-card,.panel{margin:0!important;max-width:none!important}.chart-card{padding:12px!important;box-shadow:none!important}.plotly-graph-div{max-width:100%}.table-responsive,.states-table-wrap{overflow:auto}
 @media(max-width:600px){body{padding:6px!important}.chart-card{padding:8px!important}.layout-row{display:block!important}.stat-panel{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px!important}.controls{flex-wrap:wrap}.timeline-ticks{font-size:8px!important}}
-</style><link rel="stylesheet" href="chart.css"></head><body>
+</style><link rel="stylesheet" href="chart.css?v=fit-1"></head><body>
 <div class="chart-card">
   <div class="chart-header">
     <div>
@@ -139,11 +139,13 @@ function buildAllDatasets(){
 }
 
 const ctx = document.getElementById("chartSal").getContext("2d");
+const reduceChartMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+let previousAxisMode = mode;
 const chart = new Chart(ctx, {
   type: "line",
   data: { labels: LABELS, datasets: buildAllDatasets() },
   options: {
-    responsive: true, maintainAspectRatio: false, animation: {duration:400},
+    responsive: true, maintainAspectRatio: false, animation: {duration: reduceChartMotion.matches ? 0 : 400},
     plugins: {
       legend: {display:false},
       tooltip: {
@@ -180,13 +182,20 @@ const chart = new Chart(ctx, {
 });
 
 function rebuild(){
-  chart.data.datasets = buildAllDatasets();
+  const datasets = buildAllDatasets();
+  const y = chart.scales.y;
+  const values = datasets.flatMap(dataset => dataset.data).filter(Number.isFinite);
+  const fits = mode === previousAxisMode && y && values.every(value => value >= y.min && value <= y.max);
+  chart.options.scales.y.min = fits ? y.min : undefined;
+  chart.options.scales.y.max = fits ? y.max : undefined;
+  previousAxisMode = mode;
+  chart.data.datasets = datasets;
   chart.options.scales.y.title.text = mode === "abs" ? "Avg Salary (USD)" : "Index (Year 0 = 100)";
   chart.options.scales.y.ticks.callback = v => mode === "abs" ? "$" + v + "K" : v;
   document.getElementById("subtitle").textContent =
     mode === "abs" ? "Mean salary at Year 0, 1, 2 … after graduating"
                    : "Indexed to 100 at Year 0 · tooltip shows implied $ amount";
-  chart.update();
+  chart.update(reduceChartMotion.matches ? "none" : undefined);
   rebuildLegend();
   updateCohortBtnLabel();
 }
@@ -259,7 +268,7 @@ function rebuildLegend(){
       const meta = chart.getDatasetMeta(di);
       meta.hidden = !meta.hidden;
       el.classList.toggle("disabled", meta.hidden);
-      chart.update();
+      chart.update(reduceChartMotion.matches ? "none" : undefined);
     };
     lg.appendChild(el);
   });

@@ -1,6 +1,8 @@
-/* Keep standalone chart controls legible inside the dashboard cards. */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Spectral:wght@600;700&display=swap");
+
+/* Keep chart text and controls consistent in standalone and embedded views. */
 body {
-  font-family: Inter, Arial, sans-serif !important;
+  font-family: "Inter", "Segoe UI", sans-serif !important;
   color: #152c42 !important;
 }
 .chart-card,
@@ -22,7 +24,9 @@ body {
   outline-offset: 2px;
 }
 .chart-header h2,
-.chart-card h2 {
+.chart-card h2,
+.section-header {
+  font-family: "Spectral", Georgia, serif;
   color: #0d3b66;
 }
 .chart-header p,
@@ -31,4 +35,79 @@ body {
 }
 .states-table th {
   background: #edf3f8;
+}
+
+.layout-row {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 16.25rem);
+}
+
+.two-col {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.timeline-controls,
+.slider-track-wrap,
+.filter-group,
+.plotly-graph-div,
+.canvas-wrap {
+  min-width: 0;
+}
+
+@media (max-width: 720px) {
+  .two-col {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .layout-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .stat-panel {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  body .stat-panel {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .wrap,
+  .panel,
+  .timeline-wrap {
+    padding-inline: .5rem;
+  }
+
+  .controls {
+    position: relative;
+  }
+
+  .controls .dd-wrap,
+  .controls .multi-wrap {
+    position: static;
+  }
+
+  .controls .dd-menu,
+  .controls .multi-drop {
+    inset-inline: 0;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .filter-group,
+  .filter-group select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .timeline-ticks {
+    flex-wrap: wrap;
+    gap: .25rem;
+  }
+
+  .states-table th,
+  .states-table td {
+    padding-inline: .3rem;
+  }
 }

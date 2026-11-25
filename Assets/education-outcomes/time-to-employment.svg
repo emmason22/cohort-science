@@ -1,7 +1,22 @@
 <svg xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 568.09375 273.000232" xmlns="http://www.w3.org/2000/svg" version="1.1">
  
  <defs>
-  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+  <style type="text/css">
+    * { stroke-linejoin: round; stroke-linecap: butt; }
+    @media (prefers-reduced-motion: no-preference) {
+      #ex3_axes_1 > g[id*="_patch_"] > path[clip-path] {
+        transform-origin: 0 210.332232px;
+        animation: rise 520ms ease-out both;
+      }
+      #ex3_axes_2 > g[id*="_patch_"] > path[clip-path] {
+        transform-box: fill-box;
+        transform-origin: left center;
+        animation: extend 520ms ease-out both;
+      }
+      @keyframes rise { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+      @keyframes extend { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    }
+  </style>
  </defs>
  <g id="ex3_figure_1">
   <g id="ex3_patch_1">

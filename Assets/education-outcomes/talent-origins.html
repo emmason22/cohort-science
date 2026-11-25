@@ -57,7 +57,7 @@
 </style><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><style>
 html{color-scheme:light}body{margin:0!important;padding:12px!important;background:#fff!important;color:#142c44}button,select,input{font:inherit}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #1755c5;outline-offset:2px}.chart-card,.panel{margin:0!important;max-width:none!important}.chart-card{padding:12px!important;box-shadow:none!important}.plotly-graph-div{max-width:100%}.table-responsive,.states-table-wrap{overflow:auto}
 @media(max-width:600px){body{padding:6px!important}.chart-card{padding:8px!important}.layout-row{display:block!important}.stat-panel{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px!important}.controls{flex-wrap:wrap}.timeline-ticks{font-size:8px!important}}
-</style><link rel="stylesheet" href="chart.css"></head><body>
+</style><link rel="stylesheet" href="chart.css?v=fit-1"></head><body>
 <div class="chart-card">
 <div class="tt" id="tt"></div>
 
@@ -128,12 +128,17 @@ function buildDS() {
 }
 
 const ctx = document.getElementById("chartHS").getContext("2d");
+const reduceChartMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const countAxisMax = 5 * Math.ceil(Math.max(...[...OLD_YEARS, ...NEW_YEARS].map(year => {
+  const counts = getData(year)?.counts ?? {};
+  return CATS.reduce((total, category) => total + (counts[category] || 0), 0);
+})) / 5);
 const chart = new Chart(ctx, {
   type: "bar",
   data: { labels: getYears(), datasets: buildDS() },
   options: {
     indexAxis: "y",
-    responsive: true, maintainAspectRatio: false, animation: {duration:400},
+    responsive: true, maintainAspectRatio: false, animation: {duration: reduceChartMotion.matches ? 0 : 400},
     plugins: {
       legend: {display:false},
       tooltip: {
@@ -150,7 +155,7 @@ const chart = new Chart(ctx, {
       }
     },
     scales: {
-      x: {stacked:true, max: mode==="pct"?100:undefined, grid:{color:"#DDE3EC"},
+      x: {stacked:true, max: mode==="pct"?100:countAxisMax, grid:{color:"#DDE3EC"},
            ticks:{font:{size:11}, color:"#5A7090", callback: v => mode==="pct" ? v+"%" : v}},
       y: {stacked:true, grid:{display:false}, ticks:{font:{size:12,weight:"600"}, color:"#1A2B45"}, title:{display:true, text:"Cohort: Graduating Year", font:{size:11}, color:"#5A7090"}}
     }
@@ -190,9 +195,9 @@ const chart = new Chart(ctx, {
 function rebuild() {
   chart.data.labels   = getYears();
   chart.data.datasets = buildDS();
-  chart.options.scales.x.max = mode === "pct" ? 100 : undefined;
+  chart.options.scales.x.max = mode === "pct" ? 100 : countAxisMax;
   chart.options.scales.x.ticks.callback = v => mode === "pct" ? v+"%" : v;
-  chart.update();
+  chart.update(reduceChartMotion.matches ? "none" : undefined);
 }
 function setMode(m) {
   mode = m;

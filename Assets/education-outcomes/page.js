@@ -33,6 +33,7 @@ for (const frame of document.querySelectorAll('.outcome-frame')) {
     const observer = new ResizeObserver(resize);
     observer.observe(body);
     resize();
+    window.connectOutcomeChart?.(frame);
   }, { once: true });
 }
 
@@ -102,22 +103,24 @@ if (reportCarousel && reportPrevious && reportNext) {
   }, 3600);
 }
 
-const whyList = document.querySelector('.outcomes-why-list');
 const reduceRevealMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-if (whyList && 'IntersectionObserver' in window) {
-  const revealObserver = new IntersectionObserver(([entry]) => {
-    if (!entry.isIntersecting) return;
-    revealObserver.disconnect();
-    if (reduceRevealMotion.matches) return;
-    Array.from(whyList.children).forEach((card, index) => {
-      card.animate?.(
-        [{ opacity: .72, transform: 'translateY(5px)' }, { opacity: 1, transform: 'translateY(0)' }],
-        { delay: index * 55, duration: 320, easing: 'ease-out' }
+if ('IntersectionObserver' in window) {
+  const revealTargets = document.querySelectorAll(
+    '.outcomes-why .container, .outcome-demo .container > h2, .outcome-demo-intro, .outcome-topic > summary, ' +
+    '.outcome-methodology, .outcomes-coverage h2, .coverage-intro, .outcome-logo-grid, .outcomes-conversion .container'
+  );
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.filter((entry) => entry.isIntersecting).forEach(({target}, index) => {
+      revealObserver.unobserve(target);
+      if (reduceRevealMotion.matches) return;
+      target.animate?.(
+        [{ opacity: .1, transform: 'translateY(10px)' }, { opacity: 1, transform: 'translateY(0)' }],
+        { delay: Math.min(index, 4) * 45, duration: 340, easing: 'ease-out', fill: 'backwards' }
       );
     });
-  }, { threshold: .1 });
-  revealObserver.observe(whyList);
+  }, { rootMargin: '0px 0px 24px 0px' });
+  revealTargets.forEach((target) => revealObserver.observe(target));
 }
 
 const clientIdentification = document.querySelector('#outcomes-client-identification');
@@ -139,7 +142,7 @@ if (topics.length) {
 
   for (const topic of topics) {
     topic.addEventListener('toggle', () => {
-      animations.get(topic)?.forEach((animation) => animation.cancel());
+      animations.get(topic)?.cancel();
       animations.delete(topic);
       if (!topic.open) {
         if (location.hash === '#' + topic.id && !topics.some((item) => item.open)) {
@@ -149,19 +152,14 @@ if (topics.length) {
       }
 
       history.replaceState(null, '', '#' + topic.id);
-      const chart = topic.querySelector('.workspace-chart-scroll, .figure-scroll');
       const cards = topic.querySelector('.outcome-topic-grid');
       if (!reduceMotion.matches && cards.animate) {
-        animations.set(topic, [
+        animations.set(topic,
           cards.animate(
             [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }],
             { duration: 240, easing: 'ease-out' }
-          ),
-          chart.animate(
-            [{ clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0)' }],
-            { delay: 180, duration: 620, easing: 'ease-out', fill: 'backwards' }
           )
-        ]);
+        );
       }
 
       const chartWindow = topic.querySelector('iframe')?.contentWindow;
